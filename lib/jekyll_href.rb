@@ -56,26 +56,13 @@ module JekyllHref
     # @param command_line [Hash, String, Liquid::Tag::Parser] the arguments from the web page.
     # @param tokens [Liquid::ParseContext] tokenized command line
     # @return [void]
-    def initialize(tag_name, command_line, tokens) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+    def initialize(tag_name, command_line, tokens)
       super
 
-      @follow = " rel='nofollow'"
       @match = false
-      @target = " target='_blank'"
-
-      tokens = command_line.strip.split
-
-      follow_index = tokens.index("follow")
-      if follow_index
-        tokens.delete_at(follow_index)
-        @follow = ""
-      end
-
-      target_index = tokens.index("notarget")
-      if target_index
-        tokens.delete_at(target_index)
-        @target = ""
-      end
+      @tokens = command_line.strip.split
+      @follow = get_value("follow", " rel='nofollow'")
+      @target = get_value("notarget", " target='_blank'")
 
       match_index = tokens.index("match")
       if match_index
@@ -85,6 +72,21 @@ module JekyllHref
         @target = ""
       end
 
+      finalize tokens
+    end
+
+    # Method prescribed by the Jekyll plugin lifecycle.
+    # @return [String]
+    def render(context)
+      match(context) if @match
+      link = replace_vars(context, @link)
+      # puts "@link=#{@link}; link=#{link}"
+      "<a href='#{link}'#{@target}#{@follow}>#{@text}</a>"
+    end
+
+    private
+
+    def finalize(tokens)
       @link = tokens.shift
 
       @text = tokens.join(" ").strip
@@ -97,6 +99,16 @@ module JekyllHref
         @follow = ""
         @target = ""
       end
+    end
+
+    def get_value(token, default_value)
+      value = default_value
+      target_index = tokens.index(token)
+      if target_index
+        @tokens.delete_at(target_index)
+        value = ""
+      end
+      value
     end
 
     def match(context) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
@@ -132,15 +144,6 @@ module JekyllHref
         link = link.gsub("{{#{name}}}", value)
       end
       link
-    end
-
-    # Method prescribed by the Jekyll plugin lifecycle.
-    # @return [String]
-    def render(context)
-      match(context) if @match
-      link = replace_vars(context, @link)
-      # puts "@link=#{@link}; link=#{link}"
-      "<a href='#{link}'#{@target}#{@follow}>#{@text}</a>"
     end
   end
 end
