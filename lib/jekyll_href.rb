@@ -53,43 +53,47 @@ module JekyllHref
 
   class ExternalHref < Liquid::Tag
     # @param tag_name [String] is the name of the tag, which we already know.
-    # @param command_line [Hash, String, Liquid::Tag::Parser] the arguments from the web page.
-    # @param tokens [Liquid::ParseContext] tokenized command line
+    # @param tag_line [Hash, String, Liquid::Tag::Parser] the contents between {% and %} in the web page (should be a string).
+    # @param context [Liquid::ParseContext] tokenized command line
     # @return [void]
-    def initialize(tag_name, command_line, tokens)
+    def initialize(tag_name, tag_line, context)
       super
 
+      @site = context.registers[:site]
+      @config = @site.config
+
       @match = false
-      @tokens = command_line.strip.split
+      @tokens = tag_line.strip.split
+      @context = context
       @follow = get_value("follow", " rel='nofollow'")
       @target = get_value("notarget", " target='_blank'")
 
-      match_index = tokens.index("match")
+      match_index = context.index("match")
       if match_index
-        tokens.delete_at(match_index)
+        context.delete_at(match_index)
         @follow = ""
         @match = true
         @target = ""
       end
 
-      finalize tokens
+      finalize
     end
 
     # Method prescribed by the Jekyll plugin lifecycle.
     # @return [String]
     def render(context)
       match(context) if @match
-      link = replace_vars(context, @link)
+      link = replace_vars(@link)
       # puts "@link=#{@link}; link=#{link}"
       "<a href='#{link}'#{@target}#{@follow}>#{@text}</a>"
     end
 
     private
 
-    def finalize(tokens)
-      @link = tokens.shift
+    def finalize
+      @link = @tokens.shift
 
-      @text = tokens.join(" ").strip
+      @text = @tokens.join(" ").strip
       if @text.empty?
         @text = "<code>${@link}</code>"
         @link = "https://#{@link}"
@@ -103,7 +107,7 @@ module JekyllHref
 
     def get_value(token, default_value)
       value = default_value
-      target_index = tokens.index(token)
+      target_index = @context.index(token)
       if target_index
         @tokens.delete_at(target_index)
         value = ""
@@ -111,17 +115,18 @@ module JekyllHref
       value
     end
 
-    def match(context) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
-      site = context.registers[:site]
-      config = site.config['href']
-      die_if_nomatch = !config.nil? && config['nomatch'] && config['nomatch']=='fatal'
+    def match # rubocop:disable Metrics/CyclomaticComplexity
+      href_config = @config['href']
+      die_if_nomatch = !href_config.nil? &&
+                       href_config['nomatch'] &&
+                       href_config['nomatch'] == 'fatal'
 
       path, fragment = @link.split('#')
 
       # puts "@link=#{@link}"
-      # puts "site.posts[0].url = #{site.posts.docs[0].url}"
-      # puts "site.posts[0].path = #{site.posts.docs[0].path}"
-      posts = site.posts.docs.select { |x| x.url.include?(path) }
+      # puts "@site.posts[0].url = #{@site.posts.docs[0].url}"
+      # puts "@site.posts[0].path = #{@site.posts.docs[0].path}"
+      posts = @site.posts.docs.select { |x| x.url.include?(path) }
       case posts.length
       when 0
         if die_if_nomatch
@@ -133,12 +138,12 @@ module JekyllHref
       when 1
         @link = "#{@link}\##{fragment}" if fragment
       else
-        abort "Error: More than one url matched: #{ matches.join(", ")}"
+        abort "Error: More than one url matched: #{matches.join(", ")}"
       end
     end
 
-    def replace_vars(context, link)
-      variables = context.registers[:site].config['plugin-vars']
+    def replace_vars(link)
+      variables = @config['plugin-vars']
       variables.each do |name, value|
         # puts "#{name}=#{value}"
         link = link.gsub("{{#{name}}}", value)

@@ -32,9 +32,13 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency 'bundler'
+  spec.add_development_dependency 'debase'
+  spec.add_development_dependency 'jekyll'
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'rubocop'
   spec.add_development_dependency 'rubocop-jekyll'
+  spec.add_development_dependency 'rubocop-rake'
+  spec.add_development_dependency 'ruby-debug-ide'
 end
