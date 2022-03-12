@@ -1,4 +1,6 @@
-# `Jekyll_href`
+`Jekyll_href`
+[![Gem Version](https://badge.fury.io/rb/jekyll_href.svg)](https://badge.fury.io/rb/jekyll_href)
+===========
 
 `Jekyll_href` is a Jekyll plugin that provides a new Liquid tag: `href`.
 The Liquid tag generates and `<a href>` HTML tag, by default containing `target="_blank"` and `rel=nofollow`.
