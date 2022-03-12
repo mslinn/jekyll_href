@@ -47,45 +47,35 @@ require_relative "jekyll_href/version"
 # @example Substitute name/value pair for the django-github variable:
 # {% href {{django-github}}/django/core/management/__init__.py#L398-L401
 #   <code>django.core.management.execute_from_command_line</code> %}
-
 module JekyllHref
   class Error < StandardError; end
 
-  class ExternalHref < Liquid::Tag
-    # @param tag_name [String] is the name of the tag, which we already know.
-    # @param tag_line [Hash, String, Liquid::Tag::Parser] the contents between {% and %} in the web page (should be a string).
-    # @param context [Liquid::ParseContext] tokenized command line
-    # @return [void]
-    def initialize(tag_name, tag_line, context)
-      super
+  class HrefSetup
+    attr_reader :follow, :match_keyword, :tokens, :target, :text
 
-      @site = context.registers[:site]
-      @config = @site.config
-
-      @match = false
+    def initialize(tag_line, parse_context)
       @tokens = tag_line.strip.split
-      @context = context
-      @follow = get_value("follow", " rel='nofollow'")
-      @target = get_value("notarget", " target='_blank'")
+      @parse_context = parse_context
+      @follow = get_value('follow', " rel='nofollow'")
+      @target = get_value('notarget', " target='_blank'")
 
-      match_index = context.index("match")
+      @match_keyword = false
+      match_index = @tokens.index('match')
       if match_index
         context.delete_at(match_index)
-        @follow = ""
-        @match = true
-        @target = ""
+        @follow = ''
+        @match_keyword = true
+        @target = ''
       end
 
       finalize
     end
 
-    # Method prescribed by the Jekyll plugin lifecycle.
-    # @return [String]
-    def render(context)
-      match(context) if @match
-      link = replace_vars(@link)
-      # puts "@link=#{@link}; link=#{link}"
-      "<a href='#{link}'#{@target}#{@follow}>#{@text}</a>"
+    def replace_vars(variables)
+      variables.each do |name, value|
+        @link.gsub!("{{#{name}}}", value)
+      end
+      @link
     end
 
     private
@@ -93,64 +83,103 @@ module JekyllHref
     def finalize
       @link = @tokens.shift
 
-      @text = @tokens.join(" ").strip
+      @text = @tokens.join(' ').strip
       if @text.empty?
         @text = "<code>${@link}</code>"
         @link = "https://#{@link}"
       end
 
-      unless @link.start_with? "http"
-        @follow = ""
-        @target = ""
+      unless @link.start_with? 'http'
+        @follow = ''
+        @target = ''
       end
     end
 
     def get_value(token, default_value)
       value = default_value
-      target_index = @context.index(token)
+      target_index = @tokens.index(token)
       if target_index
         @tokens.delete_at(target_index)
         value = ""
       end
       value
     end
+  end
 
-    def match # rubocop:disable Metrics/CyclomaticComplexity
+  class HrefRender
+    def initialize(context, href_setup)
+      @context = context
+      @site = @context.registers[:site]
+      @config = @site.config
+      @href_setup = href_setup
+      match(context) if @href_setup.match_keyword
+    end
+
+    def link
+      @href_setup.replace_vars @config['plugin-vars']
+    end
+
+    private
+
+    def handle_no_args
       href_config = @config['href']
       die_if_nomatch = !href_config.nil? &&
-                       href_config['nomatch'] &&
-                       href_config['nomatch'] == 'fatal'
+                        href_config['nomatch'] &&
+                        href_config['nomatch'] == 'fatal'
+      if die_if_nomatch
+        abort "href error: No url matches '#{@link}'"
+      else
+        @link = "#"
+        @text = "<i>#{@link} is not available</i>"
+      end
+    end
 
+    def match
       path, fragment = @link.split('#')
-
-      # puts "@link=#{@link}"
-      # puts "@site.posts[0].url = #{@site.posts.docs[0].url}"
-      # puts "@site.posts[0].path = #{@site.posts.docs[0].path}"
       posts = @site.posts.docs.select { |x| x.url.include?(path) }
       case posts.length
       when 0
-        if die_if_nomatch
-          abort "href error: No url matches '#{@link}'"
-        else
-          @link = "#"
-          @text = "<i>#{@link} is not available</i>"
-        end
+        handle_no_args
       when 1
         @link = "#{@link}\##{fragment}" if fragment
       else
         abort "Error: More than one url matched: #{matches.join(", ")}"
       end
     end
+  end
 
-    def replace_vars(link)
-      variables = @config['plugin-vars']
-      variables.each do |name, value|
-        # puts "#{name}=#{value}"
-        link = link.gsub("{{#{name}}}", value)
-      end
-      link
+  class HrefTag < Liquid::Tag
+    # @param tag_name [String] is the name of the tag, which we already know.
+    # @param tag_line [Hash, String, Liquid::Tag::Parser] the contents between {% and %} in the web page (should be a string).
+    # @param parse_context [Liquid::ParseContext] looks like:
+    #   <Liquid::ParseContext:0x00005595446e5800
+    #     @template_options={
+    #       :line_numbers=>true,
+    #       :locale=>#<Liquid::I18n:0x00005595446e5760 @path="/home/mslinn/.gems/gems/liquid-4.0.3/lib/liquid/locales/en.yml">},
+    #     @locale=#<Liquid::I18n:0x00005595446e5760
+    #     @path="/home/mslinn/.gems/gems/liquid-4.0.3/lib/liquid/locales/en.yml">,
+    #     @warnings=[],
+    #     @depth=0,
+    #     @partial=false,
+    #     @options={:line_numbers=>true, :locale=>#<Liquid::I18n:0x00005595446e5760
+    #     @path="/home/mslinn/.gems/gems/liquid-4.0.3/lib/liquid/locales/en.yml">},
+    #     @error_mode=:strict,
+    #     @line_number=9,
+    #     @trim_whitespace=false>
+    # @return [void]
+    def initialize(tag_name, tag_line, parse_context)
+      super
+      @href_setup = HrefSetup.new(tag_line, parse_context)
+    end
+
+    # Method prescribed by the Jekyll plugin lifecycle.
+    # @param context [Liquid::Context] Context keeps the variable stack and resolves variables, as well as keywords
+    # @return [String]
+    def render(context)
+      href_render = HrefRender.new(context, @href_setup)
+      "<a href='#{href_render.link}'#{@href_setup.target}#{@href_setup.follow}>#{@href_setup.text}</a>"
     end
   end
 end
 
-Liquid::Template.register_tag('href', JekyllHref::ExternalHref)
+Liquid::Template.register_tag('href', JekyllHref::HrefTag)

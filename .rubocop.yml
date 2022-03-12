@@ -12,6 +12,9 @@ AllCops:
 Layout/LineLength:
   Max: 150
 
+Layout/MultilineOperationIndentation:
+  Enabled: false
+
 Layout/MultilineMethodCallIndentation:
   Enabled: false
 
