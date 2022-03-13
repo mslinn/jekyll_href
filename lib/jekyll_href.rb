@@ -73,7 +73,7 @@ module JekyllHref
 
     def replace_vars(variables)
       variables.each do |name, value|
-        @link.gsub!("{{#{name}}}", value)
+        @link = @link.gsub("{{#{name}}}", value)
       end
       @link
     end
