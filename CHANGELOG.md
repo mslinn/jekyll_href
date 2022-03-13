@@ -1,6 +1,9 @@
 ## HEAD / 2022-03-12
   * Added unit tests
 
+## 1.0.2 / 2022-03-13
+  * Fixed frozen string issue
+
 ## 1.0.0 / 2022-03-11
   * Made into a Ruby gem and published on RubyGems.org as [jekyll_href](https://rubygems.org/gems/jekyll_href).
   * `bin/attach` script added for debugging
