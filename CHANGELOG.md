@@ -1,5 +1,6 @@
-## HEAD / 2022-03-12
-  * Added unit tests
+## 1.0.3 / 2022-03-14
+  * Fixed default value for implied URL string
+  * Added unit tests, but they do not work yet
 
 ## 1.0.2 / 2022-03-13
   * Fixed frozen string issue

@@ -76,5 +76,9 @@ RSpec.describe(JekyllHref::HrefTag) do
     command_line = "#{link} #{text}"
     href = JekyllHref::HrefTag.send :new, 'href', command_line, context
     expect(href.render(context)).to eq "<a href='#{link}'#{target}#{follow}>#{text}</a>"
+
+    command_line = text
+    href = JekyllHref::HrefTag.send :new, 'href', command_line, context
+    expect(href.render(context)).to eq "<a href='#{link}'#{target}#{follow}><code>#{text}</code></a>"
   end
 end

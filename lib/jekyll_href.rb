@@ -85,7 +85,7 @@ module JekyllHref
 
       @text = @tokens.join(' ').strip
       if @text.empty?
-        @text = "<code>${@link}</code>"
+        @text = "<code>#{@link}</code>"
         @link = "https://#{@link}"
       end
 
