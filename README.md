@@ -16,6 +16,10 @@ Note that the url should not be enclosed in quotes.
 Also please note that the square brackets denote optional parameters, and should not be typed.
 
 
+### Additional Information
+More information is available on my web site about [my Jekyll plugins](https://www.mslinn.com/blog/2020/10/03/jekyll-plugins.html).
+
+
 ## Installation
 
 Add this line to your Jekyll website's `Gemfile`, within the `jekyll_plugins` group:
