@@ -48,8 +48,6 @@ require_relative "jekyll_href/version"
 # {% href {{django-github}}/django/core/management/__init__.py#L398-L401
 #   <code>django.core.management.execute_from_command_line</code> %}
 module JekyllHref
-  class Error < StandardError; end
-
   class HrefSetup
     attr_reader :follow, :match_keyword, :tokens, :target, :text
 
