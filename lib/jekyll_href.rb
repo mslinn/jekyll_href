@@ -2,6 +2,10 @@
 
 require_relative "jekyll_href/version"
 
+module JekyllPluginHrefName
+  PLUGIN_NAME = "jekyll_href"
+end
+
 # @author Copyright 2020 Michael Slinn
 # @license SPDX-License-Identifier: Apache-2.0
 #
@@ -180,4 +184,5 @@ module JekyllHref
   end
 end
 
+Jekyll.info { "Loaded #{JekyllPluginHrefName::PLUGIN_NAME} v#{JekyllArchiveCreate::VERSION} plugin." }
 Liquid::Template.register_tag('href', JekyllHref::HrefTag)

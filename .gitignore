@@ -8,4 +8,4 @@ spec/reports/
 tmp/
 .jekyll-cache/
 Jekyll/
-*.gemspec
+Gemfile.lock
