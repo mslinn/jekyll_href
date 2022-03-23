@@ -16,6 +16,10 @@ Note that the url should not be enclosed in quotes.
 Also please note that the square brackets denote optional parameters, and should not be typed.
 
 
+### Additional Information
+More information is available on my web site about [my Jekyll plugins](https://www.mslinn.com/blog/2020/10/03/jekyll-plugins.html).
+
+
 ## Installation
 
 Add this line to your Jekyll website's `Gemfile`, within the `jekyll_plugins` group:
@@ -91,12 +95,30 @@ Expands to this:
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Install development dependencies like this:
+```
+$ BUNDLE_WITH="development" bundle install
+```
+
+To install this gem onto your local machine, run:
+```shell
+$ bundle exec rake install
+```
+
+To release a new version, 
+  1. Update the version number in `version.rb`.
+  2. Commit all changes to git; if you don't the next step might fail with an unexplainable error message.
+  3. Run the following:
+     ```shell
+     $ bundle exec rake release
+     ```
+     The above creates a git tag for the version, commits the created tag, 
+     and pushes the new `.gem` file to [RubyGems.org](https://rubygems.org).
 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/jekyll_href.
+Bug reports and pull requests are welcome on GitHub at https://github.com/mslinn/jekyll_href.
 
 
 ## License

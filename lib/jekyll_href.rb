@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "jekyll_plugin_logger"
 require_relative "jekyll_href/version"
 
 # @author Copyright 2020 Michael Slinn
@@ -48,9 +49,10 @@ require_relative "jekyll_href/version"
 # {% href {{django-github}}/django/core/management/__init__.py#L398-L401
 #   <code>django.core.management.execute_from_command_line</code> %}
 
-module JekyllHref
-  class Error < StandardError; end
+require "jekyll_plugin_logger"
+require "liquid"
 
+module Jekyll
   class ExternalHref < Liquid::Tag
     # @param tag_name [String] is the name of the tag, which we already know.
     # @param command_line [Hash, String, Liquid::Tag::Parser] the arguments from the web page.
@@ -63,6 +65,7 @@ module JekyllHref
       @tokens = command_line.strip.split
       @follow = get_value("follow", " rel='nofollow'")
       @target = get_value("notarget", " target='_blank'")
+      @logger = PluginLogger.new
 
       match_index = tokens.index("match")
       if match_index
@@ -80,7 +83,7 @@ module JekyllHref
     def render(context)
       match(context) if @match
       link = replace_vars(context, @link)
-      # puts "@link=#{@link}; link=#{link}"
+      @logger.debug { "@link=#{@link}; link=#{link}" }
       "<a href='#{link}'#{@target}#{@follow}>#{@text}</a>"
     end
 
@@ -111,16 +114,16 @@ module JekyllHref
       value
     end
 
-    def match(context) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+    def match(context) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
       site = context.registers[:site]
       config = site.config['href']
       die_if_nomatch = !config.nil? && config['nomatch'] && config['nomatch']=='fatal'
 
       path, fragment = @link.split('#')
 
-      # puts "@link=#{@link}"
-      # puts "site.posts[0].url = #{site.posts.docs[0].url}"
-      # puts "site.posts[0].path = #{site.posts.docs[0].path}"
+      @logger.debug { "@link=#{@link}" }
+      @logger.debug { "site.posts[0].url  = #{site.posts.docs[0].url}" }
+      @logger.debug { "site.posts[0].path = #{site.posts.docs[0].path}" }
       posts = site.posts.docs.select { |x| x.url.include?(path) }
       case posts.length
       when 0
@@ -148,4 +151,5 @@ module JekyllHref
   end
 end
 
-Liquid::Template.register_tag('href', JekyllHref::ExternalHref)
+PluginMetaLogger.instance.info { "Loaded jeykll_href v#{JekyllHref::VERSION} plugin." }
+Liquid::Template.register_tag('href', Jekyll::ExternalHref)
