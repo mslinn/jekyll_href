@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "jekyll_plugin_logger"
+require "liquid"
 require_relative "jekyll_href/version"
 
 # @author Copyright 2020 Michael Slinn
@@ -49,107 +49,102 @@ require_relative "jekyll_href/version"
 # {% href {{django-github}}/django/core/management/__init__.py#L398-L401
 #   <code>django.core.management.execute_from_command_line</code> %}
 
-require "jekyll_plugin_logger"
-require "liquid"
+class ExternalHref < Liquid::Tag
+  # @param tag_name [String] is the name of the tag, which we already know.
+  # @param command_line [Hash, String, Liquid::Tag::Parser] the arguments from the web page.
+  # @param tokens [Liquid::ParseContext] tokenized command line
+  # @return [void]
+  def initialize(tag_name, command_line, tokens)
+    super
 
-module Jekyll
-  class ExternalHref < Liquid::Tag
-    # @param tag_name [String] is the name of the tag, which we already know.
-    # @param command_line [Hash, String, Liquid::Tag::Parser] the arguments from the web page.
-    # @param tokens [Liquid::ParseContext] tokenized command line
-    # @return [void]
-    def initialize(tag_name, command_line, tokens)
-      super
+    @match = false
+    @tokens = command_line.strip.split
+    @follow = get_value("follow", " rel='nofollow'")
+    @target = get_value("notarget", " target='_blank'")
+    @logger = PluginMetaLogger.new_logger(self)
 
-      @match = false
-      @tokens = command_line.strip.split
-      @follow = get_value("follow", " rel='nofollow'")
-      @target = get_value("notarget", " target='_blank'")
-      @logger = PluginLogger.new(self)
-
-      match_index = tokens.index("match")
-      if match_index
-        tokens.delete_at(match_index)
-        @follow = ""
-        @match = true
-        @target = ""
-      end
-
-      finalize tokens
+    match_index = tokens.index("match")
+    if match_index
+      tokens.delete_at(match_index)
+      @follow = ""
+      @match = true
+      @target = ""
     end
 
-    # Method prescribed by the Jekyll plugin lifecycle.
-    # @return [String]
-    def render(context)
-      match(context) if @match
-      link = replace_vars(context, @link)
-      @logger.debug { "@link=#{@link}; link=#{link}" }
-      "<a href='#{link}'#{@target}#{@follow}>#{@text}</a>"
+    finalize tokens
+  end
+
+  # Method prescribed by the Jekyll plugin lifecycle.
+  # @return [String]
+  def render(context)
+    match(context) if @match
+    link = replace_vars(context, @link)
+    @logger.debug { "@link=#{@link}; link=#{link}" }
+    "<a href='#{link}'#{@target}#{@follow}>#{@text}</a>"
+  end
+
+  private
+
+  def finalize(tokens)
+    @link = tokens.shift
+
+    @text = tokens.join(" ").strip
+    if @text.empty?
+      @text = "<code>${@link}</code>"
+      @link = "https://#{@link}"
     end
 
-    private
-
-    def finalize(tokens)
-      @link = tokens.shift
-
-      @text = tokens.join(" ").strip
-      if @text.empty?
-        @text = "<code>${@link}</code>"
-        @link = "https://#{@link}"
-      end
-
-      unless @link.start_with? "http"
-        @follow = ""
-        @target = ""
-      end
+    unless @link.start_with? "http"
+      @follow = ""
+      @target = ""
     end
+  end
 
-    def get_value(token, default_value)
-      value = default_value
-      target_index = tokens.index(token)
-      if target_index
-        @tokens.delete_at(target_index)
-        value = ""
-      end
-      value
+  def get_value(token, default_value)
+    value = default_value
+    target_index = tokens.index(token)
+    if target_index
+      @tokens.delete_at(target_index)
+      value = ""
     end
+    value
+  end
 
-    def match(context) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
-      site = context.registers[:site]
-      config = site.config['href']
-      die_if_nomatch = !config.nil? && config['nomatch'] && config['nomatch']=='fatal'
+  def match(context) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+    site = context.registers[:site]
+    config = site.config['href']
+    die_if_nomatch = !config.nil? && config['nomatch'] && config['nomatch']=='fatal'
 
-      path, fragment = @link.split('#')
+    path, fragment = @link.split('#')
 
-      @logger.debug { "@link=#{@link}" }
-      @logger.debug { "site.posts[0].url  = #{site.posts.docs[0].url}" }
-      @logger.debug { "site.posts[0].path = #{site.posts.docs[0].path}" }
-      posts = site.posts.docs.select { |x| x.url.include?(path) }
-      case posts.length
-      when 0
-        if die_if_nomatch
-          abort "href error: No url matches '#{@link}'"
-        else
-          @link = "#"
-          @text = "<i>#{@link} is not available</i>"
-        end
-      when 1
-        @link = "#{@link}\##{fragment}" if fragment
+    @logger.debug { "@link=#{@link}" }
+    @logger.debug { "site.posts[0].url  = #{site.posts.docs[0].url}" }
+    @logger.debug { "site.posts[0].path = #{site.posts.docs[0].path}" }
+    posts = site.posts.docs.select { |x| x.url.include?(path) }
+    case posts.length
+    when 0
+      if die_if_nomatch
+        abort "href error: No url matches '#{@link}'"
       else
-        abort "Error: More than one url matched: #{ matches.join(", ")}"
+        @link = "#"
+        @text = "<i>#{@link} is not available</i>"
       end
+    when 1
+      @link = "#{@link}\##{fragment}" if fragment
+    else
+      abort "Error: More than one url matched: #{ matches.join(", ")}"
     end
+  end
 
-    def replace_vars(context, link)
-      variables = context.registers[:site].config['plugin-vars']
-      variables.each do |name, value|
-        # puts "#{name}=#{value}"
-        link = link.gsub("{{#{name}}}", value)
-      end
-      link
+  def replace_vars(context, link)
+    variables = context.registers[:site].config['plugin-vars']
+    variables.each do |name, value|
+      # puts "#{name}=#{value}"
+      link = link.gsub("{{#{name}}}", value)
     end
+    link
   end
 end
 
 PluginMetaLogger.instance.info { "Loaded jeykll_href v#{JekyllHref::VERSION} plugin." }
-Liquid::Template.register_tag('href', Jekyll::ExternalHref)
+Liquid::Template.register_tag('href', ExternalHref)
