@@ -3,7 +3,6 @@
 require_relative "lib/jekyll_href/version"
 
 Gem::Specification.new do |spec|
-  files = GemSpecHelper.spec_files
   github = "https://github.com/mslinn/jekyll_href"
 
   spec.authors = ["Mike Slinn"]
