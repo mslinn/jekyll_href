@@ -6,11 +6,12 @@
 The Liquid tag generates and `<a href>` HTML tag, by default containing `target="_blank"` and `rel=nofollow`.
 To suppress the `nofollow` attribute, preface the link with the word `follow`.
 To suppress the `target` attribute, preface the link with the word `notarget`.
+Also provides a convenient way to generate formatted and clickable URIs.
 
 
 ### Syntax:
 ```
-{% href [match | [follow] [notarget]] url text to display %}
+{% href [match | [follow] [notarget]] [url] text to display %}
 ```
 Note that the url should not be enclosed in quotes.
 Also please note that the square brackets denote optional parameters, and should not be typed.
@@ -40,6 +41,7 @@ Or install it yourself as:
 
 ## Usage
 
+### Defaults
 ```
 {% href https://mslinn.com The Awesome %}
 ```
@@ -51,7 +53,7 @@ Expands to this:
 
 Which renders as this: <a href='https://mslinn.com' target='_blank' rel='nofollow'>The Awesome</a>
 
-
+### `follow`
 ```
 {% href follow https://mslinn.com The Awesome %}
 ```
@@ -62,6 +64,7 @@ Expands to this:
 ```
 
 
+### `notarget`
 ```
  {% href notarget https://mslinn.com The Awesome %}
 ```
@@ -72,6 +75,7 @@ Expands to this:
 ```
 
 
+### `follow notarget`
 ```
 {% href follow notarget https://mslinn.com The Awesome %}
 ```
@@ -81,15 +85,26 @@ Expands to this:
 <a href='https://mslinn.com'>The Awesome</a>
 ```
 
+### `match`
+Looks for a post with a matching URL.
 ```
 {% href match setting-up-django-oscar.html tutorial site %}
 ```
 
-Expands to this:
+Might expand to this:
 ```html
 <a href='/blog/2021/02/11/setting-up-django-oscar.html'>tutorial site</a>
 ```
 
+### URI
+```html
+{% href mslinn.com %}
+```
+Expands to this:
+```html
+<a href='https://mslinn.com' target='_blank' rel='nofollow'><code>mslinn.com</code></a>
+```
+Which renders as: [`mslinn.com`](https://mslinn.com)
 
 ## Development
 
@@ -105,14 +120,14 @@ To install this gem onto your local machine, run:
 $ bundle exec rake install
 ```
 
-To release a new version, 
+To release a new version,
   1. Update the version number in `version.rb`.
   2. Commit all changes to git; if you don't the next step might fail with an unexplainable error message.
   3. Run the following:
      ```shell
      $ bundle exec rake release
      ```
-     The above creates a git tag for the version, commits the created tag, 
+     The above creates a git tag for the version, commits the created tag,
      and pushes the new `.gem` file to [RubyGems.org](https://rubygems.org).
 
 
