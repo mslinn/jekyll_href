@@ -62,7 +62,7 @@ class ExternalHref < Liquid::Tag
     @tokens = command_line.strip.split
     @follow = get_value("follow", " rel='nofollow'")
     @target = get_value("notarget", " target='_blank'")
-    @logger = PluginMetaLogger.new_logger(self)
+    @logger = PluginMetaLogger.instance.new_logger(self)
 
     match_index = tokens.index("match")
     if match_index
