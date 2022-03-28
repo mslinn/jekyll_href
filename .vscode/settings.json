@@ -1,0 +1,6 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+  "ruby.rubocop.configFilePath": ".rubocop.yml",
+  "ruby.rubocop.useBundler": true,
+  "ruby.rubocop.executePath": "/home/mslinn/.rbenv/versions/3.0.0/lib/ruby/gems/3.0.0/gems/rubocop-1.18.4/exe/"
+}

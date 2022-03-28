@@ -53,9 +53,9 @@ require_relative "jekyll_href/version"
 class ExternalHref < Liquid::Tag
   # @param tag_name [String] is the name of the tag, which we already know.
   # @param command_line [Hash, String, Liquid::Tag::Parser] the arguments from the web page.
-  # @param tokens [Liquid::ParseContext] tokenized command line
+  # @param _parse_context [Liquid::ParseContext] tokenized command line
   # @return [void]
-  def initialize(tag_name, command_line, tokens)
+  def initialize(tag_name, command_line, _parse_context)
     super
 
     @match = false
@@ -64,15 +64,15 @@ class ExternalHref < Liquid::Tag
     @target = get_value("notarget", " target='_blank'")
     @logger = PluginMetaLogger.instance.new_logger(self)
 
-    match_index = tokens.index("match")
+    match_index = @tokens.index("match")
     if match_index
-      tokens.delete_at(match_index)
+      @tokens.delete_at(match_index)
       @follow = ""
       @match = true
       @target = ""
     end
 
-    finalize tokens
+    finalize @tokens
   end
 
   # Method prescribed by the Jekyll plugin lifecycle.
@@ -91,7 +91,7 @@ class ExternalHref < Liquid::Tag
 
     @text = tokens.join(" ").strip
     if @text.empty?
-      @text = "<code>${@link}</code>"
+      @text = "<code>#{@link}</code>"
       @link = "https://#{@link}"
     end
 
@@ -103,7 +103,7 @@ class ExternalHref < Liquid::Tag
 
   def get_value(token, default_value)
     value = default_value
-    target_index = tokens.index(token)
+    target_index = @tokens.index(token)
     if target_index
       @tokens.delete_at(target_index)
       value = ""
@@ -131,6 +131,7 @@ class ExternalHref < Liquid::Tag
         @text = "<i>#{@link} is not available</i>"
       end
     when 1
+      @link = posts.first.url
       @link = "#{@link}\##{fragment}" if fragment
     else
       abort "Error: More than one url matched: #{ matches.join(", ")}"
