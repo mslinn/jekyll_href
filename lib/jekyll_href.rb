@@ -62,7 +62,7 @@ class ExternalHref < Liquid::Tag
     @tokens = command_line.strip.split
     @follow = get_value("follow", " rel='nofollow'")
     @target = get_value("notarget", " target='_blank'")
-    @logger = PluginMetaLogger.instance.new_logger(self)
+    @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
 
     match_index = @tokens.index("match")
     if match_index
@@ -148,5 +148,5 @@ class ExternalHref < Liquid::Tag
   end
 end
 
-PluginMetaLogger.instance.info { "Loaded jeykll_href v#{JekyllHref::VERSION} plugin." }
+PluginMetaLogger.instance.info { "Loaded jeykll_href v#{JekyllHrefVersion::VERSION} plugin." }
 Liquid::Template.register_tag('href', ExternalHref)
