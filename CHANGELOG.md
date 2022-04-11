@@ -1,3 +1,6 @@
+## 1.0.8 / 2022-04-11
+  * Fixed match text
+
 ## 1.0.7 / 2022-04-11
   * Fixed bad reference when more than one URL matches
 

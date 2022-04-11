@@ -58,11 +58,11 @@ class ExternalHref < Liquid::Tag
   def initialize(tag_name, command_line, _parse_context)
     super
 
+    @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
     @match = false
     @tokens = command_line.strip.split
     @follow = get_value("follow", " rel='nofollow'")
     @target = get_value("notarget", " target='_blank'")
-    @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
 
     match_index = @tokens.index("match")
     if match_index
@@ -118,18 +118,19 @@ class ExternalHref < Liquid::Tag
 
     path, fragment = @link.split('#')
 
-    @logger.debug { "@link=#{@link}" }
-    @logger.debug { "site.posts[0].url  = #{site.posts.docs[0].url}" }
-    @logger.debug { "site.posts[0].path = #{site.posts.docs[0].path}" }
-    posts = site.posts.docs.select { |x| x.url.include?(path) }
+    @logger.debug {
+      <<~END_DEBUG
+        @link=#{@link}
+        site.posts[0].url  = #{site.posts.docs[0].url}
+        site.posts[0].path = #{site.posts.docs[0].path}
+      END_DEBUG
+    }
+    posts = site.posts.docs.select { |x| x.url.include? path }
     case posts.length
     when 0
-      if die_if_nomatch
-        abort "href error: No url matches '#{@link}'"
-      else
-        @link = "#"
-        @text = "<i>#{@link} is not available</i>"
-      end
+      abort "href error: No url matches '#{@link}'" if die_if_nomatch
+      @link = "#"
+      @text = "<i>#{@link} is not available</i>"
     when 1
       @link = posts.first.url
       @link = "#{@link}\##{fragment}" if fragment
@@ -141,8 +142,7 @@ class ExternalHref < Liquid::Tag
   def replace_vars(context, link)
     variables = context.registers[:site].config['plugin-vars']
     variables.each do |name, value|
-      # puts "#{name}=#{value}"
-      link = link.gsub("{{#{name}}}", value)
+      link = link.gsub "{{#{name}}}", value
     end
     link
   end
