@@ -134,7 +134,7 @@ class ExternalHref < Liquid::Tag
       @link = posts.first.url
       @link = "#{@link}\##{fragment}" if fragment
     else
-      abort "Error: More than one url matched: #{ matches.join(", ")}"
+      abort "Error: More than one url matched: #{ posts.map(&:relative_path).join(", ")}"
     end
   end
 
