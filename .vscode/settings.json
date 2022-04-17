@@ -2,5 +2,5 @@
 {
   "ruby.rubocop.configFilePath": ".rubocop.yml",
   "ruby.rubocop.useBundler": true,
-  "ruby.rubocop.executePath": "~/.rbenv/shims/"
+  "ruby.rubocop.executePath": "./exe/"
 }
