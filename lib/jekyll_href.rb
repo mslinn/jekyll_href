@@ -125,17 +125,22 @@ class ExternalHref < Liquid::Tag
         site.posts[0].path = #{site.posts.docs[0].path}
       END_DEBUG
     }
-    posts = site.posts.docs.select { |x| x.url.include? path }
-    case posts.length
+    urls = site.collections
+               .values
+               .map { |x| x.class.method_defined?(:docs) ? x.docs : x }
+               .flatten
+               .map(&:url) # TODO Optimize this by caching the result
+    url_matches = urls.select { |url| url.include? path }
+    case url_matches.length
     when 0
       abort "href error: No url matches '#{@link}'" if die_if_nomatch
       @link = "#"
       @text = "<i>#{@link} is not available</i>"
     when 1
-      @link = posts.first.url
+      @link = url_matches.first
       @link = "#{@link}\##{fragment}" if fragment
     else
-      abort "Error: More than one url matched: #{ posts.map(&:relative_path).join(", ")}"
+      abort "Error: More than one url matched '#{path}': #{ url_matches.join(", ")}"
     end
   end
 

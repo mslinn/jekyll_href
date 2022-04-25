@@ -16,6 +16,9 @@ Also provides a convenient way to generate formatted and clickable URIs.
 Note that the url should not be enclosed in quotes.
 Also please note that the square brackets denote optional parameters, and should not be typed.
 
+`match` will attempt to match the url fragment (specified as a regex) to a URL in any collection.
+If multiple documents have matching URL an error is thrown.
+
 
 ### Additional Information
 More information is available on my web site about [my Jekyll plugins](https://www.mslinn.com/blog/2020/10/03/jekyll-plugins.html).
