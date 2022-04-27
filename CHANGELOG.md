@@ -1,4 +1,4 @@
-## 1.0.10 / 2022-04-26
+## 1.0.10 / 2022-04-27
   * Works from pre-computed `site['all_collections']` provided by a new dependency called `jekyll_all_collections`.
 
 ## 1.0.9 / 2022-04-25
