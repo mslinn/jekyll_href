@@ -1,3 +1,6 @@
+## 1.0.11 / 2022-04-27
+  * Suppresses target and rel=nofollow attributes for mailto: links.
+
 ## 1.0.10 / 2022-04-27
   * Works from pre-computed `site['all_collections']` provided by a new dependency called `jekyll_all_collections`.
 

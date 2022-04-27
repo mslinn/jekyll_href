@@ -86,6 +86,7 @@ class ExternalHref < Liquid::Tag
 
     match(liquid_context) if @match
     link = replace_vars(liquid_context, @link)
+    @target = @follow = "" if link.start_with? "mailto:"
     @logger.debug { "@link=#{@link}; link=#{link}" }
     "<a href='#{link}'#{@target}#{@follow}>#{@text}</a>"
   end
