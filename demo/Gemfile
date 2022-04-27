@@ -1,0 +1,31 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+
+gem 'confidential_info_redactor'
+gem 'ffi'
+gem 'jekyll', '~> 4.2.2'
+gem 'nokogumbo', '=2.0.3'
+gem 'ptools'
+gem 'sprockets'
+gem 'talk_like_a_pirate', ">= 0.2.2"
+gem 'webrick'
+
+group :jekyll_plugins do
+  gem 'classifier-reborn'
+  gem 'html-proofer'
+  gem 'jekyll-assets'
+  gem 'jekyll-environment-variables'
+  gem "jekyll_plugin_logger"
+  gem 'jekyll_href', path: "../"
+  gem 'jekyll-sort'
+  gem 'jekyll-tagging'
+  gem 'kramdown'
+end
+
+# Debugging:
+gem 'debase', require: false
+gem "rake", "~> 13.0", require: false
+gem 'rspec', require: false
+gem 'rubocop', '= 1.18.0', require: false
+gem 'ruby-debug-ide', require: false

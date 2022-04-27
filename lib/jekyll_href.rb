@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "jekyll_plugin_logger"
+require "jekyll_all_collections"
 require "liquid"
 require_relative "jekyll_href/version"
 
@@ -51,6 +52,7 @@ require_relative "jekyll_href/version"
 #   <code>django.core.management.execute_from_command_line</code> %}
 
 class ExternalHref < Liquid::Tag
+
   # @param tag_name [String] is the name of the tag, which we already know.
   # @param command_line [Hash, String, Liquid::Tag::Parser] the arguments from the web page.
   # @param _parse_context [Liquid::ParseContext] tokenized command line
@@ -76,10 +78,14 @@ class ExternalHref < Liquid::Tag
   end
 
   # Method prescribed by the Jekyll plugin lifecycle.
+  # @param liquid_context [Liquid::Context]
   # @return [String]
-  def render(context)
-    match(context) if @match
-    link = replace_vars(context, @link)
+  def render(liquid_context)
+    @site = liquid_context.registers[:site]
+    JekyllAllCollections::maybe_compute_all_collections(@site)
+
+    match(liquid_context) if @match
+    link = replace_vars(liquid_context, @link)
     @logger.debug { "@link=#{@link}; link=#{link}" }
     "<a href='#{link}'#{@target}#{@follow}>#{@text}</a>"
   end
@@ -111,9 +117,8 @@ class ExternalHref < Liquid::Tag
     value
   end
 
-  def match(context) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
-    site = context.registers[:site]
-    config = site.config['href']
+  def match(liquid_context) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+    config = @site.config['href']
     die_if_nomatch = !config.nil? && config['nomatch'] && config['nomatch']=='fatal'
 
     path, fragment = @link.split('#')
@@ -121,16 +126,13 @@ class ExternalHref < Liquid::Tag
     @logger.debug {
       <<~END_DEBUG
         @link=#{@link}
-        site.posts[0].url  = #{site.posts.docs[0].url}
-        site.posts[0].path = #{site.posts.docs[0].path}
+        @site.posts.docs[0].url  = #{@site.posts.docs[0].url}
+        @site.posts.docs[0].path = #{@site.posts.docs[0].path}
       END_DEBUG
     }
-    urls = site.collections
-               .values
-               .map { |x| x.class.method_defined?(:docs) ? x.docs : x }
-               .flatten
-               .map(&:url) # TODO Optimize this by caching the result
-    url_matches = urls.select { |url| url.include? path }
+
+    all_urls = @site.all_collections.map(&:url)
+    url_matches = all_urls.select { |url| url.include? path }
     case url_matches.length
     when 0
       abort "href error: No url matches '#{@link}'" if die_if_nomatch
@@ -144,8 +146,8 @@ class ExternalHref < Liquid::Tag
     end
   end
 
-  def replace_vars(context, link)
-    variables = context.registers[:site].config['plugin-vars']
+  def replace_vars(liquid_context, link)
+    variables = @site.config['plugin-vars']
     variables.each do |name, value|
       link = link.gsub "{{#{name}}}", value
     end
