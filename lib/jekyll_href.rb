@@ -149,6 +149,8 @@ class ExternalHref < Liquid::Tag
 
   def replace_vars(liquid_context, link)
     variables = @site.config['plugin-vars']
+    return link unless variables
+
     variables.each do |name, value|
       link = link.gsub "{{#{name}}}", value
     end

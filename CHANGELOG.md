@@ -1,3 +1,6 @@
+## 1.0.12 / 2022-08-09
+  * No longer abends if `plugin-vars` is not present in `_config.yml`
+
 ## 1.0.11 / 2022-04-27
   * Suppresses target and rel=nofollow attributes for mailto: links.
 
