@@ -45,32 +45,36 @@ class ExternalHref < Liquid::Tag
       @follow = ''
       @target = ''
     else
-      @follow = @helper.parameter_specified?('follow') ?   " rel='nofollow'"  : ''
-      @target = @helper.parameter_specified?('notarget') ? " target='_blank'" : ''
+      @follow = @helper.parameter_specified?('follow') ?   '' : " rel='nofollow'"
+      @target = @helper.parameter_specified?('notarget') ? '' : " target='_blank'"
     end
 
     link = @url || @helper.argv.shift
     link = JekyllTagHelper2.expand_env(link)
-    finalize(@helper.argv, link)
+
+    finalize(@helper.argv, link) # Sets @link and @text, might clear @follow and @target
     @link = replace_vars(liquid_context, @link)
 
-    if @link.start_with? 'mailto:'
-      @target = @follow = ''
-      @text = @link.delete_prefix 'mailto:'
-    end
     @logger.debug { "@link=#{@link}" }
     "<a href='#{@link}'#{@target}#{@follow}>#{@text}</a>"
   end
 
   private
 
-  def finalize(tokens, link)
-    @text = tokens.join(" ").strip
-    if @text.empty?
-      @text = "<code>#{link}</code>"
-      @link = "https://#{link}"
-    else
+  def finalize(tokens, link) # rubocop:disable Metrics/MethodLength
+    if link.start_with? 'mailto:'
       @link = link
+      @target = @follow = ''
+      @text = link.delete_prefix 'mailto:'
+      return
+    else
+      @text = tokens.join(" ").strip
+      if @text.empty?
+        @text = "<code>#{link}</code>"
+        @link = "https://#{link}"
+      else
+        @link = link
+      end
     end
 
     return if @link.start_with? "http"

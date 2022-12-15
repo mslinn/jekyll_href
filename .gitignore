@@ -6,9 +6,11 @@
 /pkg/
 /spec/reports/
 /tmp/
-Gemfile.lock
+Gemfile.lockmicronauticsmslinn@mslinn.com
 spec/status_persistence.txt
 .jekyll-cache/
 .jekyll-metadata
 _site/
 demo/_site/
+.jekyll-cache/
+demo/.jekyll-cache/
