@@ -3,18 +3,15 @@ description: Tests
 layout: default
 title: Tests
 ---
-<li>
-  {% href url='https://mslinn.html' <code>USER=$USER</code> %}
-  <span class="error">Error: link messed up</span>
-  (domain is set to $USER)
-</li>
-
 <h2>Default Parameter Value Tests</h2>
 <ul>
   <li>{% href http://mslinn.com Link to <code>http://mslinn.com</code>. %}</li>
   <li>{% href https://mslinn.com Link to <code>https://mslinn.com</code>. %}</li>
   <li>{% href mslinn.com %}</li>
-  <li>{% href mailto:mslinn@mslinn.com %}</li>
+  <li>
+    {% href mailto:mslinn@mslinn.com %}
+    <span class="error">Error: No linked text for <code>mailto:</code></span>
+  </li>
 </ul>
 
 
@@ -81,28 +78,18 @@ title: Tests
   </li>
   <li>
     {% href url='https://mslinn.html' <code>USER=$USER</code> %}
-    <span class="error">Error: link messed up</span>
-    (domain is set to $USER)
   </li>
   <li>
     {% href url="https://mslinn.html" <code>USER=$USER</code> %}
-    <span class="error">Error: link messed up</span>
-    (domain is set to $USER)
   </li>
   <li>
     {% href follow url="https://mslinn.html" <code>USER=$USER</code> %}
-    <span class="error">Error: link messed up</span>
-    (domain is set to $USER)
   </li>
   <li>
     {% href notarget url="https://mslinn.html" <code>USER=$USER</code> %}
-    <span class="error">Error: link messed up</span>
-    (domain is set to $USER)
   </li>
   <li>
     {% href follow notarget url="https://mslinn.html" <code>USER=$USER</code> %}
-    <span class="error">Error: link messed up</span>
-    (domain is set to $USER)
   </li>
 </ul>
 
@@ -119,16 +106,13 @@ title: Tests
   <li>
     {% href follow {{django-github}}/django/core/management/__init__.py#L398-L401
       With <code>follow</code>. %}
-    <span class="error">Error: line not expanded</span>
   </li>
   <li>
     {% href notarget {{django-github}}/django/core/management/__init__.py#L398-L401
       With <code>notarget</code>. %}
-      <span class="error">Error: line not expanded</span>
     </li>
   <li>
     {% href follow notarget {{django-github}}/django/core/management/__init__.py#L398-L401
       With <code>follow</code> and <code>notarget</code>. %}
-      <span class="error">Error: line not expanded</span>
     </li>
 </ul>
