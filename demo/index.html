@@ -53,7 +53,7 @@ title: Tests
   <li>
     {% href match redact-test.html
       <code>Match</code> test given 'redact-test.html'. %}
-  </li>
+    </li>
   <li>
     {% href match url='redact-test.html'
       Match test with <code>url='redact-test.html'</code>. %}
@@ -70,26 +70,33 @@ title: Tests
   <code>$USER</code> expansion permutations.
 </p>
 <ul>
-  <li>{% href https://mslinn.html <code>USER=$USER</code> %}</li>
+  <li>
+    {% href https://mslinn.html <code>USER=$USER</code> %}
+  </li>
   <li>
     {% href url='https://mslinn.html' <code>USER=$USER</code> %}
-    (with <code>url</code> keyword and double quotes)
+    <span class="error">Error: link messed up</span>
+    (domain is set to $USER)
   </li>
   <li>
     {% href url="https://mslinn.html" <code>USER=$USER</code> %}
-    (with <code>url</code> keyword and single quotes)
+    <span class="error">Error: link messed up</span>
+    (domain is set to $USER)
   </li>
   <li>
     {% href follow url="https://mslinn.html" <code>USER=$USER</code> %}
-    (with <code>follow</code> <code>url</code> keywords)
+    <span class="error">Error: link messed up</span>
+    (domain is set to $USER)
   </li>
   <li>
     {% href notarget url="https://mslinn.html" <code>USER=$USER</code> %}
-      (with <code>notarget</code> <code>url</code> keywords)
+    <span class="error">Error: link messed up</span>
+    (domain is set to $USER)
   </li>
   <li>
     {% href follow notarget url="https://mslinn.html" <code>USER=$USER</code> %}
-    (with <code>follow</code>, <code>notarget</code> <code>url</code> keywords)
+    <span class="error">Error: link messed up</span>
+    (domain is set to $USER)
   </li>
 </ul>
 
@@ -106,13 +113,16 @@ title: Tests
   <li>
     {% href follow {{django-github}}/django/core/management/__init__.py#L398-L401
       With <code>follow</code>. %}
+    <span class="error">Error: line not expanded</span>
   </li>
   <li>
     {% href notarget {{django-github}}/django/core/management/__init__.py#L398-L401
       With <code>notarget</code>. %}
-  </li>
+      <span class="error">Error: line not expanded</span>
+    </li>
   <li>
     {% href follow notarget {{django-github}}/django/core/management/__init__.py#L398-L401
       With <code>follow</code> and <code>notarget</code>. %}
-  </li>
+      <span class="error">Error: line not expanded</span>
+    </li>
 </ul>

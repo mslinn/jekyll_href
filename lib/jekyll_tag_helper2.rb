@@ -24,32 +24,30 @@ class JekyllTagHelper2
   end
 
   def initialize(tag_name, markup, logger)
+    # @keys_values was a Hash[Symbol, String|Boolean] but now it is Hash[String, String|Boolean]
     @tag_name = tag_name
-    @argv = Shellwords.split(markup)
+    @argv = Shellwords.split(JekyllTagHelper2.expand_env(markup))
     @keys_values = KeyValueParser \
-      .new({}, { array_values: false, normalize_keys: false }) \
-      .parse(@argv) # Hash[Symbol, String|Boolean]
+      .new({}, { array_values: false, normalize_keys: false, separator: /=/ }) \
+      .parse(@argv)
     @logger = logger
     @logger.debug { "@keys_values='#{@keys_values}'" }
   end
 
-  def delete_parameter(name)
+  def delete_parameter(key)
     return if @keys_values.empty?
 
-    key = name
-    key = name.to_sym if @keys_values.first.first.instance_of?(String)
-
-    @params.delete(name)
-    @argv.delete_if { |x| x.start_with? name }
+    @params.delete(key)
+    @argv.delete_if { |x| x == key or x.start_with? "#{key}=" }
     @keys_values.delete(key)
   end
 
-  # @return if parameter was specified, returns value and removes it from the available tokens
+  # @return if parameter was specified, removes it from the available tokens and returns value
   def parameter_specified?(name)
     return false if @keys_values.empty?
 
     key = name
-    key = name.to_sym if @keys_values.first.first.instance_of?(String)
+    key = name.to_sym if @keys_values.first.first.instance_of?(Symbol)
     value = @keys_values[key]
     delete_parameter(name)
     value
@@ -85,6 +83,9 @@ class JekyllTagHelper2
   end
 
   def lookup_variable(symbol)
+    if symbol.nil?
+      puts "nil symbol"
+    end
     string = symbol.to_s
     return string unless string.start_with?('{{') && string.end_with?('}}')
 

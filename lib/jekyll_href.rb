@@ -40,6 +40,11 @@ class ExternalHref < Liquid::Tag
     @match = @helper.parameter_specified?('match')
     @url   = @helper.parameter_specified?('url')
 
+    link = @url || @helper.argv.shift
+
+    finalize(@helper.argv, link) # Sets @link and @text, might clear @follow and @target
+    @link = replace_vars(liquid_context, @link)
+
     if @match
       match(liquid_context)
       @follow = ''
@@ -48,12 +53,6 @@ class ExternalHref < Liquid::Tag
       @follow = @helper.parameter_specified?('follow') ?   '' : " rel='nofollow'"
       @target = @helper.parameter_specified?('notarget') ? '' : " target='_blank'"
     end
-
-    link = @url || @helper.argv.shift
-    link = JekyllTagHelper2.expand_env(link)
-
-    finalize(@helper.argv, link) # Sets @link and @text, might clear @follow and @target
-    @link = replace_vars(liquid_context, @link)
 
     @logger.debug { "@link=#{@link}" }
     "<a href='#{@link}'#{@target}#{@follow}>#{@text}</a>"
@@ -83,10 +82,14 @@ class ExternalHref < Liquid::Tag
     @target = ''
   end
 
-  def match(_liquid_context) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+  def match(_liquid_context) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+    # Might set @link and @text
     config = @site.config['href']
     die_if_nomatch = !config.nil? && config['nomatch'] && config['nomatch'] == 'fatal'
 
+    if @link.nil?
+      puts "@link is nil"
+    end
     path, fragment = @link.split('#')
 
     @logger.debug do

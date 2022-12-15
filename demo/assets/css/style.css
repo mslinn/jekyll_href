@@ -34,7 +34,7 @@ h1, .h1 {
   margin-inline-end: 0px;
 }
 
-h1, h2, header, nav#sidebar {
+h1, h2, header, nav#sidebar, .error {
   font-family: "Helvetica Neue", Helvetica, Arial, serif;
 }
 
@@ -113,6 +113,10 @@ pre {
   clear: both;
   margin-top: 2em;
   padding-top: 0.5em;
+}
+
+.error {
+  color: red;
 }
 
 .inner {
