@@ -9,6 +9,11 @@ require_relative './jekyll_tag_helper2'
 # @author Copyright 2020 Michael Slinn
 # @license SPDX-License-Identifier: Apache-2.0
 # Generates an href.
+
+class HrefError < StandardError
+end
+
+# Implements href Jekyll tag
 class ExternalHref < Liquid::Tag
   # @param tag_name [String] is the name of the tag, which we already know.
   # @param markup [String] the arguments from the web page.
@@ -30,28 +35,46 @@ class ExternalHref < Liquid::Tag
   # Method prescribed by the Jekyll plugin lifecycle.
   # @param liquid_context [Liquid::Context]
   # @return [String]
-  def render(liquid_context) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  def render(liquid_context) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
     _content = super
     @helper.liquid_context = liquid_context
 
     @site = liquid_context.registers[:site]
+    path = liquid_context.registers[:page]['path']
     JekyllAllCollections.maybe_compute_all_collections(@site)
 
-    @match = @helper.parameter_specified?('match')
-    @url   = @helper.parameter_specified?('url')
+    @match  = @helper.parameter_specified?('match')
+    @url    = @helper.parameter_specified?('url')
+    @follow = @helper.parameter_specified?('follow') ?   '' : " rel='nofollow'"
+    @target = @helper.parameter_specified?('notarget') ? '' : " target='_blank'"
 
-    link = @url || @helper.argv.shift
+    linkk = @url
+    if linkk.nil?
+      linkk = @helper.argv&.shift
+      @helper.params&.shift
+      @keys_values&.shift
+    end
 
-    finalize(@helper.argv, link) # Sets @link and @text, might clear @follow and @target
-    @link = replace_vars(liquid_context, @link)
+    if linkk.nil? # Suppress stack trace
+      msg = <<~END_MESSAGE
+        jekyll_href error: no url was provided on #{path}:#{@line_number}.
+          @helper.argv='#{@helper.argv}'
+          linkk='#{linkk}'
+          @match='#{@match}'
+          @url='#{@url}'
+          @follow='#{@follow}
+          @target='#{@target}'
+      END_MESSAGE
+      abort msg.red, []
+    end
+
+    finalize(@helper.argv, linkk) # Sets @link and @text, might clear @follow and @target
+    @link = replace_vars(@link)
 
     if @match
-      match(liquid_context)
+      match_post
       @follow = ''
       @target = ''
-    else
-      @follow = @helper.parameter_specified?('follow') ?   '' : " rel='nofollow'"
-      @target = @helper.parameter_specified?('notarget') ? '' : " target='_blank'"
     end
 
     @logger.debug { "@link=#{@link}" }
@@ -64,7 +87,7 @@ class ExternalHref < Liquid::Tag
     if link.start_with? 'mailto:'
       @link = link
       @target = @follow = ''
-      @text = link.delete_prefix 'mailto:'
+      @text = @helper.argv.join(' ')
       return
     else
       @text = tokens.join(" ").strip
@@ -82,14 +105,10 @@ class ExternalHref < Liquid::Tag
     @target = ''
   end
 
-  def match(_liquid_context) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+  def match_post # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
     # Might set @link and @text
     config = @site.config['href']
     die_if_nomatch = !config.nil? && config['nomatch'] && config['nomatch'] == 'fatal'
-
-    if @link.nil?
-      puts "@link is nil"
-    end
     path, fragment = @link.split('#')
 
     @logger.debug do
@@ -115,14 +134,15 @@ class ExternalHref < Liquid::Tag
     end
   end
 
-  def replace_vars(_liquid_context, link)
+  def replace_vars(text)
+    # Replace names in plugin-vars with values
     variables = @site.config['plugin-vars']
-    return link unless variables
+    return text unless variables
 
     variables.each do |name, value|
-      link = link.gsub "{{#{name}}}", value
+      text = text.gsub "{{#{name}}}", value
     end
-    link
+    text
   end
 end
 

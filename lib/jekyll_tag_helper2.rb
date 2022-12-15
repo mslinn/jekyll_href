@@ -11,7 +11,7 @@ class JekyllTagHelper2
   def self.expand_env(str, die_if_undefined: false)
     str.gsub(/\$([a-zA-Z_][a-zA-Z0-9_]*)|\${\g<1>}|%\g<1>%/) do
       envar = Regexp.last_match(1)
-      raise FlexibleError, "flexible_include error: #{envar} is undefined".red, [] \
+      raise HrefError, "jekyll_href error: #{envar} is undefined".red, [] \
         if !ENV.key?(envar) && die_if_undefined # Suppress stack trace
 
       ENV[envar]
@@ -38,7 +38,7 @@ class JekyllTagHelper2
     return if @keys_values.empty?
 
     @params.delete(key)
-    @argv.delete_if { |x| x == key or x.start_with? "#{key}=" }
+    @argv.delete_if { |x| x == key or x.start_with?("#{key}=") }
     @keys_values.delete(key)
   end
 
@@ -83,9 +83,6 @@ class JekyllTagHelper2
   end
 
   def lookup_variable(symbol)
-    if symbol.nil?
-      puts "nil symbol"
-    end
     string = symbol.to_s
     return string unless string.start_with?('{{') && string.end_with?('}}')
 

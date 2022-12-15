@@ -222,6 +222,8 @@ A test web site is provided in the `demo` directory.
 
   3. Once the `Fast Debugger` signon appears, launch the test configuration called `Attach rdebug-ide`.
 
+  4. View the generated website at [`http://localhost:4444`](http://localhost:4444)
+
 
 ## Release
 To release a new version,
