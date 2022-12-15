@@ -36,6 +36,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'jekyll', '>= 3.5.0'
   spec.add_dependency 'jekyll_all_collections'
   spec.add_dependency 'jekyll_plugin_logger'
+  spec.add_dependency 'key-value-parser'
+  spec.add_dependency 'shellwords'
 
   # spec.add_development_dependency 'debase'
   # spec.add_development_dependency 'rubocop-jekyll'

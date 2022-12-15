@@ -27,7 +27,7 @@ class JekyllTagHelper2
     @tag_name = tag_name
     @argv = Shellwords.split(markup)
     @keys_values = KeyValueParser \
-      .new({}, {array_values: false, normalize_keys: false}) \
+      .new({}, { array_values: false, normalize_keys: false }) \
       .parse(@argv) # Hash[Symbol, String|Boolean]
     @logger = logger
     @logger.debug { "@keys_values='#{@keys_values}'" }

@@ -35,7 +35,7 @@ class ExternalHref < Liquid::Tag
     @helper.liquid_context = liquid_context
 
     @site = liquid_context.registers[:site]
-    JekyllAllCollections::maybe_compute_all_collections(@site)
+    JekyllAllCollections.maybe_compute_all_collections(@site)
 
     @match = @helper.parameter_specified?('match')
     @url   = @helper.parameter_specified?('url')
@@ -78,17 +78,17 @@ class ExternalHref < Liquid::Tag
 
   def match(_liquid_context) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
     config = @site.config['href']
-    die_if_nomatch = !config.nil? && config['nomatch'] && config['nomatch']=='fatal'
+    die_if_nomatch = !config.nil? && config['nomatch'] && config['nomatch'] == 'fatal'
 
     path, fragment = @link.split('#')
 
-    @logger.debug {
+    @logger.debug do
       <<~END_DEBUG
         @link=#{@link}
         @site.posts.docs[0].url  = #{@site.posts.docs[0].url}
         @site.posts.docs[0].path = #{@site.posts.docs[0].path}
       END_DEBUG
-    }
+    end
 
     all_urls = @site.all_collections.map(&:url)
     url_matches = all_urls.select { |url| url.include? path }
@@ -101,7 +101,7 @@ class ExternalHref < Liquid::Tag
       @link = url_matches.first
       @link = "#{@link}\##{fragment}" if fragment
     else
-      abort "Error: More than one url matched '#{path}': #{ url_matches.join(", ")}"
+      abort "Error: More than one url matched '#{path}': #{url_matches.join(", ")}"
     end
   end
 

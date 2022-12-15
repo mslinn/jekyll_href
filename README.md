@@ -220,7 +220,7 @@ A test web site is provided in the `demo` directory.
     $ bin/attach demo
     ```
 
-  3. Once the `fastdebug` prompt appears, launch the test configuration called `Attach rdebug-ide`.
+  3. Once the `Fast Debugger` signon appears, launch the test configuration called `Attach rdebug-ide`.
 
 
 ## Release

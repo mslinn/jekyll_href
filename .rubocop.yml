@@ -12,6 +12,9 @@ AllCops:
 # Gemspec/RequireMFA:
 #   Enabled: false
 
+Layout/HashAlignment:
+  EnforcedHashRocketStyle: table
+
 Layout/LineLength:
   Max: 150
 
@@ -31,4 +34,7 @@ Style/StringLiterals:
   Enabled: false
 
 Style/StringLiteralsInInterpolation:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
   Enabled: false
