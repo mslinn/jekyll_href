@@ -10,11 +10,8 @@ require_relative './jekyll_tag_helper2'
 # @license SPDX-License-Identifier: Apache-2.0
 # Generates an href.
 
-class HrefError < StandardError
-end
-
 # Implements href Jekyll tag
-class ExternalHref < Liquid::Tag
+class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
   # @param tag_name [String] is the name of the tag, which we already know.
   # @param markup [String] the arguments from the web page.
   # @param _tokens [Liquid::ParseContext] tokenized command line
@@ -88,6 +85,10 @@ class ExternalHref < Liquid::Tag
       @link = link
       @target = @follow = ''
       @text = @helper.argv.join(' ')
+      if @text.empty?
+        text = link.delete_prefix('mailto:')
+        @text = "<code>#{text}</code>"
+      end
       return
     else
       @text = tokens.join(" ").strip
