@@ -1,12 +1,118 @@
 ---
-description: Jekyll plugin template demonstration
+description: Tests
 layout: default
-title: Demonstration
+title: Tests
 ---
-<h2 id="demo">PDF Demo</h2>
+<h2>Default Parameter Value Tests</h2>
+<ul>
+  <li>{% href http://mslinn.com Link to <code>http://mslinn.com</code>. %}</li>
+  <li>{% href https://mslinn.com Link to <code>https://mslinn.com</code>. %}</li>
+  <li>{% href mslinn.com %}</li>
+  <li>{% href mailto:mslinn@mslinn.com %}</li>
+</ul>
+
+
+<h2><code>Follow</code> Tests</h2>
+<ul>
+  <li>{% href follow http://mslinn.com Link to <code>http://mslinn.com</code>. %}</li>
+  <li>{% href follow https://mslinn.com Link to <code>https://mslinn.com</code>. %}</li>
+  <li>{% href follow mslinn.com %}</li>
+</ul>
+
+
+<h2><code>Notarget</code> Tests</h2>
+<ul>
+  <li>
+    {% href notarget http://mslinn.com
+      Link to <code>http://mslinn.com</code>. %}
+  </li>
+  <li>
+    {% href notarget https://mslinn.com
+      Link to <code>https://mslinn.com</code>. %}
+  </li>
+  <li>{% href notarget mslinn.com %}</li>
+</ul>
+
+
+<h2><code>Follow</code> and <code>Notarget</code> Tests</h2>
+<ul>
+  <li>
+    {% href follow notarget http://mslinn.com
+      Link to <code>http://mslinn.com</code>. %}
+  </li>
+  <li>
+    {% href follow notarget https://mslinn.com
+      Link to <code>https://mslinn.com</code>. %}
+  </li>
+  <li>{% href follow notarget mslinn.com %}</li>
+</ul>
+
+
+<h2><code>Match</code> Tests</h2>
+<ul>
+  <li>
+    {% href match redact-test.html
+      <code>Match</code> test given 'redact-test.html'. %}
+  </li>
+  <li>
+    {% href match url='redact-test.html'
+      Match test with <code>url='redact-test.html'</code>. %}
+  </li>
+  <li>
+    {% href match url="redact-test.html"
+      Match test with <code>url="redact-test.html"</code>. %}
+  </li>
+</ul>
+
+
+<h2>Environment Variable Expansion Tests</h2>
 <p>
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-  Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  <code>$USER</code> expansion permutations.
 </p>
+<ul>
+  <li>{% href https://mslinn.html <code>USER=$USER</code> %}</li>
+  <li>
+    {% href url='https://mslinn.html' <code>USER=$USER</code> %}
+    (with <code>url</code> keyword and double quotes)
+  </li>
+  <li>
+    {% href url="https://mslinn.html" <code>USER=$USER</code> %}
+    (with <code>url</code> keyword and single quotes)
+  </li>
+  <li>
+    {% href follow url="https://mslinn.html" <code>USER=$USER</code> %}
+    (with <code>follow</code> <code>url</code> keywords)
+  </li>
+  <li>
+    {% href notarget url="https://mslinn.html" <code>USER=$USER</code> %}
+      (with <code>notarget</code> <code>url</code> keywords)
+  </li>
+  <li>
+    {% href follow notarget url="https://mslinn.html" <code>USER=$USER</code> %}
+    (with <code>follow</code>, <code>notarget</code> <code>url</code> keywords)
+  </li>
+</ul>
+
+
+<h2>YAML Variable Expansion Tests</h2>
+<p>
+  The following should substitute the value of <code>github</code> defined in <code>_config.yml</code>.
+</p>
+<ul>
+  <li>
+    {% href {{django-github}}/django/core/management/__init__.py#L398-L401
+      <code>django.core.management.execute_from_command_line</code> %}
+  </li>
+  <li>
+    {% href follow {{django-github}}/django/core/management/__init__.py#L398-L401
+      With <code>follow</code>. %}
+  </li>
+  <li>
+    {% href notarget {{django-github}}/django/core/management/__init__.py#L398-L401
+      With <code>notarget</code>. %}
+  </li>
+  <li>
+    {% href follow notarget {{django-github}}/django/core/management/__init__.py#L398-L401
+      With <code>follow</code> and <code>notarget</code>. %}
+  </li>
+</ul>

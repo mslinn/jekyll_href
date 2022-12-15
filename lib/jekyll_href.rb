@@ -54,7 +54,10 @@ class ExternalHref < Liquid::Tag
     finalize(@helper.argv, link)
     @link = replace_vars(liquid_context, @link)
 
-    @target = @follow = '' if @link.start_with? 'mailto:'
+    if @link.start_with? 'mailto:'
+      @target = @follow = ''
+      @text = @link.delete_prefix 'mailto:'
+    end
     @logger.debug { "@link=#{@link}" }
     "<a href='#{@link}'#{@target}#{@follow}>#{@text}</a>"
   end

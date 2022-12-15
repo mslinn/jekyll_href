@@ -26,18 +26,21 @@ code, pre, tt, .codeLabel {
 h1, .h1 {
   display: block;
   font-size: 2em;
+  font-weight: bold;
   margin: 0.67em 0;
   margin-block-start: 0.67em;
   margin-block-end: 0.67em;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
-  font-weight: bold;
+}
+
+h1, h2, header, nav#sidebar {
+  font-family: "Helvetica Neue", Helvetica, Arial, serif;
 }
 
 header {
   background: #095e2e;
   display: flow-root;
-  font-family: "Helvetica Neue", Helvetica, Arial, serif;
   height: 160px;
   position: relative;
 }
@@ -65,7 +68,6 @@ header > .inner {
 
 nav#sidebar {
   float: right;
-  font-family: "Helvetica Neue", Helvetica, Arial, serif;
   line-height: 1.3;
   min-height: 504px;
   padding-left: 20px;
