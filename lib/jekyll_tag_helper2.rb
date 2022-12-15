@@ -37,7 +37,7 @@ class JekyllTagHelper2
     return if @keys_values.empty?
 
     key = name
-    key = name.to_sym if @keys_values.first.first.instance_of? 'String'
+    key = name.to_sym if @keys_values.first.first.instance_of?(String)
 
     @params.delete(name)
     @argv.delete_if { |x| x.start_with? name }
@@ -49,7 +49,7 @@ class JekyllTagHelper2
     return false if @keys_values.empty?
 
     key = name
-    key = name.to_sym if @keys_values.first.first.instance_of? 'String'
+    key = name.to_sym if @keys_values.first.first.instance_of?(String)
     value = @keys_values[key]
     delete_parameter(name)
     value
