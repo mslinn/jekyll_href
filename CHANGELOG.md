@@ -1,3 +1,18 @@
+## 1.0.13 / 2022-12-14
+  * Links with embedded spaces are now supported when the new 'url' named parameter is used. For example, instead of specifying:
+    ```
+    {% href http://link.com with space.html some text %}
+    ```
+    Instead specify (single and double quotes are equally valid):
+    ```
+    {% href url="http://link.com with space.html" some text %}
+    ```
+  * URLs can now contain environment variable references. For example, if $domain and $uri are environment variables:
+    ```
+    {% href url="http://$domain.html" some text %}
+    {% href url="$uri" some text %}
+    ```
+
 ## 1.0.12 / 2022-08-09
   * No longer abends if `plugin-vars` is not present in `_config.yml`
 

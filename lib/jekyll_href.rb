@@ -4,6 +4,7 @@ require "jekyll_plugin_logger"
 require "jekyll_all_collections"
 require "liquid"
 require_relative "jekyll_href/version"
+require_relative './jekyll_tag_helper2'
 
 # @author Copyright 2020 Michael Slinn
 # @license SPDX-License-Identifier: Apache-2.0
@@ -54,68 +55,73 @@ require_relative "jekyll_href/version"
 class ExternalHref < Liquid::Tag
 
   # @param tag_name [String] is the name of the tag, which we already know.
-  # @param command_line [Hash, String, Liquid::Tag::Parser] the arguments from the web page.
-  # @param _parse_context [Liquid::ParseContext] tokenized command line
+  # @param markup [String] the arguments from the web page.
+  # @param _tokens [Liquid::ParseContext] tokenized command line
+  #        By default it has two keys: :locale and :line_numbers, the first is a Liquid::I18n object, and the second,
+  #        a boolean parameter that determines if error messages should display the line number the error occurred.
+  #        This argument is used mostly to display localized error messages on Liquid built-in Tags and Filters.
+  #        See https://github.com/Shopify/liquid/wiki/Liquid-for-Programmers#create-your-own-tags
   # @return [void]
-  def initialize(tag_name, command_line, _parse_context)
+  def initialize(tag_name, markup, _tokens)
     super
+    markup = '' if markup.nil?
+    markup.strip!
 
     @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
-    @match = false
-    @tokens = command_line.strip.split
-    @follow = get_value("follow", " rel='nofollow'")
-    @target = get_value("notarget", " target='_blank'")
-
-    match_index = @tokens.index("match")
-    if match_index
-      @tokens.delete_at(match_index)
-      @follow = ""
-      @match = true
-      @target = ""
-    end
-
-    finalize @tokens
+    @helper = JekyllTagHelper2.new(tag_name, markup, @logger)
   end
 
   # Method prescribed by the Jekyll plugin lifecycle.
   # @param liquid_context [Liquid::Context]
   # @return [String]
   def render(liquid_context)
+    _content = super
+    @helper.liquid_context = liquid_context
+
     @site = liquid_context.registers[:site]
     JekyllAllCollections::maybe_compute_all_collections(@site)
 
-    match(liquid_context) if @match
-    link = replace_vars(liquid_context, @link)
-    @target = @follow = "" if link.start_with? "mailto:"
-    @logger.debug { "@link=#{@link}; link=#{link}" }
-    "<a href='#{link}'#{@target}#{@follow}>#{@text}</a>"
+    @match = @helper.parameter_specified?('match')
+    @url   = @helper.parameter_specified?('url')
+
+    if @match
+      match(liquid_context)
+      @follow = ''
+      @target = ''
+    else
+      @follow = @helper.parameter_specified?('follow') ?   " rel='nofollow'"  : ''
+      @target = @helper.parameter_specified?('notarget') ? " target='_blank'" : ''
+    end
+
+    if @url
+      link = @url
+    else
+      link = @helper.argv.shift
+    end
+    link = JekyllTagHelper2.expand_env(link)
+    finalize(@helper.argv, link)
+    @link = replace_vars(liquid_context, @link)
+
+    @target = @follow = '' if @link.start_with? 'mailto:'
+    @logger.debug { "@link=#{@link}" }
+    "<a href='#{@link}'#{@target}#{@follow}>#{@text}</a>"
   end
 
   private
 
-  def finalize(tokens)
-    @link = tokens.shift
-
+  def finalize(tokens, link)
     @text = tokens.join(" ").strip
     if @text.empty?
-      @text = "<code>#{@link}</code>"
-      @link = "https://#{@link}"
+      @text = "<code>#{link}</code>"
+      @link = "https://#{link}"
+    else
+      @link = link
     end
 
     unless @link.start_with? "http"
-      @follow = ""
-      @target = ""
+      @follow = ''
+      @target = ''
     end
-  end
-
-  def get_value(token, default_value)
-    value = default_value
-    target_index = @tokens.index(token)
-    if target_index
-      @tokens.delete_at(target_index)
-      value = ""
-    end
-    value
   end
 
   def match(liquid_context) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
