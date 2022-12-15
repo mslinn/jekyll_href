@@ -8,52 +8,8 @@ require_relative './jekyll_tag_helper2'
 
 # @author Copyright 2020 Michael Slinn
 # @license SPDX-License-Identifier: Apache-2.0
-#
 # Generates an href.
-# Note that the url should not be enclosed in quotes.
-#
-# If the link starts with 'http' or `match` is specified:
-#   The link will open in a new tab or window
-#   The link will include `rel=nofollow` for SEO purposes.
-#
-# To suppress the `nofollow` attribute, preface the link with the word `follow`.
-# To suppress the `target` attribute, preface the link with the word `notarget`.
-#
-# The `match` option looks through the pages collection for a URL with containing the provided substring.
-# Match implies follow and notarget.
-#
-# If a section called plugin-vars exists then its name/value pairs are available for substitution.
-#   plugin-vars:
-#     django-github: 'https://github.com/django/django/blob/3.1.7'
-#     django-oscar-github: 'https://github.com/django-oscar/django-oscar/blob/3.0.2'
-#
-#
-# @example General form
-#   {% href [follow] [notarget] [match] url text to display %}
-#
-# @example Generates `nofollow` and `target` attributes.
-#   {% href https://mslinn.com The Awesome %}
-#
-# @example Does not generate `nofollow` or `target` attributes.
-#   {% href follow notarget https://mslinn.com The Awesome %}
-#
-# @example Does not generate `nofollow` attribute.
-#   {% href follow https://mslinn.com The Awesome %}
-#
-# @example Does not generate `target` attribute.
-#   {% href notarget https://mslinn.com The Awesome %}
-#
-# @example Matches page with URL containing abc.
-#   {% href match abc The Awesome %}
-# @example Matches page with URL containing abc.
-#   {% href match abc.html#tag The Awesome %}
-#
-# @example Substitute name/value pair for the django-github variable:
-# {% href {{django-github}}/django/core/management/__init__.py#L398-L401
-#   <code>django.core.management.execute_from_command_line</code> %}
-
 class ExternalHref < Liquid::Tag
-
   # @param tag_name [String] is the name of the tag, which we already know.
   # @param markup [String] the arguments from the web page.
   # @param _tokens [Liquid::ParseContext] tokenized command line
@@ -74,7 +30,7 @@ class ExternalHref < Liquid::Tag
   # Method prescribed by the Jekyll plugin lifecycle.
   # @param liquid_context [Liquid::Context]
   # @return [String]
-  def render(liquid_context)
+  def render(liquid_context) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     _content = super
     @helper.liquid_context = liquid_context
 
@@ -93,11 +49,7 @@ class ExternalHref < Liquid::Tag
       @target = @helper.parameter_specified?('notarget') ? " target='_blank'" : ''
     end
 
-    if @url
-      link = @url
-    else
-      link = @helper.argv.shift
-    end
+    link = @url || @helper.argv.shift
     link = JekyllTagHelper2.expand_env(link)
     finalize(@helper.argv, link)
     @link = replace_vars(liquid_context, @link)
@@ -118,13 +70,13 @@ class ExternalHref < Liquid::Tag
       @link = link
     end
 
-    unless @link.start_with? "http"
-      @follow = ''
-      @target = ''
-    end
+    return if @link.start_with? "http"
+
+    @follow = ''
+    @target = ''
   end
 
-  def match(liquid_context) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+  def match(_liquid_context) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
     config = @site.config['href']
     die_if_nomatch = !config.nil? && config['nomatch'] && config['nomatch']=='fatal'
 
@@ -153,7 +105,7 @@ class ExternalHref < Liquid::Tag
     end
   end
 
-  def replace_vars(liquid_context, link)
+  def replace_vars(_liquid_context, link)
     variables = @site.config['plugin-vars']
     return link unless variables
 

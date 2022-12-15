@@ -11,7 +11,8 @@ class JekyllTagHelper2
   def self.expand_env(str, die_if_undefined: false)
     str.gsub(/\$([a-zA-Z_][a-zA-Z0-9_]*)|\${\g<1>}|%\g<1>%/) do
       envar = Regexp.last_match(1)
-      raise FlexibleError, "flexible_include error: #{envar} is undefined".red, [] if !ENV.key?(envar) && die_if_undefined # Suppress stack trace
+      raise FlexibleError, "flexible_include error: #{envar} is undefined".red, [] \
+        if !ENV.key?(envar) && die_if_undefined # Suppress stack trace
 
       ENV[envar]
     end
@@ -36,7 +37,7 @@ class JekyllTagHelper2
     return if @keys_values.empty?
 
     key = name
-    key = name.to_sym if @keys_values.first.first.class == 'String'
+    key = name.to_sym if @keys_values.first.first.instance_of? 'String'
 
     @params.delete(name)
     @argv.delete_if { |x| x.start_with? name }
@@ -48,13 +49,13 @@ class JekyllTagHelper2
     return false if @keys_values.empty?
 
     key = name
-    key = name.to_sym if @keys_values.first.first.class == 'String'
+    key = name.to_sym if @keys_values.first.first.instance_of? 'String'
     value = @keys_values[key]
     delete_parameter(name)
     value
   end
 
-  PREDEFINED_SCOPE_KEYS = [:include, :page].freeze
+  PREDEFINED_SCOPE_KEYS = %i[include page].freeze
 
   # Finds variables defined in an invoking include, or maybe somewhere else
   # @return variable value or nil
