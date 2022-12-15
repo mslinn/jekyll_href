@@ -49,7 +49,7 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
     if linkk.nil?
       linkk = @helper.argv&.shift
       @helper.params&.shift
-      @keys_values&.shift
+      @keys_values&.shift # This does nothing, should delete this line, does not matter if the entry exists
     end
 
     if linkk.nil? # Suppress stack trace
@@ -62,7 +62,7 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
           @follow='#{@follow}
           @target='#{@target}'
       END_MESSAGE
-      abort msg.red, []
+      abort msg.red
     end
 
     finalize(@helper.argv, linkk) # Sets @link and @text, might clear @follow and @target
