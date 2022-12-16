@@ -104,6 +104,7 @@ The `match` option looks through the pages collection for a URL with containing 
     {% href {{django-github}}/django/core/management/__init__.py#L398-L401
       <code>django.core.management.execute_from_command_line</code> %}
     ```
+    Substitutions are only made to the URL, not to the linked text.
 
 
 ## Additional Information

@@ -5,7 +5,7 @@ require 'key_value_parser'
 
 # Parses arguments and options
 class JekyllTagHelper2
-  attr_reader :argv, :liquid_context, :logger, :params, :tag_name
+  attr_reader :argv, :keys_values, :liquid_context, :logger, :params, :tag_name
 
   # Expand a environment variable reference
   def self.expand_env(str, die_if_undefined: false)

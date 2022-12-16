@@ -32,76 +32,87 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
   # Method prescribed by the Jekyll plugin lifecycle.
   # @param liquid_context [Liquid::Context]
   # @return [String]
-  def render(liquid_context) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
-    _content = super
-    @helper.liquid_context = liquid_context
-
-    @site = liquid_context.registers[:site]
-    path = liquid_context.registers[:page]['path']
-    JekyllAllCollections.maybe_compute_all_collections(@site)
-
-    @match  = @helper.parameter_specified?('match')
-    @url    = @helper.parameter_specified?('url')
-    @follow = @helper.parameter_specified?('follow') ?   '' : " rel='nofollow'"
-    @target = @helper.parameter_specified?('notarget') ? '' : " target='_blank'"
-
-    linkk = @url
-    if linkk.nil?
-      linkk = @helper.argv&.shift
-      @helper.params&.shift
-      @keys_values&.shift # This does nothing, should delete this line, does not matter if the entry exists
-    end
-
-    if linkk.nil? # Suppress stack trace
-      msg = <<~END_MESSAGE
-        jekyll_href error: no url was provided on #{path}:#{@line_number}.
-          @helper.argv='#{@helper.argv}'
-          linkk='#{linkk}'
-          @match='#{@match}'
-          @url='#{@url}'
-          @follow='#{@follow}
-          @target='#{@target}'
-      END_MESSAGE
-      abort msg.red
-    end
-
-    finalize(@helper.argv, linkk) # Sets @link and @text, might clear @follow and @target
+  def render(liquid_context)
+    super
+    globals_initial(liquid_context)
+    linkk = compute_linkk
+    globals_update(@helper.argv, linkk) # Sets @link and @text, might clear @follow and @target
     @link = replace_vars(@link)
-
-    if @match
-      match_post
-      @follow = ''
-      @target = ''
-    end
-
-    @logger.debug { "@link=#{@link}" }
+    handle_match if @match
     "<a href='#{@link}'#{@target}#{@follow}>#{@text}</a>"
   end
 
   private
 
-  def finalize(tokens, link) # rubocop:disable Metrics/MethodLength
-    if link.start_with? 'mailto:'
-      @link = link
+  def compute_linkk
+    # Does not look at or compute @link
+    linkk = @url
+    if linkk.nil? || !linkk
+      linkk = @helper.argv&.shift
+      @helper.params&.shift
+      @helper.keys_values&.delete(linkk)
+    end
+    dump_linkk_relations(linkk) if linkk.nil?
+    linkk
+  end
+
+  def dump_linkk_relations(linkk)
+    msg = <<~END_MESSAGE
+      jekyll_href error: no url was provided on #{@path}:#{@line_number}.
+        @helper.argv='#{@helper.argv}'
+        linkk='#{linkk}'
+        @match='#{@match}'
+        @url='#{@url}'
+        @follow='#{@follow}
+        @target='#{@target}'
+    END_MESSAGE
+    abort msg.red
+  end
+
+  def globals_initial(liquid_context)
+    # Sets @follow, @helper, @match, @page, @path, @site, @target, @url
+    @helper.liquid_context = liquid_context
+
+    @page = liquid_context.registers[:page]
+    @path = @page['path']
+    @site = liquid_context.registers[:site]
+    JekyllAllCollections.maybe_compute_all_collections(@site)
+
+    @follow = @helper.parameter_specified?('follow') ? '' : " rel='nofollow'"
+    @match  = @helper.parameter_specified?('match')
+    @target = @helper.parameter_specified?('notarget') ? '' : " target='_blank'"
+    @url    = @helper.parameter_specified?('url')
+  end
+
+  def globals_update(tokens, linkk) # rubocop:disable Metrics/MethodLength
+    # Might set @follow, @linkk, @target, and @text
+    if linkk.start_with? 'mailto:'
+      @link = linkk
       @target = @follow = ''
       @text = @helper.argv.join(' ')
       if @text.empty?
-        text = link.delete_prefix('mailto:')
+        text = linkk.delete_prefix('mailto:')
         @text = "<code>#{text}</code>"
       end
       return
     else
       @text = tokens.join(" ").strip
       if @text.empty?
-        @text = "<code>#{link}</code>"
-        @link = "https://#{link}"
+        @text = "<code>#{linkk}</code>"
+        @link = "https://#{linkk}"
       else
-        @link = link
+        @link = linkk
       end
     end
 
     return if @link.start_with? "http"
 
+    @follow = ''
+    @target = ''
+  end
+
+  def handle_match
+    match_post
     @follow = ''
     @target = ''
   end
@@ -143,6 +154,7 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
     variables.each do |name, value|
       text = text.gsub "{{#{name}}}", value
     end
+    @logger.debug { "@link=#{@link}" }
     text
   end
 end
