@@ -11,9 +11,7 @@
       "remoteHost": "localhost",
       "remotePort": "1234",
       "remoteWorkspaceRoot": "/",
-      "restart": true,
       "showDebuggerOutput": true,
-      "stopOnEntry": true,
       "type": "Ruby",
     },
     {

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "jekyll_plugin_logger"
 require "jekyll_all_collections"
+require "jekyll_plugin_logger"
 require "liquid"
 require_relative "jekyll_href/version"
 require_relative './jekyll_tag_helper2'
@@ -12,6 +12,8 @@ require_relative './jekyll_tag_helper2'
 
 # Implements href Jekyll tag
 class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
+  attr_reader :follow, :helper, :line_number, :link, :match, :page, :path, :site, :text, :target, :url
+
   # @param tag_name [String] is the name of the tag, which we already know.
   # @param markup [String] the arguments from the web page.
   # @param _tokens [Liquid::ParseContext] tokenized command line

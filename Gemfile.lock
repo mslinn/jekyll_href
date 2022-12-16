@@ -19,6 +19,7 @@ GEM
     debase (0.2.5.beta2)
       debase-ruby_core_source (>= 0.10.12)
     debase-ruby_core_source (0.10.18)
+    diff-lcs (1.5.0)
     em-websocket (0.5.3)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0)
@@ -28,6 +29,7 @@ GEM
     http_parser.rb (0.8.0)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
+    io-console (0.6.0)
     jekyll (4.3.1)
       addressable (~> 2.4)
       colorator (~> 1.0)
@@ -75,8 +77,23 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     regexp_parser (2.6.1)
+    reline (0.3.1)
+      io-console (~> 0.5)
     rexml (3.2.5)
     rouge (4.0.0)
+    rspec (3.12.0)
+      rspec-core (~> 3.12.0)
+      rspec-expectations (~> 3.12.0)
+      rspec-mocks (~> 3.12.0)
+    rspec-core (3.12.0)
+      rspec-support (~> 3.12.0)
+    rspec-expectations (3.12.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.12.0)
+    rspec-mocks (3.12.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.12.0)
+    rspec-support (3.12.0)
     rubocop (1.18.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
@@ -106,8 +123,10 @@ PLATFORMS
 DEPENDENCIES
   bundler
   debase (= 0.2.5.beta2)
-  debase-ruby_core_source (~> 0.10.15)
+  debase-ruby_core_source (= 0.10.18)
   jekyll_href!
+  reline (= 0.3.1)
+  rspec
   rubocop (= 1.18.0)
   ruby-debug-ide
 
