@@ -119,7 +119,7 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
     @target = ''
   end
 
-  def match_post # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+  def match_post # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
     # Might set @link and @text
     config = @site.config['href']
     die_if_nomatch = !config.nil? && config['nomatch'] && config['nomatch'] == 'fatal'
