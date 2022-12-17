@@ -7,9 +7,23 @@ require_relative "../lib/jekyll_href"
 # Lets get this party started
 Registers = Struct.new(:page, :site)
 
+# blah
+class Collections
+  def values
+    []
+  end
+end
+
+# asdf
+class SiteMock
+  def collections
+    Collections.new
+  end
+end
+
 # More party
 class TestParseContext < Liquid::ParseContext
-  attr_reader :blah, :line_number, :registers
+  attr_reader :line_number, :registers
 
   def initialize
     super
@@ -17,10 +31,8 @@ class TestParseContext < Liquid::ParseContext
 
     @registers = Registers.new(
       { 'path' => 'https://feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss' },
-      { 'name' => 'You asked for a site name' }
+      SiteMock.new
     )
-
-    @blah = 456
   end
 end
 
