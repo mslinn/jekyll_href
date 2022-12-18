@@ -102,11 +102,11 @@ class MyTest # rubocop:disable Metrics/ClassLength
       )
       href.send(:globals_initial, parse_context)
       linkk = href.send(:compute_linkk)
+      linkk = href.send(:replace_vars, linkk)
       href.send(:globals_update, href.helper.argv, linkk)
-      href.link = href.send(:replace_vars, href.link)
-      # expect(href.follow).to eq(" rel='nofollow'")
+      expect(href.follow).to eq(" rel='nofollow'")
       expect(href.link).to   eq('https://github.com/diasks2/confidential_info_redactor')
-      # expect(href.target).to eq(" target='_blank'")
+      expect(href.target).to eq(" target='_blank'")
       expect(href.text).to   eq('<code>confidential_info_redactor</code>')
     end
 

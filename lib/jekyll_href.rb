@@ -39,8 +39,8 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
     super
     globals_initial(liquid_context)
     linkk = compute_linkk
+    linkk = replace_vars(linkk)
     globals_update(@helper.argv, linkk) # Sets @link and @text, might clear @follow and @target
-    @link = replace_vars(@link)
     handle_match if @match
     "<a href='#{@link}'#{@target}#{@follow}>#{@text}</a>"
   end
