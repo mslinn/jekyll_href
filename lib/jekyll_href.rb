@@ -99,7 +99,7 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
       return
     else
       @text = tokens.join(" ").strip
-      if @text.empty?
+      if @text.to_s.empty?
         @text = "<code>#{linkk}</code>"
         @link = "https://#{linkk}"
       else

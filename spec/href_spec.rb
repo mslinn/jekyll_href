@@ -4,24 +4,23 @@ require "jekyll"
 require "jekyll_plugin_logger"
 require_relative "../lib/jekyll_href"
 
-# Lets get this party started
 Registers = Struct.new(:page, :site)
 
-# blah
+# Mock for Collections
 class Collections
   def values
     []
   end
 end
 
-# asdf
+# Mock for Site
 class SiteMock
   def collections
     Collections.new
   end
 end
 
-# More party
+# Mock for Liquid::ParseContent
 class TestParseContext < Liquid::ParseContext
   attr_reader :line_number, :registers
 
@@ -53,7 +52,7 @@ class MyTest
       )
     end
 
-    it "does stuff" do
+    it "Obtains external link without text" do
       href = ExternalHref.send(
         :new,
         'href',
@@ -61,8 +60,9 @@ class MyTest
         parse_context
       )
       href.send(:globals_initial, parse_context)
-      url = href.url
-      expect(url).to eq('https://feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss')
+      linkk = href.send(:compute_linkk)
+      href.send(:globals_update, href.helper.argv, linkk)
+      expect(href.link).to eq('https://feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss')
     end
   end
 end
