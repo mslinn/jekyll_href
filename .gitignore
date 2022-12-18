@@ -12,5 +12,4 @@ spec/status_persistence.txt
 .jekyll-metadata
 _site/
 demo/_site/
-.jekyll-cache/
 demo/.jekyll-cache/
