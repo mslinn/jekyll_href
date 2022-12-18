@@ -16,7 +16,7 @@ fi
 GIT_ROOT="$( git rev-parse --show-toplevel )"
 cd "${GIT_ROOT}"
 
-# bin/build
+bin/build
 
 set -e
 

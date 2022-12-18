@@ -77,6 +77,22 @@ class MyTest # rubocop:disable Metrics/ClassLength
       expect(href.text).to   eq('SoundCloud RSS Feed')
     end
 
+    it "Obtains external link using url parameter with text" do
+      href = ExternalHref.send(
+        :new,
+        'href',
+        'url="https://feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss" SoundCloud RSS Feed'.dup,
+        parse_context
+      )
+      href.send(:globals_initial, parse_context)
+      linkk = href.send(:compute_linkk)
+      href.send(:globals_update, href.helper.argv, linkk)
+      expect(href.follow).to eq(" rel='nofollow'")
+      expect(href.link).to   eq('https://feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss')
+      expect(href.target).to eq(" target='_blank'")
+      expect(href.text).to   eq('SoundCloud RSS Feed')
+    end
+
     it "Obtains external link without scheme or text" do
       href = ExternalHref.send(
         :new,

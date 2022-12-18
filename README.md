@@ -29,6 +29,7 @@ then its name/value pairs are available for substitution.
 
 
 ## Syntax 2 (always works):
+This syntax is recommended when the URL contains a colon (:).
 ```
 {% href [match | [follow] [notarget]]
   url="http://link.com with space.html" some text %}

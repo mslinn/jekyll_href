@@ -40,6 +40,8 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
     globals_initial(liquid_context)
     linkk = compute_linkk
     linkk = replace_vars(linkk)
+    @link_save = linkk
+    @helper_save = @helper.clone
     globals_update(@helper.argv, linkk) # Sets @link and @text, might clear @follow and @target
     handle_match if @match
     "<a href='#{@link}'#{@target}#{@follow}>#{@text}</a>"
@@ -61,9 +63,10 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
     linkk
   end
 
-  def dump_linkk_relations(linkk)
+  def dump_linkk_relations(linkk) # rubocop:disable Metrics/MethodLength
     msg = <<~END_MESSAGE
       jekyll_href error: no url was provided on #{@path}:#{@line_number}.
+        @helper.markup=#{@helper.markup}
         @helper.argv='#{@helper.argv}'
         linkk='#{linkk}'
         @match='#{@match}'
