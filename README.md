@@ -10,6 +10,8 @@ If the url starts with `http`, or the `match` keyword is specified:
  - The url will open in a new tab or window.
  - The url will include `rel=nofollow` for SEO purposes.
 
+CAUTION: if linked text contains a single or double quote you will see the error message: `Liquid Exception: Unmatched quote`. Instead, use &lsquo;, &rsquo;, &ldquo;, &rdquo;
+
 In `_config.yml`, if a section called `plugin-vars` exists,
 then its name/value pairs are available for substitution.
 ```yaml
