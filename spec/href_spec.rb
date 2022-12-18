@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-require "jekyll"
-require "jekyll_plugin_logger"
-require_relative "../lib/jekyll_href"
+require 'jekyll'
+require 'jekyll_plugin_logger'
+require 'yaml'
+require_relative '../lib/jekyll_href'
 
 Registers = Struct.new(:page, :site)
 
@@ -15,6 +16,12 @@ end
 
 # Mock for Site
 class SiteMock
+  attr_reader :config
+
+  def initialize
+    @config = YAML.safe_load(File.read('_config.yml'))
+  end
+
   def collections
     Collections.new
   end
@@ -37,6 +44,8 @@ end
 
 # Lets get this party started
 class MyTest # rubocop:disable Metrics/ClassLength
+  Dir.chdir 'demo'
+
   RSpec.describe ExternalHref do
     let(:logger) do
       PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
@@ -72,16 +81,33 @@ class MyTest # rubocop:disable Metrics/ClassLength
       href = ExternalHref.send(
         :new,
         'href',
-        'feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss'.dup,
+        'super-fake-merger.com'.dup,
         parse_context
       )
       href.send(:globals_initial, parse_context)
       linkk = href.send(:compute_linkk)
       href.send(:globals_update, href.helper.argv, linkk)
       expect(href.follow).to eq(" rel='nofollow'")
-      expect(href.link).to   eq('https://feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss')
+      expect(href.link).to   eq('https://super-fake-merger.com')
       expect(href.target).to eq(" target='_blank'")
-      expect(href.text).to   eq('<code>feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss</code>')
+      expect(href.text).to   eq('<code>super-fake-merger.com</code>')
+    end
+
+    it "Expands YAML hash with link text" do
+      href = ExternalHref.send(
+        :new,
+        'href',
+        '{{github}}/diasks2/confidential_info_redactor <code>confidential_info_redactor</code>'.dup,
+        parse_context
+      )
+      href.send(:globals_initial, parse_context)
+      linkk = href.send(:compute_linkk)
+      href.send(:globals_update, href.helper.argv, linkk)
+      href.link = href.send(:replace_vars, href.link)
+      # expect(href.follow).to eq(" rel='nofollow'")
+      expect(href.link).to   eq('https://github.com/diasks2/confidential_info_redactor')
+      # expect(href.target).to eq(" target='_blank'")
+      expect(href.text).to   eq('<code>confidential_info_redactor</code>')
     end
 
     it "Obtains external link with follow" do

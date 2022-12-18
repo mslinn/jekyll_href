@@ -12,7 +12,8 @@ require_relative './jekyll_tag_helper2'
 
 # Implements href Jekyll tag
 class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
-  attr_reader :follow, :helper, :line_number, :link, :match, :page, :path, :site, :text, :target, :url
+  attr_reader :follow, :helper, :line_number, :match, :page, :path, :site, :text, :target, :url
+  attr_accessor :link
 
   # @param tag_name [String] is the name of the tag, which we already know.
   # @param markup [String] the arguments from the web page.
@@ -46,15 +47,17 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
 
   private
 
-  def compute_linkk
+  def compute_linkk # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     # Does not look at or compute @link
     linkk = @url
     if linkk.nil? || !linkk
       linkk = @helper.argv&.shift
       @helper.params&.shift
       @helper.keys_values&.delete(linkk)
+      dump_linkk_relations(linkk) if linkk.nil?
+    elsif @url.to_s.empty?
+      dump_linkk_relations(linkk)
     end
-    dump_linkk_relations(linkk) if linkk.nil?
     linkk
   end
 
@@ -161,5 +164,5 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
   end
 end
 
-PluginMetaLogger.instance.info { "Loaded jeykll_href v#{JekyllHrefVersion::VERSION} plugin." }
+PluginMetaLogger.instance.info { "Loaded jekyll_href v#{JekyllHrefVersion::VERSION} plugin." }
 Liquid::Template.register_tag('href', ExternalHref)
