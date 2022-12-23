@@ -158,7 +158,23 @@ class MyTest # rubocop:disable Metrics/ClassLength
       expect(href.text).to   eq('Awesome')
     end
 
-    it "Obtains external link with follow and notarget but without text" do
+    it "Implicitly computes external link from text" do
+      href = ExternalHref.send(
+        :new,
+        'href',
+        'www.mslinn.com'.dup,
+        parse_context
+      )
+      href.send(:globals_initial, parse_context)
+      linkk = href.send(:compute_linkk)
+      href.send(:globals_update, href.helper.argv, linkk)
+      expect(href.follow).to eq(" rel='nofollow'")
+      expect(href.link).to   eq('https://www.mslinn.com')
+      expect(href.target).to eq(" target='_blank'")
+      expect(href.text).to   eq('<code>www.mslinn.com</code>')
+    end
+
+    it "Implicitly computes external link from text with follow and notarget" do
       href = ExternalHref.send(
         :new,
         'href',

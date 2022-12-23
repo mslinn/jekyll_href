@@ -45,6 +45,17 @@ This syntax is recommended when the URL contains a colon (:).
   3. The square brackets denote optional keyword parameters, and should not be typed.
 
 
+## Syntax 3 (implicit URL):
+```
+{% href [match | [follow] [notarget]] www.domain.com %}
+```
+The URI provided, for example `www.domain.com`,
+is used to form the URL by prepending `https://`,
+in this case the result would be `https://www.domain.com`.
+The displayed URI is enclosed in `<code></code>`,
+so the resulting text is `<code>www.domain.com</code>`.
+
+
 ## Environment Variable Expansion
 URLs can contain environment variable references.
 For example, if `$domain`, `$uri` and `$USER` are environment variables:
