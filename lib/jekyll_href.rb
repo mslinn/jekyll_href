@@ -77,7 +77,7 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
     abort msg.red
   end
 
-  def globals_initial(liquid_context)
+  def globals_initial(liquid_context) # rubocop:disable Metrics/MethodLength
     # Sets @follow, @helper, @match, @page, @path, @site, @target, @url
     @helper.liquid_context = liquid_context
 
@@ -88,11 +88,13 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
 
     @follow = @helper.parameter_specified?('follow') ? '' : " rel='nofollow'"
     @match  = @helper.parameter_specified?('match')
-    @target = @helper.parameter_specified?('notarget') ? '' : " target='_blank'"
+    @blank  = @helper.parameter_specified?('blank')
+    @target = @blank ? " target='_blank'" : nil
+    @target ||= @helper.parameter_specified?('notarget') ? '' : " target='_blank'"
     @url    = @helper.parameter_specified?('url')
   end
 
-  def globals_update(tokens, linkk) # rubocop:disable Metrics/MethodLength
+  def globals_update(tokens, linkk) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     # Might set @follow, @linkk, @target, and @text
     if linkk.start_with? 'mailto:'
       @link = linkk
@@ -116,13 +118,13 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
     return if @link.start_with? "http"
 
     @follow = ''
-    @target = ''
+    @target = '' unless @blank
   end
 
   def handle_match
     match_post
     @follow = ''
-    @target = ''
+    @target = '' unless @blank
   end
 
   def match_post # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength

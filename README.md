@@ -24,7 +24,7 @@ then its name/value pairs are available for substitution.
 
 ## Syntax 1 (requires `url` does not have embedded spaces):
 ```
-{% href [match | [follow] [notarget]] url text to display %}
+{% href [match | [follow] [blank|notarget]] url text to display %}
 ```
  1. The url must be a single token, without embedded spaces.
  2. The url need not be enclosed in quotes.
@@ -34,10 +34,10 @@ then its name/value pairs are available for substitution.
 ## Syntax 2 (always works):
 This syntax is recommended when the URL contains a colon (:).
 ```
-{% href [match | [follow] [notarget]]
+{% href [match | [follow] [blank|notarget]]
   url="http://link.com with space.html" some text %}
 
-{% href [match | [follow] [notarget]]
+{% href [match | [follow] [blank|notarget]]
   url='http://link.com with space.html' some text %}
 ```
   1. Each of the above examples contain an embedded newline, which is legal.
@@ -47,7 +47,7 @@ This syntax is recommended when the URL contains a colon (:).
 
 ## Syntax 3 (implicit URL):
 ```
-{% href [match | [follow] [notarget]] www.domain.com %}
+{% href [match | [follow] [blank|notarget]] www.domain.com %}
 ```
 The URI provided, for example `www.domain.com`,
 is used to form the URL by prepending `https://`,
@@ -68,12 +68,20 @@ For example, if `$domain`, `$uri` and `$USER` are environment variables:
 ```
 
 ## Optional Parameters
+### `blank`
+The `target='_blank'` attribute is not normally generated for relative links.
+To enforce the generation of this attribute, preface the link with the word `blank`.
+The `blank` and `notarget` parameters are mutually exclusive.
+If both are specified, `blank` prevails.
+
 ### `follow`
 To suppress the `nofollow` attribute, preface the link with the word `follow`.
 
 
 ### `notarget`
 To suppress the `target` attribute, preface the link with the word `notarget`.
+The `blank` and `notarget` parameters are mutually exclusive.
+If both are specified, `blank` prevails.
 
 
 ### `match`

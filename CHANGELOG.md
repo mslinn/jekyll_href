@@ -1,3 +1,6 @@
+## 1.0.14 / 2023-01-09
+  * Added `blank` parameter.
+
 ## 1.0.13 / 2022-12-14
   * Links with embedded spaces are now supported when the new 'url' named parameter is used. For example, instead of specifying:
     ```

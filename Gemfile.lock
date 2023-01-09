@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    jekyll_href (1.0.13)
+    jekyll_href (1.0.14)
       jekyll (>= 3.5.0)
       jekyll_all_collections
       jekyll_plugin_logger

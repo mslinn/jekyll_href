@@ -61,6 +61,22 @@ class MyTest # rubocop:disable Metrics/ClassLength
       )
     end
 
+    it "Obtains internal link with blank" do
+      href = ExternalHref.send(
+        :new,
+        'href',
+        'blank ./path/page.html internal link text'.dup,
+        parse_context
+      )
+      href.send(:globals_initial, parse_context)
+      linkk = href.send(:compute_linkk)
+      href.send(:globals_update, href.helper.argv, linkk)
+      expect(href.follow).to eq('')
+      expect(href.link).to   eq('./path/page.html')
+      expect(href.target).to eq(" target='_blank'")
+      expect(href.text).to   eq('internal link text')
+    end
+
     it "Obtains external link with text" do
       href = ExternalHref.send(
         :new,
@@ -158,6 +174,22 @@ class MyTest # rubocop:disable Metrics/ClassLength
       expect(href.text).to   eq('Awesome')
     end
 
+    it "Obtains external link with blank" do
+      href = ExternalHref.send(
+        :new,
+        'href',
+        'blank https://www.mslinn.com Awesome'.dup,
+        parse_context
+      )
+      href.send(:globals_initial, parse_context)
+      linkk = href.send(:compute_linkk)
+      href.send(:globals_update, href.helper.argv, linkk)
+      expect(href.follow).to eq(" rel='nofollow'")
+      expect(href.link).to   eq('https://www.mslinn.com')
+      expect(href.target).to eq(" target='_blank'")
+      expect(href.text).to   eq('Awesome')
+    end
+
     it "Implicitly computes external link from text" do
       href = ExternalHref.send(
         :new,
@@ -187,6 +219,22 @@ class MyTest # rubocop:disable Metrics/ClassLength
       expect(href.follow).to eq('')
       expect(href.link).to   eq('https://www.mslinn.com')
       expect(href.target).to eq('')
+      expect(href.text).to   eq('<code>www.mslinn.com</code>')
+    end
+
+    it "Implicitly computes external link from text with blank" do
+      href = ExternalHref.send(
+        :new,
+        'href',
+        'follow blank www.mslinn.com'.dup,
+        parse_context
+      )
+      href.send(:globals_initial, parse_context)
+      linkk = href.send(:compute_linkk)
+      href.send(:globals_update, href.helper.argv, linkk)
+      expect(href.follow).to eq('')
+      expect(href.link).to   eq('https://www.mslinn.com')
+      expect(href.target).to eq(" target='_blank'")
       expect(href.text).to   eq('<code>www.mslinn.com</code>')
     end
 
