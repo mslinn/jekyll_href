@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "jekyll_all_collections"
 require "jekyll_plugin_logger"
 require "liquid"
@@ -141,7 +139,7 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
       END_DEBUG
     end
 
-    all_urls = @site.all_collections.map(&:url)
+    all_urls = @site.all_collections.map { |x| x['url'] }
     url_matches = all_urls.select { |url| url.include? path }
     case url_matches.length
     when 0

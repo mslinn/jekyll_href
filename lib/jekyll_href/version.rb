@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module JekyllHrefVersion
-  VERSION = "1.0.14"
+  VERSION = "1.1.0"
 end

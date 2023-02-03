@@ -4,14 +4,17 @@
 
 `Jekyll_href` is a Jekyll plugin that provides a new Liquid tag: `href`.
 It provides a convenient way to generate formatted and clickable URIs.
-The Liquid tag generates an `a href` HTML tag, which by default contains `target="_blank"` and `rel=nofollow`.
+The Liquid tag generates an `a href` HTML tag,
+which by default contains `target="_blank"` and `rel=nofollow`.
 
 If the url starts with `http`, or the `match` keyword is specified:
  - The url will open in a new tab or window.
  - The url will include `rel=nofollow` for SEO purposes.
 
-CAUTION: if linked text contains a single or double quote you will see the error message: `Liquid Exception: Unmatched quote`.
-Instead, use &apos; (`&apos;`), &quot; (`&quot;`), &lsquo; (`&lsquo;`), &rsquo; (`&rsquo;`), &ldquo; (`&ldquo;`), and &rdquo; (`&rdquo;`)
+CAUTION: if linked text contains a single or double quote,
+you will see the error message: `Liquid Exception: Unmatched quote`.
+Instead, use &apos; (`&apos;`), &quot; (`&quot;`), &lsquo; (`&lsquo;`),
+&rsquo; (`&rsquo;`), &ldquo; (`&ldquo;`), and &rdquo; (`&rdquo;`)
 
 In `_config.yml`, if a section called `plugin-vars` exists,
 then its name/value pairs are available for substitution.
@@ -131,7 +134,8 @@ The `match` option looks through the pages collection for a URL with containing 
 
 
 ## Additional Information
-More information is available on my web site about [my Jekyll plugins](https://www.mslinn.com/blog/2020/10/03/jekyll-plugins.html).
+More information is available on my website about
+[my Jekyll plugins](https://www.mslinn.com/blog/2020/10/03/jekyll-plugins.html).
 
 
 ## Installation
@@ -147,10 +151,6 @@ end
 And then execute:
 
     $ bundle install
-
-Or install it yourself as:
-
-    $ gem install jekyll_href
 
 
 ## Generated HTML
@@ -223,7 +223,8 @@ Which renders as: [`mslinn.com`](https://mslinn.com)
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies.
+You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 Install development dependencies like this:
 ```
@@ -236,7 +237,7 @@ $ bundle exec rake install
 ```
 
 ## Test
-A test web site is provided in the `demo` directory.
+A test website is provided in the `demo` directory.
  1. Set breakpoints.
 
  2. Initiate a debug session from the command line:

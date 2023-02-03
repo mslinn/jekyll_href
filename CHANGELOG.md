@@ -1,3 +1,6 @@
+## 1.1.0 / 2023-02-03
+  * Updated because the `jekyll_all_collections` plugin was updated.
+
 ## 1.0.14 / 2023-01-09
   * Added `blank` parameter.
 

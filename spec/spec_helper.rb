@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "liquid"
 require "fileutils"
 require_relative "../lib/jekyll_href"
