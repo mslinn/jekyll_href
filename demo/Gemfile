@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'ffi'
-gem 'jekyll', '~> 4.2.2'
+gem 'jekyll', '~> 4.3.2'
 gem 'nokogumbo', '=2.0.3'
 gem 'ptools'
 gem 'sprockets'
@@ -19,7 +19,6 @@ group :jekyll_plugins do
   # gem 'kramdown'
 end
 
-# Debugging:
 gem 'debase', "0.2.5.beta2", require: false
 gem 'debase-ruby_core_source', '~> 0.10.15', require: false
 # gem "rake", "~> 13.0", require: false

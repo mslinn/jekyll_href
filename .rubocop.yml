@@ -21,7 +21,19 @@ Layout/LineLength:
 Layout/MultilineMethodCallIndentation:
   Enabled: false
 
-Metrics/BlockLength:
+Metrics/AbcSize:
+  Max: 25
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/MethodLength:
+  Max: 30
+
+Metrics/PerceivedComplexity:
+  Max: 10
+
+Style/FrozenStringLiteralComment:
   Enabled: false
 
 Style/PercentLiteralDelimiters:

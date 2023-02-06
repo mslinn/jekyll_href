@@ -1,7 +1,7 @@
-require "jekyll_all_collections"
-require "jekyll_plugin_logger"
-require "liquid"
-require_relative "jekyll_href/version"
+require 'jekyll_all_collections'
+require 'jekyll_plugin_logger'
+require 'liquid'
+require_relative 'jekyll_href/version'
 require_relative './jekyll_tag_helper2'
 
 # @author Copyright 2020 Michael Slinn
@@ -47,8 +47,10 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
 
   private
 
-  def compute_linkk # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-    # Does not look at or compute @link
+  # Does not look at or compute @link
+  def compute_linkk
+    return @link if @link
+
     linkk = @url
     if linkk.nil? || !linkk
       linkk = @helper.argv&.shift
@@ -61,7 +63,7 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
     linkk
   end
 
-  def dump_linkk_relations(linkk) # rubocop:disable Metrics/MethodLength
+  def dump_linkk_relations(linkk)
     msg = <<~END_MESSAGE
       jekyll_href error: no url was provided on #{@path}:#{@line_number}.
         @helper.markup=#{@helper.markup}
@@ -75,14 +77,14 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
     abort msg.red
   end
 
-  def globals_initial(liquid_context) # rubocop:disable Metrics/MethodLength
+  def globals_initial(liquid_context)
     # Sets @follow, @helper, @match, @page, @path, @site, @target, @url
     @helper.liquid_context = liquid_context
 
     @page = liquid_context.registers[:page]
     @path = @page['path']
     @site = liquid_context.registers[:site]
-    JekyllAllCollections.maybe_compute_all_collections(@site)
+    AllCollectionsHooks.compute(@site)
 
     @follow = @helper.parameter_specified?('follow') ? '' : " rel='nofollow'"
     @match  = @helper.parameter_specified?('match')
@@ -92,8 +94,8 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
     @url    = @helper.parameter_specified?('url')
   end
 
-  def globals_update(tokens, linkk) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-    # Might set @follow, @linkk, @target, and @text
+  # Might set @follow, @linkk, @target, and @text
+  def globals_update(tokens, linkk)
     if linkk.start_with? 'mailto:'
       @link = linkk
       @target = @follow = ''
@@ -104,7 +106,7 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
       end
       return
     else
-      @text = tokens.join(" ").strip
+      @text = tokens.join(' ').strip
       if @text.to_s.empty?
         @text = "<code>#{linkk}</code>"
         @link = "https://#{linkk}"
@@ -113,7 +115,7 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
       end
     end
 
-    return if @link.start_with? "http"
+    return if @link.start_with? 'http'
 
     @follow = ''
     @target = '' unless @blank
@@ -125,11 +127,11 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
     @target = '' unless @blank
   end
 
-  def match_post # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
-    # Might set @link and @text
+  # Might set @link and @text
+  def match_post
     config = @site.config['href']
-    die_if_nomatch = !config.nil? && config['nomatch'] && config['nomatch'] == 'fatal'
-    path, fragment = @link.split('#')
+    @die_if_nomatch = !config.nil? && config['nomatch'] && config['nomatch'] == 'fatal'
+    @path, @fragment = @link.split('#')
 
     @logger.debug do
       <<~END_DEBUG
@@ -139,23 +141,27 @@ class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
       END_DEBUG
     end
 
-    all_urls = @site.all_collections.map { |x| x['url'] }
-    url_matches = all_urls.select { |url| url.include? path }
+    all_urls = @site.all_collections.map(&:url)
+    compute_link_and_text(all_urls)
+  end
+
+  def compute_link_and_text(all_urls)
+    url_matches = all_urls.select { |url| url&.include? @path }
     case url_matches.length
     when 0
-      abort "href error: No url matches '#{@link}'" if die_if_nomatch
-      @link = "#"
+      abort "href error: No url matches '#{@link}'" if @die_if_nomatch
+      @link = '#'
       @text = "<i>#{@link} is not available</i>"
     when 1
       @link = url_matches.first
-      @link = "#{@link}\##{fragment}" if fragment
+      @link = "#{@link}\##{@fragment}" if @fragment
     else
-      abort "Error: More than one url matched '#{path}': #{url_matches.join(", ")}"
+      abort "Error: More than one url matched '#{@path}': #{url_matches.join(', ')}"
     end
   end
 
+  # Replace names in plugin-vars with values
   def replace_vars(text)
-    # Replace names in plugin-vars with values
     variables = @site.config['plugin-vars']
     return text unless variables
 
