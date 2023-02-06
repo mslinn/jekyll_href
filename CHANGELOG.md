@@ -1,5 +1,6 @@
 ## 1.1.0 / 2023-02-03
-  * Updated because the `jekyll_all_collections` plugin was updated.
+  * Updated to `jekyll_all_collections` plugin v0.2.0.
+  * Fixed insidious bug where a valid link was not used properly.
 
 ## 1.0.14 / 2023-01-09
   * Added `blank` parameter.
