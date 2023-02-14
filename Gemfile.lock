@@ -28,7 +28,6 @@ GEM
     http_parser.rb (0.8.0)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
-    io-console (0.6.0)
     jekyll (4.3.2)
       addressable (~> 2.4)
       colorator (~> 1.0)
@@ -84,8 +83,6 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     regexp_parser (2.7.0)
-    reline (0.3.1)
-      io-console (~> 0.5)
     rexml (3.2.5)
     rouge (4.1.0)
     rspec (3.12.0)
@@ -134,9 +131,8 @@ DEPENDENCIES
   bundler
   debase (= 0.2.5.beta2)
   jekyll_href!
-  reline (= 0.3.1)
   rspec
-  rubocop (= 1.18.0)
+  rubocop
   rubocop-rspec
   ruby-debug-ide
 
