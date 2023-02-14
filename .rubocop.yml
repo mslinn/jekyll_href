@@ -1,11 +1,8 @@
-#require: rubocop-jekyll
-#inherit_gem:
-#  rubocop-jekyll: .rubocop.yml
-
 AllCops:
   Exclude:
-      - vendor/**/*
-      - Gemfile*
+    - exe/**/*
+    - vendor/**/*
+    - Gemfile*
   NewCops: enable
   TargetRubyVersion: 2.6
 
@@ -23,6 +20,17 @@ Layout/MultilineMethodCallIndentation:
 
 Metrics/AbcSize:
   Max: 25
+
+Metrics/BlockLength:
+  Exclude:
+    - jekyll_href.gemspec
+    - spec/**/*
+  Max: 25
+
+Metrics/ClassLength:
+  Exclude:
+    - spec/**/*
+  Max: 125
 
 Metrics/CyclomaticComplexity:
   Max: 10

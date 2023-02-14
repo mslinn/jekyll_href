@@ -1,41 +1,23 @@
 require 'jekyll_all_collections'
 require 'jekyll_plugin_logger'
+require 'jekyll_plugin_support'
 require 'liquid'
 require_relative 'jekyll_href/version'
-require_relative './jekyll_tag_helper2'
 
 # @author Copyright 2020 Michael Slinn
 # @license SPDX-License-Identifier: Apache-2.0
 # Generates an href.
 
 # Implements href Jekyll tag
-class ExternalHref < Liquid::Tag # rubocop:disable Metrics/ClassLength
+class ExternalHref < JekyllSupport::JekyllTag
   attr_reader :follow, :helper, :line_number, :match, :page, :path, :site, :text, :target, :url
   attr_accessor :link
-
-  # @param tag_name [String] is the name of the tag, which we already know.
-  # @param markup [String] the arguments from the web page.
-  # @param _tokens [Liquid::ParseContext] tokenized command line
-  #        By default it has two keys: :locale and :line_numbers, the first is a Liquid::I18n object, and the second,
-  #        a boolean parameter that determines if error messages should display the line number the error occurred.
-  #        This argument is used mostly to display localized error messages on Liquid built-in Tags and Filters.
-  #        See https://github.com/Shopify/liquid/wiki/Liquid-for-Programmers#create-your-own-tags
-  # @return [void]
-  def initialize(tag_name, markup, _tokens)
-    super
-    markup = '' if markup.nil?
-    markup.strip!
-
-    @logger = PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
-    @helper = JekyllTagHelper2.new(tag_name, markup, @logger)
-  end
 
   # Method prescribed by the Jekyll plugin lifecycle.
   # @param liquid_context [Liquid::Context]
   # @return [String]
-  def render(liquid_context)
-    super
-    globals_initial(liquid_context)
+  def render_impl
+    globals_initial(@liquid_context)
     linkk = compute_linkk
     linkk = replace_vars(linkk)
     @link_save = linkk

@@ -41,7 +41,7 @@ class TestParseContext < Liquid::ParseContext
 end
 
 # Lets get this party started
-class MyTest # rubocop:disable Metrics/ClassLength
+class MyTest
   Dir.chdir 'demo'
 
   RSpec.describe ExternalHref do

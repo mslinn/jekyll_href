@@ -1,6 +1,6 @@
 require_relative 'lib/jekyll_href/version'
 
-Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
+Gem::Specification.new do |spec|
   github = 'https://github.com/mslinn/jekyll_href'
 
   spec.authors = ['Mike Slinn']
@@ -32,8 +32,6 @@ Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
   spec.version = JekyllHrefVersion::VERSION
 
   spec.add_dependency 'jekyll', '>= 3.5.0'
-  spec.add_dependency 'jekyll_all_collections', '>= 0.2.0'
-  spec.add_dependency 'jekyll_plugin_logger'
-  spec.add_dependency 'key-value-parser'
-  spec.add_dependency 'shellwords'
+  spec.add_dependency 'jekyll_all_collections', '~> 0.2.0'
+  spec.add_dependency 'jekyll_plugin_support', '~> 0.4.0'
 end
