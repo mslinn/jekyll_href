@@ -40,7 +40,6 @@ class TestParseContext < Liquid::ParseContext
   end
 end
 
-# Lets get this party started
 class MyTest
   Dir.chdir 'demo'
 
@@ -60,7 +59,7 @@ class MyTest
     end
 
     it "Obtains internal link with blank" do
-      href = ExternalHref.send(
+      href = described_class.send(
         :new,
         'href',
         'blank ./path/page.html internal link text'.dup,
@@ -76,7 +75,7 @@ class MyTest
     end
 
     it "Obtains external link with text" do
-      href = ExternalHref.send(
+      href = described_class.send(
         :new,
         'href',
         'https://feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss  SoundCloud RSS Feed'.dup,
@@ -92,7 +91,7 @@ class MyTest
     end
 
     it "Obtains external link using url parameter with text" do
-      href = ExternalHref.send(
+      href = described_class.send(
         :new,
         'href',
         'url="https://feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss" SoundCloud RSS Feed'.dup,
@@ -108,7 +107,7 @@ class MyTest
     end
 
     it "Obtains external link without scheme or text" do
-      href = ExternalHref.send(
+      href = described_class.send(
         :new,
         'href',
         'super-fake-merger.com'.dup,
@@ -124,7 +123,7 @@ class MyTest
     end
 
     it "Expands YAML hash with link text" do
-      href = ExternalHref.send(
+      href = described_class.send(
         :new,
         'href',
         '{{github}}/diasks2/confidential_info_redactor <code>confidential_info_redactor</code>'.dup,
@@ -141,7 +140,7 @@ class MyTest
     end
 
     it "Obtains external link with follow" do
-      href = ExternalHref.send(
+      href = described_class.send(
         :new,
         'href',
         'follow https://www.mslinn.com Awesome'.dup,
@@ -157,7 +156,7 @@ class MyTest
     end
 
     it "Obtains external link with follow and notarget" do
-      href = ExternalHref.send(
+      href = described_class.send(
         :new,
         'href',
         'follow notarget https://www.mslinn.com Awesome'.dup,
@@ -173,7 +172,7 @@ class MyTest
     end
 
     it "Obtains external link with blank" do
-      href = ExternalHref.send(
+      href = described_class.send(
         :new,
         'href',
         'blank https://www.mslinn.com Awesome'.dup,
@@ -189,7 +188,7 @@ class MyTest
     end
 
     it "Implicitly computes external link from text" do
-      href = ExternalHref.send(
+      href = described_class.send(
         :new,
         'href',
         'www.mslinn.com'.dup,
@@ -205,7 +204,7 @@ class MyTest
     end
 
     it "Implicitly computes external link from text with follow and notarget" do
-      href = ExternalHref.send(
+      href = described_class.send(
         :new,
         'href',
         'follow notarget www.mslinn.com'.dup,
@@ -221,7 +220,7 @@ class MyTest
     end
 
     it "Implicitly computes external link from text with blank" do
-      href = ExternalHref.send(
+      href = described_class.send(
         :new,
         'href',
         'follow blank www.mslinn.com'.dup,
@@ -237,7 +236,7 @@ class MyTest
     end
 
     it "Obtains mailto without text" do
-      href = ExternalHref.send(
+      href = described_class.send(
         :new,
         'href',
         'mailto:mslinn@mslinn.com'.dup,
@@ -253,7 +252,7 @@ class MyTest
     end
 
     it "Obtains mailto with text" do
-      href = ExternalHref.send(
+      href = described_class.send(
         :new,
         'href',
         'mailto:mslinn@mslinn.com Mike Slinn'.dup,

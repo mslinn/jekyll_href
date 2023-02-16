@@ -1,5 +1,8 @@
+## 1.2.0 / 2023-02-16
+  * Updated to `jekyll_plugin_support` v1.5.0
+
 ## 1.1.1 / 2023-02-14
-  * Now dependent on jekyll_plugin_support
+  * Now dependent on `jekyll_plugin_support`
 
 ## 1.1.0 / 2023-02-03
   * Updated to `jekyll_all_collections` plugin v0.2.0.

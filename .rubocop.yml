@@ -1,3 +1,6 @@
+require:
+  - rubocop-rspec
+
 AllCops:
   Exclude:
     - exe/**/*
@@ -6,8 +9,11 @@ AllCops:
   NewCops: enable
   TargetRubyVersion: 2.6
 
-# Gemspec/RequireMFA:
-#   Enabled: false
+Gemspec/DeprecatedAttributeAssignment:
+  Enabled: false
+
+Gemspec/RequireMFA:
+  Enabled: false
 
 Layout/HashAlignment:
   EnforcedHashRocketStyle: table
@@ -41,7 +47,16 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 10
 
+RSpec/ExampleLength:
+  Max: 20
+
+RSpec/MultipleExpectations:
+  Max: 15
+
 Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/Documentation:
   Enabled: false
 
 Style/PercentLiteralDelimiters:

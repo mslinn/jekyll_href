@@ -13,17 +13,20 @@ class ExternalHref < JekyllSupport::JekyllTag
   attr_reader :follow, :helper, :line_number, :match, :page, :path, :site, :text, :target, :url
   attr_accessor :link
 
+  include JekyllHrefVersion
+
   # Method prescribed by the Jekyll plugin lifecycle.
   # @param liquid_context [Liquid::Context]
   # @return [String]
   def render_impl
-    globals_initial(@liquid_context)
+    globals_initial
     linkk = compute_linkk
     linkk = replace_vars(linkk)
     @link_save = linkk
     @helper_save = @helper.clone
     globals_update(@helper.argv, linkk) # Sets @link and @text, might clear @follow and @target
     handle_match if @match
+
     "<a href='#{@link}'#{@target}#{@follow}>#{@text}</a>"
   end
 
@@ -59,13 +62,10 @@ class ExternalHref < JekyllSupport::JekyllTag
     abort msg.red
   end
 
-  def globals_initial(liquid_context)
-    # Sets @follow, @helper, @match, @page, @path, @site, @target, @url
-    @helper.liquid_context = liquid_context
+  def globals_initial
+    # Sets @follow, @helper, @match, @path, @target, @url
 
-    @page = liquid_context.registers[:page]
     @path = @page['path']
-    @site = liquid_context.registers[:site]
     AllCollectionsHooks.compute(@site)
 
     @follow = @helper.parameter_specified?('follow') ? '' : " rel='nofollow'"
@@ -136,7 +136,7 @@ class ExternalHref < JekyllSupport::JekyllTag
       @text = "<i>#{@link} is not available</i>"
     when 1
       @link = url_matches.first
-      @link = "#{@link}\##{@fragment}" if @fragment
+      @link = "#{@link}##{@fragment}" if @fragment
     else
       abort "Error: More than one url matched '#{@path}': #{url_matches.join(', ')}"
     end
@@ -153,7 +153,6 @@ class ExternalHref < JekyllSupport::JekyllTag
     @logger.debug { "@link=#{@link}" }
     text
   end
-end
 
-PluginMetaLogger.instance.info { "Loaded jekyll_href v#{JekyllHrefVersion::VERSION} plugin." }
-Liquid::Template.register_tag('href', ExternalHref)
+  JekyllPluginHelper.register(self, 'href')
+end

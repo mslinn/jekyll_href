@@ -1,10 +1,9 @@
 PATH
   remote: ..
   specs:
-    jekyll_href (1.1.1)
+    jekyll_href (1.2.0)
       jekyll (>= 3.5.0)
-      jekyll_all_collections (~> 0.2.0)
-      jekyll_plugin_support (~> 0.4.0)
+      jekyll_all_collections (~> 0.3.0)
 
 GEM
   remote: https://rubygems.org/
@@ -19,7 +18,7 @@ GEM
     concurrent-ruby (1.2.0)
     debase (0.2.5.beta2)
       debase-ruby_core_source (>= 0.10.12)
-    debase-ruby_core_source (0.10.18)
+    debase-ruby_core_source (3.2.0)
     em-websocket (0.5.3)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0)
@@ -77,19 +76,20 @@ GEM
       nuggets
     jekyll-watch (2.2.1)
       listen (~> 3.0)
-    jekyll_all_collections (0.2.2)
+    jekyll_all_collections (0.3.0)
       jekyll (>= 3.5.0)
       jekyll_draft (~> 1.1.0)
-      jekyll_plugin_support (~> 0.4.0)
+      jekyll_plugin_support (~> 0.5.0)
     jekyll_draft (1.1.0)
       jekyll (>= 3.5.0)
       jekyll_plugin_logger
     jekyll_plugin_logger (2.1.1)
       jekyll (>= 3.5.0)
-    jekyll_plugin_support (0.4.0)
+    jekyll_plugin_support (0.5.0)
       jekyll (>= 3.5.0)
       jekyll_plugin_logger
       key-value-parser
+    json (2.6.3)
     key-value-parser (0.0.2)
     kramdown (2.4.0)
       rexml
@@ -125,17 +125,23 @@ GEM
     regexp_parser (2.7.0)
     rexml (3.2.5)
     rouge (4.1.0)
-    rubocop (1.18.0)
+    rubocop (1.45.1)
+      json (~> 2.3)
       parallel (~> 1.10)
-      parser (>= 3.0.0.0)
+      parser (>= 3.2.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
-      rexml
-      rubocop-ast (>= 1.7.0, < 2.0)
+      rexml (>= 3.2.5, < 4.0)
+      rubocop-ast (>= 1.24.1, < 2.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (>= 1.4.0, < 3.0)
+      unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.26.0)
       parser (>= 3.2.1.0)
+    rubocop-capybara (2.17.1)
+      rubocop (~> 1.41)
+    rubocop-rspec (2.18.1)
+      rubocop (~> 1.33)
+      rubocop-capybara (~> 2.17)
     ruby-debug-ide (0.7.3)
       rake (>= 0.8.1)
     ruby-progressbar (1.11.0)
@@ -174,7 +180,6 @@ PLATFORMS
 DEPENDENCIES
   classifier-reborn
   debase (= 0.2.5.beta2)
-  debase-ruby_core_source (~> 0.10.15)
   ffi
   html-proofer
   jekyll (~> 4.3.2)
@@ -185,10 +190,9 @@ DEPENDENCIES
   jekyll_plugin_logger
   nokogumbo (= 2.0.3)
   ptools
-  rubocop (= 1.18.0)
+  rubocop
+  rubocop-rspec
   ruby-debug-ide
-  sprockets
-  webrick
 
 BUNDLED WITH
-   2.3.7
+   2.4.6

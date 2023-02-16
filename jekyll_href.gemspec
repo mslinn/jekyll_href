@@ -32,6 +32,5 @@ Gem::Specification.new do |spec|
   spec.version = JekyllHrefVersion::VERSION
 
   spec.add_dependency 'jekyll', '>= 3.5.0'
-  spec.add_dependency 'jekyll_all_collections', '~> 0.2.0'
-  spec.add_dependency 'jekyll_plugin_support', '~> 0.4.0'
+  spec.add_dependency 'jekyll_all_collections', '~> 0.3.0'
 end
