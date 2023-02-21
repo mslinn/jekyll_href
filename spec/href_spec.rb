@@ -62,11 +62,11 @@ class MyTest
       href = described_class.send(
         :new,
         'href',
-        'blank ./path/page.html internal link text'.dup,
+        + 'blank ./path/page.html internal link text',
         parse_context
       )
-      href.send(:globals_initial, parse_context)
-      linkk = href.send(:compute_linkk)
+      href.send :globals_initial
+      linkk = href.send :compute_linkk
       href.send(:globals_update, href.helper.argv, linkk)
       expect(href.follow).to eq('')
       expect(href.link).to   eq('./path/page.html')
@@ -78,7 +78,7 @@ class MyTest
       href = described_class.send(
         :new,
         'href',
-        'https://feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss  SoundCloud RSS Feed'.dup,
+        + 'https://feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss  SoundCloud RSS Feed',
         parse_context
       )
       href.send(:globals_initial, parse_context)
@@ -94,7 +94,7 @@ class MyTest
       href = described_class.send(
         :new,
         'href',
-        'url="https://feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss" SoundCloud RSS Feed'.dup,
+        + 'url="https://feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss" SoundCloud RSS Feed',
         parse_context
       )
       href.send(:globals_initial, parse_context)
@@ -110,7 +110,7 @@ class MyTest
       href = described_class.send(
         :new,
         'href',
-        'super-fake-merger.com'.dup,
+        + 'super-fake-merger.com',
         parse_context
       )
       href.send(:globals_initial, parse_context)
@@ -126,7 +126,7 @@ class MyTest
       href = described_class.send(
         :new,
         'href',
-        '{{github}}/diasks2/confidential_info_redactor <code>confidential_info_redactor</code>'.dup,
+        + '{{github}}/diasks2/confidential_info_redactor <code>confidential_info_redactor</code>',
         parse_context
       )
       href.send(:globals_initial, parse_context)
@@ -143,7 +143,7 @@ class MyTest
       href = described_class.send(
         :new,
         'href',
-        'follow https://www.mslinn.com Awesome'.dup,
+        + 'follow https://www.mslinn.com Awesome',
         parse_context
       )
       href.send(:globals_initial, parse_context)
@@ -159,7 +159,7 @@ class MyTest
       href = described_class.send(
         :new,
         'href',
-        'follow notarget https://www.mslinn.com Awesome'.dup,
+        + 'follow notarget https://www.mslinn.com Awesome',
         parse_context
       )
       href.send(:globals_initial, parse_context)
@@ -175,7 +175,7 @@ class MyTest
       href = described_class.send(
         :new,
         'href',
-        'blank https://www.mslinn.com Awesome'.dup,
+        + 'blank https://www.mslinn.com Awesome',
         parse_context
       )
       href.send(:globals_initial, parse_context)
@@ -191,7 +191,7 @@ class MyTest
       href = described_class.send(
         :new,
         'href',
-        'www.mslinn.com'.dup,
+        + 'www.mslinn.com',
         parse_context
       )
       href.send(:globals_initial, parse_context)
@@ -207,7 +207,7 @@ class MyTest
       href = described_class.send(
         :new,
         'href',
-        'follow notarget www.mslinn.com'.dup,
+        + 'follow notarget www.mslinn.com',
         parse_context
       )
       href.send(:globals_initial, parse_context)
@@ -223,7 +223,7 @@ class MyTest
       href = described_class.send(
         :new,
         'href',
-        'follow blank www.mslinn.com'.dup,
+        + 'follow blank www.mslinn.com',
         parse_context
       )
       href.send(:globals_initial, parse_context)
@@ -239,7 +239,7 @@ class MyTest
       href = described_class.send(
         :new,
         'href',
-        'mailto:mslinn@mslinn.com'.dup,
+        + 'mailto:mslinn@mslinn.com',
         parse_context
       )
       href.send(:globals_initial, parse_context)
@@ -255,7 +255,7 @@ class MyTest
       href = described_class.send(
         :new,
         'href',
-        'mailto:mslinn@mslinn.com Mike Slinn'.dup,
+        + 'mailto:mslinn@mslinn.com Mike Slinn',
         parse_context
       )
       href.send(:globals_initial, parse_context)

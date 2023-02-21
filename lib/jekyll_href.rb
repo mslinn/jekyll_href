@@ -9,7 +9,7 @@ require_relative 'jekyll_href/version'
 # Generates an href.
 
 # Implements href Jekyll tag
-class ExternalHref < JekyllSupport::JekyllTag
+class ExternalHref < JekyllSupport::JekyllTag # rubocop:disable Metrics/ClassLength
   attr_reader :follow, :helper, :line_number, :match, :page, :path, :site, :text, :target, :url
   attr_accessor :link
 

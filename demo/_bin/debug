@@ -1,7 +1,34 @@
 #!/bin/bash
 
-# shellcheck disable=SC2086
-# shellcheck disable=SC2048
+# shellcheck disable=SC2086,SC2155,SC2059
+
+function help {
+  echo "
+$(basename $0) - Run the demo Jekyll website.
+By default the demo Jekyll website runs without restriction under ruby-debug-ide and debase,
+and listens on 0.0.0.0:1234.
+Options:
+  -h  Show this error message
+  -r  Run freely, without a debugger
+"
+  exit 1
+}
+
+
+unset RUN_FREE
+while getopts "hr" OPT; do
+  case "$OPT" in
+    h) help ;;
+
+    r) export RUN_FREE=true
+       echo "The RUN_FREE option was specified (without a debugger)."
+       ;;
+
+    *) help ;;
+  esac
+done
+shift $((OPTIND-1))
+
 
 # dispatcher-port and dispatcher-port are arbitrarily chosen to prevent conflicts with other instances.
 
@@ -24,17 +51,12 @@ bundle update
 
 bundle exec jekyll clean # Ensure all hooks get called
 
-if [ "$1" == -a ]; then
-  shift
-  bundle exec ./exe/jekyll $*
-elif [ "$1" == -r ]; then
-  shift
+if [ "$RUN_FREE" ]; then
   bundle exec ../exe/jekyll $run
 else
   bundle exec rdebug-ide \
     --host 0.0.0.0 \
     --port 1234 \
     --dispatcher-port 26162 \
-    -- \
-      ../exe/jekyll $run
+    -- ../exe/jekyll $run
 fi
