@@ -5,27 +5,35 @@
 `Jekyll_href` is a Jekyll plugin that provides a new Liquid tag: `href`.
 It provides a convenient way to generate formatted and clickable URIs.
 The Liquid tag generates an `a href` HTML tag,
-which by default contains `target="_blank"` and `rel=nofollow`.
+which by default contains `target="_blank"` and `rel="nofollow"`.
 
 If the url starts with `http`, or the `match` keyword is specified:
  - The url will open in a new tab or window.
- - The url will include `rel=nofollow` for SEO purposes.
+ - The url will include `rel="nofollow"` for SEO purposes.
 
 CAUTION: if linked text contains a single or double quote,
 you will see the error message: `Liquid Exception: Unmatched quote`.
-Instead, use &apos; (`&apos;`), &quot; (`&quot;`), &lsquo; (`&lsquo;`),
-&rsquo; (`&rsquo;`), &ldquo; (`&ldquo;`), and &rdquo; (`&rdquo;`)
+Instead, use:
 
+ - `&apos;` (&apos;)
+ - `&quot;` (&quot;)
+ - `&lsquo;` (&lsquo;)
+ - `&rsquo;` (&rsquo;)
+ - `&ldquo;` (&ldquo;)
+ - `&rdquo;` (&rdquo;)
+
+
+## Configuration
 In `_config.yml`, if a section called `plugin-vars` exists,
 then its name/value pairs are available for substitution.
 ```yaml
-  plugin-vars:
-    django-github: 'https://github.com/django/django/blob/3.1.7'
-    django-oscar-github: 'https://github.com/django-oscar/django-oscar/blob/3.0.2'
+plugin-vars:
+  django-github: 'https://github.com/django/django/blob/3.1.7'
+  django-oscar-github: 'https://github.com/django-oscar/django-oscar/blob/3.0.2'
 ```
 
 
-## Syntax 1 (requires `url` does not have embedded spaces):
+## Syntax 1 (requires `url` does not have embedded spaces)
 ```
 {% href [match | [follow] [blank|notarget]] url text to display %}
 ```
@@ -34,7 +42,7 @@ then its name/value pairs are available for substitution.
  3. The square brackets denote optional keyword parameters, and should not be typed.
 
 
-## Syntax 2 (always works):
+## Syntax 2 (always works)
 This syntax is recommended when the URL contains a colon (:).
 ```
 {% href [match | [follow] [blank|notarget]]
@@ -48,9 +56,9 @@ This syntax is recommended when the URL contains a colon (:).
   3. The square brackets denote optional keyword parameters, and should not be typed.
 
 
-## Syntax 3 (implicit URL):
+## Syntax 3 (implicit URL)
 ```
-{% href [match | [follow] [blank|notarget]] www.domain.com %}
+{% href [match | [follow] [blank|notarget]] [shy|wbr] www.domain.com %}
 ```
 The URI provided, for example `www.domain.com`,
 is used to form the URL by prepending `https://`,
@@ -92,6 +100,50 @@ If both are specified, `blank` prevails.
 If multiple documents have matching URL an error is thrown.
 The `match` option looks through the pages collection for a URL with containing the provided substring.
 `Match` implies `follow` and `notarget`.
+
+
+### `shy`
+`shy` is only applicable for syntax 3 (implicit URL).
+This option causes displayed urls to have an &amp;shy; inserted after each slash (/).
+If both `shy` and `wbr` are specified, `wbr` prevails.
+
+For example:
+```
+{% href shy mslinn.com/path/to/page.html %}
+```
+Expands to:
+```
+<a href="https://mslinn.com/path/to/page.html">mslinn.com/&shy;path/&shy;to/&shy;page.html</a>
+```
+
+### `shy`
+`shy` is only applicable for syntax 3 (implicit URL).
+This option causes displayed urls to have an [`&amp;shy;`](https://developer.mozilla.org/en-US/docs/Web/CSS/hyphens) inserted after each slash (/).
+If both `shy` and `wbr` are specified, `wbr` prevails.
+
+For example:
+```
+{% href shy mslinn.com/path/to/page.html %}
+```
+Expands to:
+```
+<a href="https://mslinn.com/path/to/page.html" rel="nofollow" target="_blank">mslinn.com/&shy;path/&shy;to/&shy;page.html</a>
+```
+
+### `wbr`
+`wbr` is only applicable for syntax 3 (implicit URL).
+It add [line break opportunites](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/wbr).
+This option causes displayed urls to have an `&lt;wbr&gt;` inserted after each slash (/).
+If both `shy` and `wbr` are specified, `wbr` prevails.
+
+For example:
+```
+{% href wbr mslinn.com/path/to/page.html %}
+```
+Expands to:
+```
+<a href="https://mslinn.com/path/to/page.html" rel="nofollow" target="_blank">mslinn.com/<wbr>path/<wbr>to/<wbr>page.html</a>
+```
 
 
 ## Examples

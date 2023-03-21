@@ -1,3 +1,6 @@
+## 1.2.1 / 2023-03-21
+  * Added `shy` and `wbr` options.
+
 ## 1.2.0 / 2023-02-16
   * Updated to `jekyll_plugin_support` v1.5.0
 

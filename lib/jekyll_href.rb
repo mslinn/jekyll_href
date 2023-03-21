@@ -62,18 +62,19 @@ class ExternalHref < JekyllSupport::JekyllTag # rubocop:disable Metrics/ClassLen
     abort msg.red
   end
 
+  # Sets @follow, @helper, @match, @path, @shy, @target, @url, @wbr
   def globals_initial
-    # Sets @follow, @helper, @match, @path, @target, @url
-
     @path = @page['path']
     AllCollectionsHooks.compute(@site)
 
     @follow = @helper.parameter_specified?('follow') ? '' : " rel='nofollow'"
     @match  = @helper.parameter_specified?('match')
     @blank  = @helper.parameter_specified?('blank')
+    @shy    = @helper.parameter_specified?('shy')
     @target = @blank ? " target='_blank'" : nil
     @target ||= @helper.parameter_specified?('notarget') ? '' : " target='_blank'"
     @url    = @helper.parameter_specified?('url')
+    @wbr    = @helper.parameter_specified?('wbr')
   end
 
   # Might set @follow, @linkk, @target, and @text
@@ -90,10 +91,19 @@ class ExternalHref < JekyllSupport::JekyllTag # rubocop:disable Metrics/ClassLen
     else
       @text = tokens.join(' ').strip
       if @text.to_s.empty?
-        @text = "<code>#{linkk}</code>"
+        text = linkk
+        text = linkk.gsub('/', '/&shy;') if @shy
+        text = linkk.gsub('/', '/<wbr>') if @wbr
+        @text = "<code>#{text}</code>"
         @link = "https://#{linkk}"
       else
-        @link = linkk
+        @link = if @shy
+                  linkk.gsub('/', '/&shy;')
+                elsif @wbr
+                  linkk.gsub('/', '/<wbr>')
+                else
+                  linkk
+                end
       end
     end
 
