@@ -117,7 +117,7 @@ Expands to:
 ```
 
 ### `shy`
-`shy` is only applicable for syntax 3 (implicit URL).
+The `shy` keyword option is only applicable for syntax 3 (implicit URL).
 This option causes displayed urls to have an [`&amp;shy;`](https://developer.mozilla.org/en-US/docs/Web/CSS/hyphens) inserted after each slash (/).
 If both `shy` and `wbr` are specified, `wbr` prevails.
 
@@ -131,7 +131,7 @@ Expands to:
 ```
 
 ### `wbr`
-`wbr` is only applicable for syntax 3 (implicit URL).
+The `wbr` keyword option is only applicable for syntax 3 (implicit URL).
 It add [line break opportunites](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/wbr).
 This option causes displayed urls to have an `&lt;wbr&gt;` inserted after each slash (/).
 If both `shy` and `wbr` are specified, `wbr` prevails.
