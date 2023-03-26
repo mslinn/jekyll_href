@@ -35,6 +35,8 @@ module HrefSummaryTag
         "<li>#{href.summarize}</li>"
       end
 
+      return '' if entries.empty?
+
       <<~END_RENDER
         <h2 id="reference">References</h2>
         <ol>

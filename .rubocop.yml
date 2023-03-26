@@ -69,6 +69,9 @@ Naming/FileName:
   Exclude:
     - Rakefile
 
+RSpec/FilePath:
+  Enabled: false
+
 RSpec/ExampleLength:
   Max: 20
 
