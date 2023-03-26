@@ -33,10 +33,9 @@ module HrefSummaryTag
     def render_refs
       hrefs = HashArray.instance_variable_get(:@global_hrefs)
       path = @page['path']
-      entries = hrefs.find(path) do |link|
-        "<li>#{link}</li>"
-      end
-
+      entries = hrefs
+                  .find { |h| h.path == path }
+                  .map  { |h| "<li>#{h.summary}</li>" }
       return '' if entries.to_s.empty?
 
       <<~END_RENDER
