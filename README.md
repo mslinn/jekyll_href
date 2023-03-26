@@ -222,7 +222,7 @@ Given these `href` usages in a web page:
 Then the generated HTML looks like the following:
 
 ```html
-<h2 id='reference'>References</h2>
+<h2 id="reference">References</h2>
 <ol>
   <li><a href='https://rubygems.org' rel='nofollow' target='_blank'>RubyGems.org</a></li>
   <li><a href='https://jekyllrb.com/' rel='nofollow' target='_blank'>Mothership</a></li>
