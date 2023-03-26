@@ -31,11 +31,13 @@ module HrefSummaryTag
     end
 
     def render_refs
-      entries = self.class.hrefs.map do |href|
-        "<li>#{href.summarize}</li>"
+      hrefs = HashArray.instance_variable_get(:@global_hrefs)
+      path = @page['path']
+      entries = hrefs.find(path) do |link|
+        "<li>#{link}</li>"
       end
 
-      return '' if entries.empty?
+      return '' if entries.to_s.empty?
 
       <<~END_RENDER
         <h2 id="reference">References</h2>
@@ -46,9 +48,13 @@ module HrefSummaryTag
     end
 
     def local_refs
-      entries = self.class.hrefs_local.map do |href|
-        "<li>#{href.summarize}</li>"
+      hrefs = HashArray.instance_variable_get(:@local_hrefs)
+      path = @page['path']
+      entries = hrefs.find(path) do |link|
+        "<li>#{link}</li>"
       end
+      return '' if entries.to_s.empty?
+
       <<~END_RENDER
 
 

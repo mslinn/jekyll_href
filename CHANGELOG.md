@@ -1,5 +1,6 @@
 ## 1.2.2 / 2023-03-25
   * Added **References** capability.
+  * If a URL appears in more than one `href` with different `follow` values a warning is logged.
 
 ## 1.2.1 / 2023-03-21
   * Added `shy` and `wbr` options.

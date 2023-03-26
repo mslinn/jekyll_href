@@ -196,18 +196,17 @@ To do this, use the `href_summary` tag.
 ```html
 {% href_summary [options] %}
 ```
-
+ - Links are presented in the order they appear in the page.
  - External links are always included.
  - Links to other pages in the website are included if the `include_local` keyword option is used.
 
-Note that the `href` tag options are used to generate the summary links,
+The `href` tag options are used to generate the summary links,
 just as they were in the text above the **References** summary section.
 The only exception is the `summary` option, which overrides the linked text.
 
-If more than one `href` tag specifies a URL, the last one encountered sets the value of the linked text,
-unless one or more of the `href` tags has a `summary` option.
-`Href` tags with a `summary` option have precedence.
-The linked text of the last `href` tag with a `summary` option is used.
+If more than one `href` tag specifies a URL, the first one encountered sets the value of the linked text.
+
+If a URL appears in more than one `href` with different `follow` values a warning is logged.
 
 ### Example
 Given these `href` usages in a web page:

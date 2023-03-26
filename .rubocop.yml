@@ -25,15 +25,17 @@ Gemspec/RequireMFA:
 
 Layout/HashAlignment:
   EnforcedColonStyle: table
+  EnforcedHashRocketStyle: table
   Exclude:
     - jekyll_href.gemspec
-
 Layout/InitialIndentation:
   Exclude:
     - README.md
 
 Layout/LineLength:
   Max: 150
+  Exclude:
+    - spec/**/*
 
 Layout/MultilineMethodCallIndentation:
   Enabled: false
@@ -69,11 +71,11 @@ Naming/FileName:
   Exclude:
     - Rakefile
 
+RSpec/ExampleLength:
+  Max: 40
+
 RSpec/FilePath:
   Enabled: false
-
-RSpec/ExampleLength:
-  Max: 20
 
 RSpec/MultipleExpectations:
   Max: 15

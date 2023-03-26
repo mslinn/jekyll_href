@@ -38,12 +38,13 @@ module HrefTag
 
     def save_summary
       @summary ||= @text
-      summary_href = "<a href='#{@link}'#{@target}#{@follow}>#{@summary}</a>"
+      @summary_href = "<a href='#{@link}'#{@target}#{@follow}>#{@summary}</a>"
 
+      path = @page['path']
       if @link.start_with?('http')
-        add_global_link_for_page @link, summary_href
+        add_global_link_for_page path, self
       elsif !@link.start_with?('#')
-        add_local_link_for_page @link, summary_href
+        add_local_link_for_page path, self
       end
     end
 

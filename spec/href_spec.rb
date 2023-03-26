@@ -18,10 +18,35 @@ class SiteMock
 
   def initialize
     @config = YAML.safe_load(File.read('_config.yml'))
+    @config['env'] = { 'JEKYLL_ENV' => 'development' }
   end
 
   def collections
     Collections.new
+  end
+end
+
+class TestLiquidContext < Liquid::Context
+  def initialize
+    super
+
+    page = {
+      "content"     => "blah blah",
+      "description" => "Jekyll plugin support demo",
+      "dir"         => "/",
+      "excerpt"     => nil,
+      "layout"      => "default",
+      "name"        => "index.html",
+      "path"        => "index.html",
+      "title"       => "Welcome",
+      "url"         => "/",
+    }
+
+    @content = "Interior of the tag"
+    @registers = Registers.new(
+      page,
+      SiteMock.new
+    )
   end
 end
 
@@ -34,7 +59,7 @@ class TestParseContext < Liquid::ParseContext
     @line_number = 123
 
     @registers = Registers.new(
-      { 'path' => 'https://feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss' },
+      { 'path' => 'path/to/page.html' },
       SiteMock.new
     )
   end
@@ -43,7 +68,7 @@ end
 class MyTest
   Dir.chdir 'demo'
 
-  RSpec.describe ExternalHref do
+  RSpec.describe HrefTag::HrefTag do
     let(:logger) do
       PluginMetaLogger.instance.new_logger(self, PluginMetaLogger.instance.config)
     end
@@ -62,14 +87,14 @@ class MyTest
       href = described_class.send(
         :new,
         'href',
-        + 'blank ./path/page.html internal link text',
+        + 'blank path/page.html internal link text',
         parse_context
       )
-      href.send :globals_initial
-      linkk = href.send :compute_linkk
-      href.send(:globals_update, href.helper.argv, linkk)
+      href.render TestLiquidContext.new
+      # linkk = href.send :compute_linkk
+      # href.send(:globals_update, href.helper.argv, linkk)
       expect(href.follow).to eq('')
-      expect(href.link).to   eq('./path/page.html')
+      expect(href.link).to   eq('path/page.html')
       expect(href.target).to eq(" target='_blank'")
       expect(href.text).to   eq('internal link text')
     end
@@ -81,9 +106,10 @@ class MyTest
         + 'https://feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss  SoundCloud RSS Feed',
         parse_context
       )
-      href.send(:globals_initial, parse_context)
-      linkk = href.send(:compute_linkk)
-      href.send(:globals_update, href.helper.argv, linkk)
+      href.render TestLiquidContext.new
+      # href.send(:globals_initial, parse_context)
+      # linkk = href.send(:compute_linkk)
+      # href.send(:globals_update, href.helper.argv, linkk)
       expect(href.follow).to eq(" rel='nofollow'")
       expect(href.link).to   eq('https://feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss')
       expect(href.target).to eq(" target='_blank'")
@@ -97,9 +123,10 @@ class MyTest
         + 'url="https://feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss" SoundCloud RSS Feed',
         parse_context
       )
-      href.send(:globals_initial, parse_context)
-      linkk = href.send(:compute_linkk)
-      href.send(:globals_update, href.helper.argv, linkk)
+      href.render TestLiquidContext.new
+      # href.send(:globals_initial, parse_context)
+      # linkk = href.send(:compute_linkk)
+      # href.send(:globals_update, href.helper.argv, linkk)
       expect(href.follow).to eq(" rel='nofollow'")
       expect(href.link).to   eq('https://feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss')
       expect(href.target).to eq(" target='_blank'")
@@ -113,9 +140,10 @@ class MyTest
         + 'super-fake-merger.com',
         parse_context
       )
-      href.send(:globals_initial, parse_context)
-      linkk = href.send(:compute_linkk)
-      href.send(:globals_update, href.helper.argv, linkk)
+      href.render TestLiquidContext.new
+      # href.send(:globals_initial, parse_context)
+      # linkk = href.send(:compute_linkk)
+      # href.send(:globals_update, href.helper.argv, linkk)
       expect(href.follow).to eq(" rel='nofollow'")
       expect(href.link).to   eq('https://super-fake-merger.com')
       expect(href.target).to eq(" target='_blank'")
@@ -129,10 +157,11 @@ class MyTest
         + '{{github}}/diasks2/confidential_info_redactor <code>confidential_info_redactor</code>',
         parse_context
       )
-      href.send(:globals_initial, parse_context)
-      linkk = href.send(:compute_linkk)
-      linkk = href.send(:replace_vars, linkk)
-      href.send(:globals_update, href.helper.argv, linkk)
+      href.render TestLiquidContext.new
+      # href.send(:globals_initial, parse_context)
+      # linkk = href.send(:compute_linkk)
+      # linkk = href.send(:replace_vars, linkk)
+      # href.send(:globals_update, href.helper.argv, linkk)
       expect(href.follow).to eq(" rel='nofollow'")
       expect(href.link).to   eq('https://github.com/diasks2/confidential_info_redactor')
       expect(href.target).to eq(" target='_blank'")
@@ -146,9 +175,10 @@ class MyTest
         + 'follow https://www.mslinn.com Awesome',
         parse_context
       )
-      href.send(:globals_initial, parse_context)
-      linkk = href.send(:compute_linkk)
-      href.send(:globals_update, href.helper.argv, linkk)
+      href.render TestLiquidContext.new
+      # href.send(:globals_initial, parse_context)
+      # linkk = href.send(:compute_linkk)
+      # href.send(:globals_update, href.helper.argv, linkk)
       expect(href.follow).to eq('')
       expect(href.link).to   eq('https://www.mslinn.com')
       expect(href.target).to eq(" target='_blank'")
@@ -162,9 +192,10 @@ class MyTest
         + 'follow notarget https://www.mslinn.com Awesome',
         parse_context
       )
-      href.send(:globals_initial, parse_context)
-      linkk = href.send(:compute_linkk)
-      href.send(:globals_update, href.helper.argv, linkk)
+      href.render TestLiquidContext.new
+      # href.send(:globals_initial, parse_context)
+      # linkk = href.send(:compute_linkk)
+      # href.send(:globals_update, href.helper.argv, linkk)
       expect(href.follow).to eq('')
       expect(href.link).to   eq('https://www.mslinn.com')
       expect(href.target).to eq('')
@@ -178,9 +209,10 @@ class MyTest
         + 'blank https://www.mslinn.com Awesome',
         parse_context
       )
-      href.send(:globals_initial, parse_context)
-      linkk = href.send(:compute_linkk)
-      href.send(:globals_update, href.helper.argv, linkk)
+      href.render TestLiquidContext.new
+      # href.send(:globals_initial, parse_context)
+      # linkk = href.send(:compute_linkk)
+      # href.send(:globals_update, href.helper.argv, linkk)
       expect(href.follow).to eq(" rel='nofollow'")
       expect(href.link).to   eq('https://www.mslinn.com')
       expect(href.target).to eq(" target='_blank'")
@@ -194,9 +226,10 @@ class MyTest
         + 'www.mslinn.com',
         parse_context
       )
-      href.send(:globals_initial, parse_context)
-      linkk = href.send(:compute_linkk)
-      href.send(:globals_update, href.helper.argv, linkk)
+      href.render TestLiquidContext.new
+      # href.send(:globals_initial, parse_context)
+      # linkk = href.send(:compute_linkk)
+      # href.send(:globals_update, href.helper.argv, linkk)
       expect(href.follow).to eq(" rel='nofollow'")
       expect(href.link).to   eq('https://www.mslinn.com')
       expect(href.target).to eq(" target='_blank'")
@@ -210,9 +243,7 @@ class MyTest
         + 'follow notarget www.mslinn.com',
         parse_context
       )
-      href.send(:globals_initial, parse_context)
-      linkk = href.send(:compute_linkk)
-      href.send(:globals_update, href.helper.argv, linkk)
+      href.render TestLiquidContext.new
       expect(href.follow).to eq('')
       expect(href.link).to   eq('https://www.mslinn.com')
       expect(href.target).to eq('')
@@ -226,13 +257,24 @@ class MyTest
         + 'follow blank www.mslinn.com',
         parse_context
       )
-      href.send(:globals_initial, parse_context)
-      linkk = href.send(:compute_linkk)
-      href.send(:globals_update, href.helper.argv, linkk)
+      href.render TestLiquidContext.new
       expect(href.follow).to eq('')
       expect(href.link).to   eq('https://www.mslinn.com')
       expect(href.target).to eq(" target='_blank'")
       expect(href.text).to   eq('<code>www.mslinn.com</code>')
+
+      href.send(:save_summary)
+      hrefs = HashArray.instance_variable_get(:@global_hrefs)
+      expect(hrefs).to eq(
+        {
+          "index.html" => [
+            "<a href='https://feeds.soundcloud.com/users/soundcloud:users:7143896/sounds.rss' target='_blank' rel='nofollow'>SoundCloud RSS Feed</a>",
+            "<a href='https://github.com/diasks2/confidential_info_redactor' target='_blank' rel='nofollow'><code>confidential_info_redactor</code></a>",
+            "<a href='https://super-fake-merger.com' target='_blank' rel='nofollow'><code>super-fake-merger.com</code></a>",
+            "<a href='https://www.mslinn.com' target='_blank'><code>www.mslinn.com</code></a>"
+          ],
+        }
+      )
     end
 
     it 'obtains mailto without text' do
@@ -242,9 +284,10 @@ class MyTest
         + 'mailto:mslinn@mslinn.com',
         parse_context
       )
-      href.send(:globals_initial, parse_context)
-      linkk = href.send(:compute_linkk)
-      href.send(:globals_update, href.helper.argv, linkk)
+      href.render TestLiquidContext.new
+      # href.send(:globals_initial, parse_context)
+      # linkk = href.send(:compute_linkk)
+      # href.send(:globals_update, href.helper.argv, linkk)
       expect(href.follow).to eq('')
       expect(href.link).to   eq('mailto:mslinn@mslinn.com')
       expect(href.target).to eq('')
@@ -258,9 +301,10 @@ class MyTest
         + 'mailto:mslinn@mslinn.com Mike Slinn',
         parse_context
       )
-      href.send(:globals_initial, parse_context)
-      linkk = href.send(:compute_linkk)
-      href.send(:globals_update, href.helper.argv, linkk)
+      href.render TestLiquidContext.new
+      # href.send(:globals_initial, parse_context)
+      # linkk = href.send(:compute_linkk)
+      # href.send(:globals_update, href.helper.argv, linkk)
       expect(href.follow).to eq('')
       expect(href.link).to   eq('mailto:mslinn@mslinn.com')
       expect(href.target).to eq('')
