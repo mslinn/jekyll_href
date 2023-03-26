@@ -58,7 +58,7 @@ class MyTest
       )
     end
 
-    it "Obtains internal link with blank" do
+    it 'obtains internal link with blank' do
       href = described_class.send(
         :new,
         'href',
@@ -74,7 +74,7 @@ class MyTest
       expect(href.text).to   eq('internal link text')
     end
 
-    it "Obtains external link with text" do
+    it 'obtains external link with text' do
       href = described_class.send(
         :new,
         'href',
@@ -90,7 +90,7 @@ class MyTest
       expect(href.text).to   eq('SoundCloud RSS Feed')
     end
 
-    it "Obtains external link using url parameter with text" do
+    it 'obtains external link using url parameter with text' do
       href = described_class.send(
         :new,
         'href',
@@ -106,7 +106,7 @@ class MyTest
       expect(href.text).to   eq('SoundCloud RSS Feed')
     end
 
-    it "Obtains external link without scheme or text" do
+    it 'obtains external link without scheme or text' do
       href = described_class.send(
         :new,
         'href',
@@ -122,7 +122,7 @@ class MyTest
       expect(href.text).to   eq('<code>super-fake-merger.com</code>')
     end
 
-    it "Expands YAML hash with link text" do
+    it 'expands YAML hash with link text' do
       href = described_class.send(
         :new,
         'href',
@@ -139,7 +139,7 @@ class MyTest
       expect(href.text).to   eq('<code>confidential_info_redactor</code>')
     end
 
-    it "Obtains external link with follow" do
+    it 'obtains external link with follow' do
       href = described_class.send(
         :new,
         'href',
@@ -155,7 +155,7 @@ class MyTest
       expect(href.text).to   eq('Awesome')
     end
 
-    it "Obtains external link with follow and notarget" do
+    it 'obtains external link with follow and notarget' do
       href = described_class.send(
         :new,
         'href',
@@ -171,7 +171,7 @@ class MyTest
       expect(href.text).to   eq('Awesome')
     end
 
-    it "Obtains external link with blank" do
+    it 'obtains external link with blank' do
       href = described_class.send(
         :new,
         'href',
@@ -187,7 +187,7 @@ class MyTest
       expect(href.text).to   eq('Awesome')
     end
 
-    it "Implicitly computes external link from text" do
+    it 'implicitly computes external link from text' do
       href = described_class.send(
         :new,
         'href',
@@ -203,7 +203,7 @@ class MyTest
       expect(href.text).to   eq('<code>www.mslinn.com</code>')
     end
 
-    it "Implicitly computes external link from text with follow and notarget" do
+    it 'implicitly computes external link from text with follow and notarget' do
       href = described_class.send(
         :new,
         'href',
@@ -219,7 +219,7 @@ class MyTest
       expect(href.text).to   eq('<code>www.mslinn.com</code>')
     end
 
-    it "Implicitly computes external link from text with blank" do
+    it 'implicitly computes external link from text with blank' do
       href = described_class.send(
         :new,
         'href',
@@ -235,7 +235,7 @@ class MyTest
       expect(href.text).to   eq('<code>www.mslinn.com</code>')
     end
 
-    it "Obtains mailto without text" do
+    it 'obtains mailto without text' do
       href = described_class.send(
         :new,
         'href',
@@ -251,7 +251,7 @@ class MyTest
       expect(href.text).to   eq('<code>mslinn@mslinn.com</code>')
     end
 
-    it "Obtains mailto with text" do
+    it 'obtains mailto with text' do
       href = described_class.send(
         :new,
         'href',
