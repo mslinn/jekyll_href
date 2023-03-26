@@ -12,8 +12,8 @@ class HrefSummary < JekyllSupport::JekyllTag
   #   'path/to/page1.html': [ "HRef1", "HRef2" ],
   #   'path/to/page2.html': [ "HRef3", "HRef4" ],
   # }
-  @hrefs = []
-  @hrefs_local = []
+  @hrefs = {}
+  @hrefs_local = {}
 
   class << self
     attr_accessor :hrefs, :hrefs_local
