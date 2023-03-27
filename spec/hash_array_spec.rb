@@ -8,40 +8,35 @@ module HashArraySpec
 
     let(:parse_context) { TestParseContext.new }
 
-    [1, 2, 3, 4, 10, 20, 30, 40].each do |x|
-      let("href#{x}".to_sym) {
-        domain = x.even? ? 'https://domain.com/' : ''
+    [1, 2, 3, 4, 11, 22, 33, 44].each do |x|
+      let("href#{x}".to_sym) do
+        domain, where = if x.even?
+                          ['https://domain.com/', 'External']
+                        else
+                          ['', 'Internal']
+                        end
         href = HrefTag::HrefTag.send(
           :new,
           'href',
-          + "#{domain}path/page#{x}.html Internal link text #{x}",
+          + "#{domain}path/page#{x}.html #{where} link text #{x}",
           parse_context
         )
         href.render(TestLiquidContext.new)
         href
-      }
+      end
     end
 
     it 'accumulates arrays of href_tag' do
       described_class.reset
-
-      described_class.add_local_link_for_page href1
-      described_class.add_local_link_for_page href2
-
-      described_class.add_global_link_for_page href10
-      described_class.add_global_link_for_page href20
-
-      described_class.add_local_link_for_page href3
-      described_class.add_local_link_for_page href4
-      described_class.add_global_link_for_page href30
-      described_class.add_global_link_for_page href40
+      [href1, href3, href11, href33].each { |x| described_class.add_local_link_for_page x }
+      [href2, href4, href22, href44].each { |x| described_class.add_global_link_for_page x }
 
       local_hrefs = described_class.instance_variable_get :@local_hrefs
-      value = { 'index.html' => [href1, href3] }
+      value = { 'index.html' => [href1, href3, href11, href33] }
       expect(local_hrefs).to match_array(value)
 
       global_hrefs = described_class.instance_variable_get :@global_hrefs
-      value = { 'index.html' => [href10, href30] }
+      value = { 'index.html' => [href2, href4, href22, href44] }
       expect(global_hrefs).to match_array(value)
     end
   end
