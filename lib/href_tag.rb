@@ -12,7 +12,8 @@ require_relative 'hash_array'
 module HrefTag
   # Implements href Jekyll tag
   class HrefTag < JekyllSupport::JekyllTag # rubocop:disable Metrics/ClassLength
-    attr_reader :follow, :helper, :line_number, :match, :page, :path, :site, :target, :text, :url
+    attr_reader :follow, :helper, :line_number, :match, :page, :path, :site, :summary,
+                :summary_exclude,:summary_href, :target, :text, :url
     attr_accessor :link
 
     include JekyllHrefVersion

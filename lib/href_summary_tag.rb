@@ -33,15 +33,15 @@ module HrefSummaryTag
     def render_refs
       hrefs = HashArray.instance_variable_get(:@global_hrefs)
       path = @page['path']
-      entries = hrefs[path]
-                  &.find { |h| h.path == path }
-                  &.map  { |h| "<li>#{h.summary}</li>" }
-      return '' if entries.to_s.empty?
+      entries = hrefs[path]&.select { |h| h.path == path }
+      return '' if entries.empty?
+
+      summaries = entries.map { |href| "<li>#{href.summary_href}</li>" }
 
       <<~END_RENDER
         <h2 id="reference">References</h2>
         <ol>
-          #{entries.join("\n  ")}
+          #{summaries.join "\n  "}
         </ol>#{local_refs if @include_local}
       END_RENDER
     end
@@ -49,17 +49,17 @@ module HrefSummaryTag
     def local_refs
       hrefs = HashArray.instance_variable_get(:@local_hrefs)
       path = @page['path']
-      entries = hrefs.find(path) do |link|
-        "<li>#{link}</li>"
-      end
-      return '' if entries.to_s.empty?
+      entry = hrefs.find(path)
+      return '' if entry.to_s.empty?
+
+      summary = "<li>#{link}</li>"
 
       <<~END_RENDER
 
 
         <h2 id="local_reference">Internal References</h2>
         <ol>
-        #{entries.join("\n  ")}
+        #{summary}
         </ol>
       END_RENDER
     end
