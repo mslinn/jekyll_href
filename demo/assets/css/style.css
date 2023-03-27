@@ -18,9 +18,13 @@ body {
   margin: 0;
 }
 
-code, pre, tt, .codeLabel {
+code, pre, tt, .code, .codeLabel {
   font-family: Monaco,"Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
   font-stretch: semi-condensed;
+}
+
+code, .code {
+  font-size: smaller;
 }
 
 h1, .h1 {
