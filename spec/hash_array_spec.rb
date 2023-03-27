@@ -10,32 +10,31 @@ module HashArraySpec
 
     [1, 2, 3, 4, 10, 20, 30, 40].each do |x|
       let("href#{x}".to_sym) {
+        domain = x.even? ? 'https://domain.com/' : ''
         href = HrefTag::HrefTag.send(
           :new,
           'href',
-          + "path/page#{x}.html internal link text",
+          + "#{domain}path/page#{x}.html Internal link text #{x}",
           parse_context
         )
-        href.render TestLiquidContext.new
+        href.render(TestLiquidContext.new)
         href
       }
     end
 
     it 'accumulates arrays of href_tag' do
       described_class.reset
-      _local_hrefs = described_class.instance_variable_get :@local_hrefs
-      _global_hrefs = described_class.instance_variable_get :@global_hrefs
 
-      described_class.add_local_link_for_page 'page1', href1
-      described_class.add_local_link_for_page 'page1', href2
+      described_class.add_local_link_for_page href1
+      described_class.add_local_link_for_page href2
 
-      described_class.add_global_link_for_page 'page10', href10
-      described_class.add_global_link_for_page 'page10', href20
+      described_class.add_global_link_for_page href10
+      described_class.add_global_link_for_page href20
 
-      described_class.add_local_link_for_page 'page2', href3
-      described_class.add_local_link_for_page 'page2', href4
-      described_class.add_global_link_for_page 'page20', href30
-      described_class.add_global_link_for_page 'page20', href40
+      described_class.add_local_link_for_page href3
+      described_class.add_local_link_for_page href4
+      described_class.add_global_link_for_page href30
+      described_class.add_global_link_for_page href40
 
       local_hrefs = described_class.instance_variable_get :@local_hrefs
       value = { 'index.html' => [href1, href3] }

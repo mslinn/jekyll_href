@@ -51,11 +51,10 @@ module HrefTag
       @summary ||= @text
       @summary_href = "<a href='#{@link}'#{@target}#{@follow}>#{@summary}</a>"
 
-      path = @page['path']
       if @link.start_with?('http')
-        add_global_link_for_page path, self
+        add_global_link_for_page self
       elsif !@link.start_with?('#')
-        add_local_link_for_page path, self
+        add_local_link_for_page self
       end
     end
 
