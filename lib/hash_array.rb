@@ -1,12 +1,14 @@
 module HashArray
-  @local_hrefs = {}
-  @global_hrefs = {}
+  def reset
+    @local_hrefs = {}
+    @global_hrefs = {}
+  end
 
   def add_link_for_page(page_path, href, hash)
     hash[page_path] = [] if hash[page_path].nil?
     pre_existing = hash[page_path].find { |h| h.path == href.path }
     if pre_existing
-      @logger.warn "HRef tags for '#{href.path}' have inconsistent 'follow' keyword options" if pre_existing.follow != href.follow
+      @logger.warn "HRef tags for '#{href.path}' have inconsistent 'follow' keyword options on line #{href.line_number}" if pre_existing.follow != href.follow
     else
       hash[page_path] << href
     end
@@ -20,6 +22,8 @@ module HashArray
     add_link_for_page(page_path, href, HashArray.instance_variable_get(:@global_hrefs))
   end
 
-  module_function :add_link_for_page, :add_local_link_for_page, :add_global_link_for_page
-  public :add_local_link_for_page, :add_global_link_for_page
+  module_function :add_link_for_page, :add_local_link_for_page, :add_global_link_for_page, :reset
+  public :add_local_link_for_page, :add_global_link_for_page, :reset
+
+  reset
 end

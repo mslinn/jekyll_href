@@ -12,11 +12,22 @@ require_relative 'hash_array'
 module HrefTag
   # Implements href Jekyll tag
   class HrefTag < JekyllSupport::JekyllTag # rubocop:disable Metrics/ClassLength
-    attr_reader :follow, :helper, :line_number, :match, :page, :path, :site, :text, :target, :url
+    attr_reader :follow, :helper, :line_number, :match, :page, :path, :site, :target, :text, :url
     attr_accessor :link
 
     include JekyllHrefVersion
     include HashArray
+    include Comparable
+
+    def <=>(other)
+      return nil unless other.is_a?(self.class)
+
+      [follow, match, path, target, text] <=> [other.follow, other.match, other.path, other.target, other.text]
+    end
+
+    def to_s
+      "On line #{line_number} of #{path}: #{follow} #{match} #{target} #{link} => '#{text}'"
+    end
 
     # Method prescribed by the Jekyll plugin lifecycle.
     # @param liquid_context [Liquid::Context]

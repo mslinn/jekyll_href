@@ -80,6 +80,9 @@ RSpec/FilePath:
 RSpec/MultipleExpectations:
   Max: 15
 
+RSpec/MultipleMemoizedHelpers:
+  Max: 20
+
 Style/CommandLiteral:
   Enabled: false
 
