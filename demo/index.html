@@ -5,16 +5,16 @@ title: Tests
 ---
 <h2>Break Tests</h2>
 <ul>
-  <li>{% href wbr mslinn.com/a/very/long/uri/to/break/somewhere/reasonable/or/so/I/hope/who/knows/what/will/happen/in/life/anyway %}</li>
-  <li>{% href shy mslinn.com/a/very/long/uri/to/break/somewhere/reasonable/or/so/I/hope/who/knows/what/will/happen/in/life/anyway %}</li>
+  <li>{% href wbr summary="mslinn.com" mslinn.com/a/very/long/uri/to/break/somewhere/reasonable/or/so/I/hope/who/knows/what/will/happen/in/life/anyway %}</li>
+  <li>{% href shy summary="mslinn.com" mslinn.com/a/very/long/uri/to/break/somewhere/reasonable/or/so/I/hope/who/knows/what/will/happen/in/life/anyway %}</li>
 </ul>
 
 
 <h2>Default Parameter Value Tests</h2>
 <ul>
-  <li>{% href http://mslinn.com Link to <code>http://mslinn.com</code>. %}</li>
-  <li>{% href https://mslinn.com Link to <code>https://mslinn.com</code>. %}</li>
-  <li>{% href mslinn.com %}</li>
+  <li>{% href summary="mslinn.com" http://mslinn.com Link to <code>http://mslinn.com</code> %}</li>
+  <li>{% href summary="mslinn.com" https://mslinn.com Link to <code>https://mslinn.com</code> %}</li>
+  <li>{% href summary="mslinn.com" mslinn.com %}</li>
   <li>
     {% href mailto:mslinn@mslinn.com %}
   </li>
