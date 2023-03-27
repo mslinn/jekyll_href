@@ -13,7 +13,7 @@ module HashArray
         @logger.warn "HRef tags for '#{href.link}' have inconsistent 'follow' keyword options on line #{href.line_number} of page #{enclosing_page}"
       end
     else
-      hash[enclosing_page] << href
+      hash[enclosing_page] << href unless href.summary_exclude
     end
   end
 

@@ -1,5 +1,7 @@
 ## 1.2.2 / 2023-03-25
-  * Added **References** capability.
+  * Added **References** capability:
+    * Added `summary_exclude` keyword option to `href` tag.
+    * Added `href_summary` tag.
   * If a URL appears in more than one `href` with different `follow` values a warning is logged.
 
 ## 1.2.1 / 2023-03-21

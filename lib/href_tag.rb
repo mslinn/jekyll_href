@@ -93,15 +93,16 @@ module HrefTag
       @path = @page['path']
       AllCollectionsHooks.compute(@site)
 
-      @follow  = @helper.parameter_specified?('follow') ? '' : " rel='nofollow'"
-      @match   = @helper.parameter_specified? 'match'
-      @blank   = @helper.parameter_specified? 'blank'
-      @shy     = @helper.parameter_specified? 'shy'
-      @summary = @helper.parameter_specified? 'summary'
-      @target  = @blank ? " target='_blank'" : nil
-      @target ||= @helper.parameter_specified?('notarget') ? '' : " target='_blank'"
-      @url     = @helper.parameter_specified? 'url'
-      @wbr     = @helper.parameter_specified? 'wbr'
+      @follow          = @helper.parameter_specified?('follow') ? '' : " rel='nofollow'"
+      @match           = @helper.parameter_specified? 'match'
+      @blank           = @helper.parameter_specified? 'blank'
+      @summary_exclude = @helper.parameter_specified? 'summary_exclude'
+      @shy             = @helper.parameter_specified? 'shy'
+      @summary         = @helper.parameter_specified? 'summary'
+      @target          = @blank ? " target='_blank'" : nil
+      @target        ||= @helper.parameter_specified?('notarget') ? '' : " target='_blank'"
+      @url             = @helper.parameter_specified? 'url'
+      @wbr             = @helper.parameter_specified? 'wbr'
     end
 
     # Might set @follow, @linkk, @target, and @text

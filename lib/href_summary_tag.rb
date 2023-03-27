@@ -8,10 +8,10 @@ module HrefSummaryTag
 
     # Class instance variables accumulate hrefs across invocations.
     # These are hashes of arrays;
-    # the hash keys are page paths (strings) and the hash values are arrays of HRef summary strings.
+    # the hash keys are page paths (strings) and the hash values are arrays of HRefTags.
     # {
-    #   'path/to/page1.html': [ "HRef1", "HRef2" ],
-    #   'path/to/page2.html': [ "HRef3", "HRef4" ],
+    #   'path/to/page1.html': [ HRefTag1, HRefTag2 ],
+    #   'path/to/page2.html': [ HRefTag3, HRefTag4 ],
     # }
     @hrefs = {}
     @hrefs_local = {}
@@ -33,9 +33,9 @@ module HrefSummaryTag
     def render_refs
       hrefs = HashArray.instance_variable_get(:@global_hrefs)
       path = @page['path']
-      entries = hrefs
-                  .find { |h| h.path == path }
-                  .map  { |h| "<li>#{h.summary}</li>" }
+      entries = hrefs[path]
+                  &.find { |h| h.path == path }
+                  &.map  { |h| "<li>#{h.summary}</li>" }
       return '' if entries.to_s.empty?
 
       <<~END_RENDER
