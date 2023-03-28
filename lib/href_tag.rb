@@ -49,9 +49,10 @@ module HrefTag
     private
 
     def save_summary
+      return if @summary_exclude || @link.start_with?('mailto:')
+
       @summary ||= @text
       @summary_href = "<a href='#{@link}'#{@target}#{@follow}>#{@summary}</a>"
-
       if @link.start_with?('http')
         add_global_link_for_page self
       elsif !@link.start_with?('#')

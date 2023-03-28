@@ -49,17 +49,17 @@ module HrefSummaryTag
     def local_refs
       hrefs = HashArray.instance_variable_get(:@local_hrefs)
       path = @page['path']
-      entry = hrefs.find(path)
-      return '' if entry.to_s.empty?
+      entries = hrefs[path]&.select { |h| h.path == path }
+      return '' if entries.empty?
 
-      summary = "<li>#{link}</li>"
+      summary = entries.map { |href| "<li>#{href.summary_href}</li>" }
 
       <<~END_RENDER
 
 
-        <h2 id="local_reference">Internal References</h2>
+        <h2 id="local_reference">Local References</h2>
         <ol>
-        #{summary}
+        #{summary.join("\n  ")}
         </ol>
       END_RENDER
     end
