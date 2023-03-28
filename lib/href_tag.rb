@@ -12,8 +12,8 @@ require_relative 'hash_array'
 module HrefTag
   # Implements href Jekyll tag
   class HrefTag < JekyllSupport::JekyllTag # rubocop:disable Metrics/ClassLength
-    attr_reader :follow, :helper, :line_number, :match, :page, :path, :site, :summary,
-                :summary_exclude,:summary_href, :target, :text, :url
+    attr_reader :follow, :helper, :line_number, :link_save, :match, :page, :path, :site,
+                :summary, :summary_exclude, :summary_href, :target, :text, :url
     attr_accessor :link
 
     include JekyllHrefVersion
@@ -38,6 +38,7 @@ module HrefTag
       linkk = compute_linkk
       linkk = replace_vars(linkk)
       linkk.delete_prefix('./') # normalize relative links
+      @url = linkk if @url
       @link_save = linkk
       @helper_save = @helper.clone
       globals_update(@helper.argv, linkk) # Sets @link and @text, might clear @follow and @target
@@ -49,13 +50,13 @@ module HrefTag
     private
 
     def save_summary
-      return if @summary_exclude || @link.start_with?('mailto:')
+      return if @summary_exclude || @link_save.start_with?('mailto:') || @link_save.start_with?('#')
 
       @summary ||= @text
-      @summary_href = "<a href='#{@link}'#{@target}#{@follow}>#{@summary}</a>"
-      if @link.start_with?('http')
+      @summary_href = "<a href='#{@link_save}'#{@target}#{@follow}>#{@summary}</a>"
+      if @link_save.start_with? 'http'
         add_global_link_for_page self
-      elsif !@link.start_with?('#')
+      else
         add_local_link_for_page self
       end
     end
@@ -125,7 +126,7 @@ module HrefTag
           text = linkk.gsub('/', '/&shy;') if @shy
           text = linkk.gsub('/', '/<wbr>') if @wbr
           @text = "<code>#{text}</code>"
-          @link = "https://#{linkk}"
+          @link = linkk.start_with?('http') ? linkk : "https://#{linkk}"
         else
           @link = if @shy
                     linkk.gsub('/', '/&shy;')
@@ -135,6 +136,7 @@ module HrefTag
                     linkk
                   end
         end
+        @link_save = @link
       end
 
       return if @link.start_with? 'http'
@@ -172,11 +174,12 @@ module HrefTag
       case url_matches.length
       when 0
         abort "href error: No url matches '#{@link}'" if @die_if_nomatch
-        @link = '#'
+        @link_save = @link = '#'
         @text = "<i>#{@link} is not available</i>"
       when 1
         @link = url_matches.first
         @link = "#{@link}##{@fragment}" if @fragment
+        @link_save = @link
       else
         abort "Error: More than one url matched '#{@path}': #{url_matches.join(', ')}"
       end
@@ -190,7 +193,6 @@ module HrefTag
       variables.each do |name, value|
         text = text.gsub "{{#{name}}}", value
       end
-      @logger.debug { "@link=#{@link}" }
       text
     end
 

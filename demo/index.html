@@ -3,92 +3,7 @@ description: Tests
 layout: default
 title: Tests
 ---
-<h2 id="summary_tests">Summary Tests</h2>
-<ul>
-  <li>{% href summary="Front page of this website" / Front page %}</li>
-  <li>{% href https://rubygems.org RubyGems.org %}</li>
-  <li>{% href summary="Mothership" https://jekyllrb.com/ Jekyll %}</li>
-  <li>{% href summary="Should not appear in summary" #break Local link %}</li>
-</ul>
-
-
-<h2 id="break">Break Tests</h2>
-<ul>
-  <li>
-    {% href wbr summary="wbr mslinn.com"
-      mslinn.com/a/very/long/uri/to/break/somewhere/reasonable/or/so/I/hope/who/knows/what/will/happen/in/life/anyway
-    %}
-  </li>
-  <li>
-    {% href shy summary="shy mslinn.com"
-      mslinn.com/a/very/long/uri/to/break/somewhere/reasonable/or/so/I/hope/who/knows/what/will/happen/in/life/anyway
-    %}
-  </li>
-</ul>
-
-
-<h2 id="defaults">Default Parameter Value Tests</h2>
-<ul>
-  <li>{% href http://mslinn.com Link to <code>http://mslinn.com</code> %}</li>
-  <li>{% href https://mslinn.com Link to <code>https://mslinn.com</code> %}</li>
-  <li>{% href mslinn.com %}</li>
-  <li>{% href mailto:mslinn@mslinn.com %}</li>
-</ul>
-
-
-<h2 id="follow"><code>Follow</code> Tests</h2>
-<ul>
-  <li>{% href follow http://mslinn.com Link to <code>http://mslinn.com</code>. %}</li>
-  <li>{% href follow https://mslinn.com Link to <code>https://mslinn.com</code>. %}</li>
-  <li>{% href follow mslinn.com %}</li>
-</ul>
-
-
-<h2 id="notarget"><code>Notarget</code> Tests</h2>
-<ul>
-  <li>
-    {% href notarget http://mslinn.com
-      Link to <code>http://mslinn.com</code>. %}
-  </li>
-  <li>
-    {% href notarget https://mslinn.com
-      Link to <code>https://mslinn.com</code>. %}
-  </li>
-  <li>{% href notarget mslinn.com %}</li>
-</ul>
-
-
-<h2 id="blank"><code>Blank</code> Tests</h2>
-<p>
-  These links should open a new page or tab.
-</p>
-<ul>
-  <li>
-    {% href blank http://mslinn.com
-      Link to <code>http://mslinn.com</code>. %}
-  </li>
-  <li>
-    {% href blank https://mslinn.com
-      Link to <code>https://mslinn.com</code>. %}
-  </li>
-  <li>{% href blank mslinn.com %}</li>
-</ul>
-
-
-<h2 id="fandn"><code>Follow</code> and <code>Notarget</code> Tests</h2>
-<ul>
-  <li>
-    {% href follow notarget http://mslinn.com
-      Link to <code>http://mslinn.com</code>. %}
-  </li>
-  <li>
-    {% href follow notarget https://mslinn.com
-      Link to <code>https://mslinn.com</code>. %}
-  </li>
-  <li>{% href follow notarget mslinn.com %}</li>
-</ul>
-
-
+<!-- #region -->
 <h2 id="match"><code>Match</code> Tests</h2>
 <ul>
   <li>
@@ -104,8 +19,110 @@ title: Tests
       Match test with <code>url="redact-test.html"</code>. %}
   </li>
 </ul>
+<!-- endregion -->
 
 
+<!-- #region -->
+<h2 id="summary_tests">Summary Tests</h2>
+<ul>
+  <li>{% href summary="Front page of this website" / Front page %}</li>
+  <li>{% href https://rubygems.org RubyGems.org %}</li>
+  <li>{% href summary="Mothership" https://jekyllrb.com/ Jekyll %}</li>
+  <li>{% href summary="Should not appear in summary" #break Local link %}</li>
+</ul>
+<!-- endregion -->
+
+
+<!-- #region -->
+<h2 id="break">Break Tests</h2>
+<ul>
+  <li>
+    {% href wbr summary="wbr mslinn.com"
+      mslinn.com/a/very/long/uri/to/break/somewhere/reasonable/or/so/I/hope/who/knows/what/will/happen/in/life/anyway
+    %}
+  </li>
+  <li>
+    {% href shy summary="shy mslinn.com"
+      mslinn.com/a/very/long/uri/to/break/somewhere/reasonable/or/so/I/hope/who/knows/what/will/happen/in/life/anyway
+    %}
+  </li>
+</ul>
+<!-- endregion -->
+
+
+<!-- #region -->
+<h2 id="defaults">Default Parameter Value Tests</h2>
+<ul>
+  <li>{% href http://mslinn.com Link to <code>http://mslinn.com</code> %}</li>
+  <li>{% href https://mslinn.com Link to <code>https://mslinn.com</code> %}</li>
+  <li>{% href mslinn.com %}</li>
+  <li>{% href mailto:mslinn@mslinn.com %}</li>
+</ul>
+<!-- endregion -->
+
+
+<!-- #region -->
+<h2 id="follow"><code>Follow</code> Tests</h2>
+<ul>
+  <li>{% href follow http://mslinn.com Link to <code>http://mslinn.com</code>. %}</li>
+  <li>{% href follow https://mslinn.com Link to <code>https://mslinn.com</code>. %}</li>
+  <li>{% href follow mslinn.com %}</li>
+</ul>
+<!-- endregion -->
+
+
+<!-- #region -->
+<h2 id="notarget"><code>Notarget</code> Tests</h2>
+<ul>
+  <li>
+    {% href notarget http://mslinn.com
+      Link to <code>http://mslinn.com</code>. %}
+  </li>
+  <li>
+    {% href notarget https://mslinn.com
+      Link to <code>https://mslinn.com</code>. %}
+  </li>
+  <li>{% href notarget mslinn.com %}</li>
+</ul>
+<!-- endregion -->
+
+
+<!-- #region -->
+<h2 id="blank"><code>Blank</code> Tests</h2>
+<p>
+  These links should open a new page or tab.
+</p>
+<ul>
+  <li>
+    {% href blank http://mslinn.com
+      Link to <code>http://mslinn.com</code>. %}
+  </li>
+  <li>
+    {% href blank https://mslinn.com
+      Link to <code>https://mslinn.com</code>. %}
+  </li>
+  <li>{% href blank mslinn.com %}</li>
+</ul>
+<!-- endregion -->
+
+
+<!-- #region -->
+<h2 id="fandn"><code>Follow</code> and <code>Notarget</code> Tests</h2>
+<ul>
+  <li>
+    {% href follow notarget http://mslinn.com
+      Link to <code>http://mslinn.com</code>. %}
+  </li>
+  <li>
+    {% href follow notarget https://mslinn.com
+      Link to <code>https://mslinn.com</code>. %}
+  </li>
+  <li>{% href follow notarget mslinn.com %}</li>
+</ul>
+<!-- endregion -->
+
+
+<!-- #region -->
 <h2 id="env">Environment Variable Expansion Tests</h2>
 <p>
   <code>$USER</code> expansion permutations.
@@ -130,8 +147,10 @@ title: Tests
     {% href follow notarget url="https://mslinn.com" <code>USER=$USER</code> %}
   </li>
 </ul>
+<!-- endregion -->
 
 
+<!-- #region -->
 <h2 id="yaml">YAML Variable Expansion Tests</h2>
 <p>
   The following should substitute the value of <code>github</code> defined in <code>_config.yml</code>.
@@ -154,5 +173,6 @@ title: Tests
       With <code>follow</code> and <code>notarget</code>. %}
     </li>
 </ul>
+<!-- endregion -->
 
 {% href_summary include_local %}
