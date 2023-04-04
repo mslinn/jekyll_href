@@ -26,8 +26,7 @@ Gemspec/RequireMFA:
 Layout/HashAlignment:
   EnforcedColonStyle: table
   EnforcedHashRocketStyle: table
-  Exclude:
-    - jekyll_href.gemspec
+
 Layout/InitialIndentation:
   Exclude:
     - README.md
