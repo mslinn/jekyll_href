@@ -3,7 +3,7 @@ require 'jekyll_plugin_support'
 require_relative 'jekyll_href/version'
 
 module HrefSummaryTag
-  class HrefSummary < JekyllSupport::JekyllTag # rubocop:disable Metrics/ClassLength
+  class HrefSummary < JekyllSupport::JekyllTag
     include JekyllHrefVersion
 
     # Class instance variables accumulate hrefs across invocations.
@@ -32,12 +32,9 @@ module HrefSummaryTag
 
     def render_refs
       hrefs = HashArray.instance_variable_get(:@global_hrefs)
-      puts "hrefs=#{hrefs}"
       path = @page['path']
-      puts "path=#{path}"
       entries = hrefs[path]&.select { |h| h.path == path }
-      puts "entries=#{entries}"
-      return '' if entries.empty?
+      return '' if entries.nil? || entries.empty?
 
       summaries = entries.map { |href| "<li>#{href.summary_href}</li>" }
 

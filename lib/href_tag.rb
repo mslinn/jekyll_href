@@ -10,6 +10,8 @@ require_relative 'hash_array'
 # Generates an href.
 
 module HrefTag
+  MiniHref = Struct.new(:follow, :html, :link, :line_number, :link_save, :path, :summary_exclude, :summary_href, keyword_init: true)
+
   # Implements href Jekyll tag
   class HrefTag < JekyllSupport::JekyllTag # rubocop:disable Metrics/ClassLength
     attr_reader :follow, :helper, :line_number, :link_save, :match, :page, :path, :site,
@@ -50,16 +52,24 @@ module HrefTag
     private
 
     def save_summary
-      return if @helper.excerpt_caller # TODO: delete
-
       return if @summary_exclude || @link_save.start_with?('mailto:') || @link_save.start_with?('#')
 
       @summary ||= @text
       @summary_href = "<a href='#{@link_save}'#{@target}#{@follow}>#{@summary}</a>"
+      mini_href = MiniHref.new(
+        follow:          @follow,
+        html:            @summary_href,
+        line_number:     @line_number,
+        link:            @link_save,
+        link_save:       @link_save,
+        path:            @path,
+        summary_exclude: @summary_exclude,
+        summary_href:    @summary_href
+      )
       if @link_save.start_with? 'http'
-        add_global_link_for_page self
+        add_global_link_for_page mini_href
       else
-        add_local_link_for_page self
+        add_local_link_for_page mini_href
       end
     end
 
