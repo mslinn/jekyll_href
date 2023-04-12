@@ -43,6 +43,7 @@ module HrefSummaryTag
         <ol>
           #{summaries.join "\n  "}
         </ol>#{local_refs if @include_local}
+        #{@helper.attribute if @helper.attribution}
       END_RENDER
     end
 
