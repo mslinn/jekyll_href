@@ -56,7 +56,7 @@ module HrefTag
 
       @summary ||= @text
       @summary = @summary.to_s
-      @summary[0] = @summary[0].upcase
+      @summary = @summary[0].upcase + @summary[1..]
       @summary_href = "<a href='#{@link_save}'#{@target}#{@follow}>#{@summary}</a>"
       mini_href = MiniHref.new(
         follow:          @follow,

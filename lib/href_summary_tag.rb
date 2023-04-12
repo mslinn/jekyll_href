@@ -43,7 +43,7 @@ module HrefSummaryTag
       entries = hrefs[path]&.select { |h| h.path == path }
       return '' if entries.nil? || entries.empty?
 
-      summaries = entries.map { |href| "<li>#{href.summary_href}</li>" }
+      summaries = entries.reverse.map { |href| "<li>#{href.summary_href}</li>" }
 
       <<~END_RENDER
         <h2 id="reference">References</h2>
@@ -64,7 +64,7 @@ module HrefSummaryTag
       entries = hrefs[path]&.select { |h| h.path == path }
       return '' if entries.nil? || entries.empty?
 
-      summary = entries.map { |href| "<li>#{href.summary_href}</li>" }
+      summary = entries.reverse.map { |href| "<li>#{href.summary_href}</li>" }
       <<~END_RENDER
         <h2 id="local_reference">Local References</h2>
         <ol>
