@@ -55,7 +55,7 @@ module HrefTag
       return if @summary_exclude || @link_save.start_with?('mailto:') || @link_save.start_with?('#')
 
       @summary ||= @text
-      @summary_href = "<a href='#{@link_save}'#{@target}#{@follow}>#{@summary}</a>"
+      @summary_href = "<a href='#{@link_save}'#{@target}#{@follow}>#{@summary.capitalize}</a>"
       mini_href = MiniHref.new(
         follow:          @follow,
         html:            @summary_href,
