@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     jekyll_href (1.2.2)
+      facets (>= 3.1.0)
       jekyll (>= 3.5.0)
       jekyll_all_collections (~> 0.3.0, >= 0.3.1)
 
@@ -21,6 +22,7 @@ GEM
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0)
     eventmachine (1.2.7)
+    facets (3.1.0)
     ffi (1.15.5)
     forwardable-extended (2.6.0)
     google-protobuf (3.22.2-x86_64-linux)

@@ -34,7 +34,7 @@ module HrefSummaryTag
       hrefs = HashArray.instance_variable_get(:@global_hrefs)
       path = @page['path']
       entries = hrefs[path]&.select { |h| h.path == path }
-      return '' if entries.empty?
+      return '' if entries.to_s.empty?
 
       summaries = entries.map { |href| "<li>#{href.summary_href}</li>" }
 
@@ -51,7 +51,7 @@ module HrefSummaryTag
       hrefs = HashArray.instance_variable_get(:@local_hrefs)
       path = @page['path']
       entries = hrefs[path]&.select { |h| h.path == path }
-      return '' if entries.empty?
+      return '' if entries.to_s.empty?
 
       summary = entries.map { |href| "<li>#{href.summary_href}</li>" }
 
