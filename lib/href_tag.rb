@@ -50,6 +50,8 @@ module HrefTag
     private
 
     def save_summary
+      return if @helper.excerpt_caller # TODO: delete
+
       return if @summary_exclude || @link_save.start_with?('mailto:') || @link_save.start_with?('#')
 
       @summary ||= @text

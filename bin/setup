@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+rm -f Gemfile.lock
+
 if [[ -z "$( which bundle )" ]]; then gem install bundler; fi
 BUNDLE_WITH="development" bundle install
 

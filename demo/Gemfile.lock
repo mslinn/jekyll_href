@@ -4,6 +4,7 @@ PATH
     jekyll_href (1.2.2)
       jekyll (>= 3.5.0)
       jekyll_all_collections (~> 0.3.0, >= 0.3.1)
+      jekyll_plugin_support (~> 0.6.0, >= 0.6.1)
 
 GEM
   remote: https://rubygems.org/
@@ -86,7 +87,7 @@ GEM
       jekyll_plugin_logger
     jekyll_plugin_logger (2.1.1)
       jekyll (>= 3.5.0)
-    jekyll_plugin_support (0.6.0)
+    jekyll_plugin_support (0.6.1)
       facets
       jekyll (>= 3.5.0)
       jekyll_plugin_logger
