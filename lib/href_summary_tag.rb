@@ -3,7 +3,7 @@ require 'jekyll_plugin_support'
 require_relative 'jekyll_href/version'
 
 module HrefSummaryTag
-  class HrefSummary < JekyllSupport::JekyllTag
+  class HrefSummary < JekyllSupport::JekyllTag # rubocop:disable Metrics/ClassLength
     include JekyllHrefVersion
 
     # Class instance variables accumulate hrefs across invocations.
@@ -27,10 +27,17 @@ module HrefSummaryTag
     # @return [String]
     def render_impl
       @include_local = @helper.parameter_specified? 'include_local'
-      render_refs
+      global_refs = render_global_refs
+      local_refs  = render_local_refs
+      have_refs = !(global_refs + local_refs).empty?
+      <<~END_RENDER
+        #{global_refs}
+        #{local_refs}
+        #{@helper.attribute if @helper.attribution && have_refs}
+      END_RENDER
     end
 
-    def render_refs
+    def render_global_refs
       hrefs = HashArray.instance_variable_get(:@global_hrefs)
       path = @page['path']
       entries = hrefs[path]&.select { |h| h.path == path }
@@ -42,25 +49,23 @@ module HrefSummaryTag
         <h2 id="reference">References</h2>
         <ol>
           #{summaries.join "\n  "}
-        </ol>#{local_refs if @include_local}
-        #{@helper.attribute if @helper.attribution}
+        </ol>
       END_RENDER
     rescue StandardError => e
       @logger.error { "#{self.class} died with a #{e.full_message}" }
       exit 1
     end
 
-    def local_refs
+    def render_local_refs
+      return '' unless @include_local
+
       hrefs = HashArray.instance_variable_get(:@local_hrefs)
       path = @page['path']
       entries = hrefs[path]&.select { |h| h.path == path }
-      return '' if entries.empty?
+      return '' if entries.nil? || entries.empty?
 
       summary = entries.map { |href| "<li>#{href.summary_href}</li>" }
-
       <<~END_RENDER
-
-
         <h2 id="local_reference">Local References</h2>
         <ol>
         #{summary.join("\n  ")}
