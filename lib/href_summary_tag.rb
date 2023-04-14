@@ -26,6 +26,7 @@ module HrefSummaryTag
     # @param liquid_context [Liquid::Context]
     # @return [String]
     def render_impl
+      @helper.gem_file __FILE__
       @include_local = @helper.parameter_specified? 'include_local'
       render_refs
     end
