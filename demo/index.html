@@ -3,7 +3,14 @@ description: Tests
 layout: default
 title: Tests
 ---
-<!-- #region -->
+<!-- #region Label -->
+<h2 id="label"><code>Label</code> Tests</h2>
+<ul>
+  <li>{% href label="This is a summary" https://mslinn.com %}</li>
+  <li>{% href https://mslinn.com label="This is also a summary" %}</li>
+</ul>
+
+<!-- #region Match -->
 <h2 id="match"><code>Match</code> Tests</h2>
 <ul>
   <li>
@@ -22,7 +29,7 @@ title: Tests
 <!-- endregion -->
 
 
-<!-- #region -->
+<!-- #region Summary -->
 <h2 id="summary_tests">Summary Tests</h2>
 <ul>
   <li>{% href summary="Front page of this website" / Front page %}</li>
@@ -33,7 +40,7 @@ title: Tests
 <!-- endregion -->
 
 
-<!-- #region -->
+<!-- #region Break -->
 <h2 id="break">Break Tests</h2>
 <ul>
   <li>
@@ -50,7 +57,7 @@ title: Tests
 <!-- endregion -->
 
 
-<!-- #region -->
+<!-- #region Default Parameter Values -->
 <h2 id="defaults">Default Parameter Value Tests</h2>
 <ul>
   <li>{% href http://mslinn.com Link to <code>http://mslinn.com</code> %}</li>
@@ -61,7 +68,7 @@ title: Tests
 <!-- endregion -->
 
 
-<!-- #region -->
+<!-- #region Follow -->
 <h2 id="follow"><code>Follow</code> Tests</h2>
 <ul>
   <li>{% href follow http://mslinn.com Link to <code>http://mslinn.com</code>. %}</li>
@@ -71,7 +78,7 @@ title: Tests
 <!-- endregion -->
 
 
-<!-- #region -->
+<!-- #region Notarget -->
 <h2 id="notarget"><code>Notarget</code> Tests</h2>
 <ul>
   <li>
@@ -87,7 +94,7 @@ title: Tests
 <!-- endregion -->
 
 
-<!-- #region -->
+<!-- #region Blank -->
 <h2 id="blank"><code>Blank</code> Tests</h2>
 <p>
   These links should open a new page or tab.
@@ -106,7 +113,7 @@ title: Tests
 <!-- endregion -->
 
 
-<!-- #region -->
+<!-- #region Follow and Notarget -->
 <h2 id="fandn"><code>Follow</code> and <code>Notarget</code> Tests</h2>
 <ul>
   <li>
@@ -122,7 +129,7 @@ title: Tests
 <!-- endregion -->
 
 
-<!-- #region -->
+<!-- #region Environment Variable Expansion -->
 <h2 id="env">Environment Variable Expansion Tests</h2>
 <p>
   <code>$USER</code> expansion permutations.
@@ -150,7 +157,7 @@ title: Tests
 <!-- endregion -->
 
 
-<!-- #region -->
+<!-- #region YAMLVariable Expansion -->
 <h2 id="yaml">YAML Variable Expansion Tests</h2>
 <p>
   The following should substitute the value of <code>github</code> defined in <code>_config.yml</code>.

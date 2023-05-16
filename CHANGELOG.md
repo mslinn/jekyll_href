@@ -1,3 +1,6 @@
+## 1.2.3 / 2023-05-16
+  * Added `label` option.
+
 ## 1.2.2 / 2023-03-25
   * Added **References** capability:
     * Added `summary_exclude` keyword option to `href` tag.

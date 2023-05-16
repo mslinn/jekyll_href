@@ -85,6 +85,15 @@ If both are specified, `blank` prevails.
 ### `follow`
 To suppress the `nofollow` attribute, preface the link with the word `follow`.
 
+### `label='whatever you want'`
+If the text to be linked contains an optional keyword argument,
+for example `summary`, that word will be removed from the displayed link text,
+unless the link text is provided via the `label` option.
+Both of the following produce the same output:
+```
+{% href https://mslinn.com label="This is a summary" %}
+{% href label="This is a summary" https://mslinn.com %}
+```
 
 ### `notarget`
 To suppress the `target` attribute, preface the link with the word `notarget`.

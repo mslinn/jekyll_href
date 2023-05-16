@@ -109,9 +109,10 @@ module HrefTag
       @path = @page['path']
       AllCollectionsHooks.compute(@site)
 
+      @blank           = @helper.parameter_specified? 'blank'
       @follow          = @helper.parameter_specified?('follow') ? '' : " rel='nofollow'"
       @match           = @helper.parameter_specified? 'match'
-      @blank           = @helper.parameter_specified? 'blank'
+      @label           = @helper.parameter_specified? 'label'
       @summary_exclude = @helper.parameter_specified? 'summary_exclude'
       @shy             = @helper.parameter_specified? 'shy'
       @summary         = @helper.parameter_specified? 'summary'
@@ -133,7 +134,7 @@ module HrefTag
         end
         return
       else
-        @text = tokens.join(' ').strip
+        @text = @label || tokens.join(' ').strip
         if @text.to_s.empty?
           text = linkk
           text = linkk.gsub('/', '/&shy;') if @shy
