@@ -1,5 +1,7 @@
 ## 1.2.4 / 2023-05-18
-  * When a URI is not provided, now generates an `http` link for `localhost`, `168.x.x.x`, and `127.x.x.x`; `https` otherwise.
+  * When only a URI is provided, the plugin now generates the `http` scheme for IP4 & IP6 loopback addresses like 
+    `localhost`, and `127.0.0.0`, as well as private IP4 addresses like 192.168.0.0 and 172.16.0.0; 
+    otherwise it generates the `https` scheme.
 
 ## 1.2.3 / 2023-05-16
   * Added `label` option.
