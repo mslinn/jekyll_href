@@ -1,7 +1,8 @@
 PATH
   remote: ..
   specs:
-    jekyll_href (1.2.2)
+    jekyll_href (1.2.4)
+      ipaddress
       jekyll (>= 3.5.0)
       jekyll_all_collections (~> 0.3.0, >= 0.3.1)
       jekyll_plugin_support (~> 0.6.0, >= 0.6.1)
@@ -32,7 +33,7 @@ GEM
       addressable (~> 2.3, >= 2.3.5)
     ffi (1.15.5)
     forwardable-extended (2.6.0)
-    google-protobuf (3.23.0-x86_64-linux)
+    google-protobuf (3.23.1-x86_64-linux)
     hike (1.2.3)
     html-proofer (4.4.3)
       addressable (~> 2.3)
@@ -46,6 +47,7 @@ GEM
     http_parser.rb (0.8.0)
     i18n (1.13.0)
       concurrent-ruby (~> 1.0)
+    ipaddress (0.8.3)
     jekyll (4.3.2)
       addressable (~> 2.4)
       colorator (~> 1.0)

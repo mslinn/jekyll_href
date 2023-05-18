@@ -1,3 +1,6 @@
+## 1.2.4 / 2023-05-18
+  * When a URI is not provided, now generates an `http` link for `localhost`, `168.x.x.x`, and `127.x.x.x`; `https` otherwise.
+
 ## 1.2.3 / 2023-05-16
   * Added `label` option.
 

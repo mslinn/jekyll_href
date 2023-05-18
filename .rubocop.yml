@@ -64,7 +64,7 @@ Metrics/MethodLength:
   Max: 40
 
 Metrics/PerceivedComplexity:
-  Max: 15
+  Max: 20
 
 Naming/FileName:
   Exclude:

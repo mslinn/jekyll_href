@@ -28,9 +28,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
   spec.required_ruby_version = '>= 2.6.0'
   spec.summary = "Generates an 'a href' tag, possibly with target='_blank' and rel='nofollow'."
-  spec.test_files = spec.files.grep(%r!^(test|spec|features)/!)
   spec.version = JekyllHrefVersion::VERSION
 
+  spec.add_dependency 'ipaddress'
   spec.add_dependency 'jekyll', '>= 3.5.0'
   spec.add_dependency 'jekyll_all_collections', '~> 0.3.0', '>= 0.3.1'
   spec.add_dependency 'jekyll_plugin_support', '~> 0.6.0', '>= 0.6.1'

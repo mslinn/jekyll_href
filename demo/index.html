@@ -3,12 +3,26 @@ description: Tests
 layout: default
 title: Tests
 ---
+<!-- #region -->
+<h2 id="local">Localhost and Local IP Addresses</h2>
+<ul>
+  <li>{% href localhost:4444 %}</li>
+  <li>{% href 10.0.0.1 %}</li>
+  <li>{% href 127.0.0.1 %}</li>
+  <li>{% href 172.16.0.1 %}</li>
+  <li>{% href 192.168.1.1 %}</li>
+</ul>
+<!-- endregion -->
+
+
 <!-- #region Label -->
 <h2 id="label"><code>Label</code> Tests</h2>
 <ul>
   <li>{% href label="This is a summary" https://mslinn.com %}</li>
   <li>{% href https://mslinn.com label="This is also a summary" %}</li>
 </ul>
+<!-- endregion -->
+
 
 <!-- #region Match -->
 <h2 id="match"><code>Match</code> Tests</h2>

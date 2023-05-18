@@ -1,3 +1,4 @@
+require 'ipaddress'
 require 'jekyll_all_collections'
 require 'jekyll_plugin_logger'
 require 'jekyll_plugin_support'
@@ -151,7 +152,13 @@ module HrefTag
           text = linkk.gsub('/', '/&shy;') if @shy
           text = linkk.gsub('/', '/<wbr>') if @wbr
           @text = "<code>#{text}</code>"
-          @link = linkk.start_with?('http') ? linkk : "https://#{linkk}"
+          @link = if linkk.start_with?('http')
+                    linkk
+                  elsif insecure_ip_address linkk
+                    "http://#{linkk}"
+                  else
+                    "https://#{linkk}"
+                  end
         else
           @link = if @shy
                     linkk.gsub('/', '/&shy;')
@@ -208,6 +215,19 @@ module HrefTag
       else
         abort "Error: More than one url matched '#{@path}': #{url_matches.join(', ')}"
       end
+    end
+
+    def insecure_ip_address(string)
+      return true if string == 'localhost'
+
+      return false unless IPAddress.valid? string
+
+      ip_address = IPAddress string
+      return true if ip_address.loopback? || ip_address.private?
+    rescue StandardError
+      false
+    ensure
+      false
     end
 
     # Replace names in plugin-vars with values

@@ -1,7 +1,8 @@
 PATH
   remote: .
   specs:
-    jekyll_href (1.2.3)
+    jekyll_href (1.2.4)
+      ipaddress
       jekyll (>= 3.5.0)
       jekyll_all_collections (~> 0.3.0, >= 0.3.1)
       jekyll_plugin_support (~> 0.6.0, >= 0.6.1)
@@ -29,6 +30,7 @@ GEM
     http_parser.rb (0.8.0)
     i18n (1.13.0)
       concurrent-ruby (~> 1.0)
+    ipaddress (0.8.3)
     jekyll (4.3.2)
       addressable (~> 2.4)
       colorator (~> 1.0)
