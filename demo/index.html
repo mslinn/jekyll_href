@@ -4,13 +4,23 @@ layout: default
 title: Tests
 ---
 <!-- #region -->
-<h2 id="local">Localhost and Local IP Addresses</h2>
+<h2 id="insecure">Private and Loopback IP Addresses</h2>
+<p>Insecure addresses start with <code>http</code>:</p>
 <ul>
+  <li>{% href localhost %}</li>
   <li>{% href localhost:4444 %}</li>
   <li>{% href 10.0.0.1 %}</li>
   <li>{% href 127.0.0.1 %}</li>
   <li>{% href 172.16.0.1 %}</li>
   <li>{% href 192.168.1.1 %}</li>
+</ul>
+<h3 id="secure">Secure IP addresses</h3>
+<p>
+  Secure IP addresses should start with <code>https</code>:
+</p>
+<ul>
+  <li>{% href 123.456.1.1 %}</li>
+  <li>{% href mslinn.com %}</li>
 </ul>
 <!-- endregion -->
 
