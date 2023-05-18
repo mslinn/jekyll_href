@@ -218,7 +218,7 @@ module HrefTag
     end
 
     def insecure_ip_address(string)
-      return true if string == 'localhost'
+      return true if string.start_with? 'localhost'
 
       return false unless IPAddress.valid? string
 
