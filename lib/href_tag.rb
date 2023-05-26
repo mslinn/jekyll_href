@@ -47,7 +47,9 @@ module HrefTag
       globals_update(@helper.argv, linkk) # Sets @link and @text, might clear @follow and @target
       handle_match if @match
       save_summary
-      "<a href='#{@link}'#{@target}#{@follow}>#{@text}</a>"
+      klass = " class='#{@klass}'" if @klass
+      style = " style='#{@style}'" if @style
+      "<a href='#{@link}'#{klass}#{style}#{@target}#{@follow}>#{@text}</a>"
     end
 
     private
@@ -122,11 +124,13 @@ module HrefTag
       AllCollectionsHooks.compute(@site)
 
       @blank           = @helper.parameter_specified? 'blank'
+      @klass           = @helper.parameter_specified? 'class'
       @follow          = @helper.parameter_specified?('follow') ? '' : " rel='nofollow'"
       @match           = @helper.parameter_specified? 'match'
       @label           = @helper.parameter_specified? 'label'
       @summary_exclude = @helper.parameter_specified? 'summary_exclude'
       @shy             = @helper.parameter_specified? 'shy'
+      @style           = @helper.parameter_specified? 'style'
       @summary         = @helper.parameter_specified? 'summary'
       @target          = @blank ? " target='_blank'" : nil
       @target        ||= @helper.parameter_specified?('notarget') ? '' : " target='_blank'"

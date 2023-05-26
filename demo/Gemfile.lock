@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    jekyll_href (1.2.4)
+    jekyll_href (1.2.5)
       ipaddress
       jekyll (>= 3.5.0)
       jekyll_all_collections (~> 0.3.0, >= 0.3.1)
@@ -20,7 +20,7 @@ GEM
     concurrent-ruby (1.2.2)
     debase (0.2.5.beta2)
       debase-ruby_core_source (>= 0.10.12)
-    debase-ruby_core_source (3.2.0)
+    debase-ruby_core_source (3.2.1)
     em-websocket (0.5.3)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0)
@@ -108,7 +108,7 @@ GEM
     mercenary (0.4.0)
     mini_magick (4.12.0)
     multi_json (1.15.0)
-    nokogiri (1.15.0-x86_64-linux)
+    nokogiri (1.15.2-x86_64-linux)
       racc (~> 1.4)
     nokogumbo (2.0.3)
       nokogiri (~> 1.8, >= 1.8.4)

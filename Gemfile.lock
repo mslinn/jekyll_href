@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    jekyll_href (1.2.4)
+    jekyll_href (1.2.5)
       ipaddress
       jekyll (>= 3.5.0)
       jekyll_all_collections (~> 0.3.0, >= 0.3.1)
