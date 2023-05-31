@@ -4,8 +4,8 @@ PATH
     jekyll_href (1.2.5)
       ipaddress
       jekyll (>= 3.5.0)
-      jekyll_all_collections (~> 0.3.0, >= 0.3.1)
-      jekyll_plugin_support (~> 0.6.0, >= 0.6.1)
+      jekyll_all_collections (>= 0.3.3)
+      jekyll_plugin_support (>= 0.7.0)
 
 GEM
   remote: https://rubygems.org/
@@ -13,11 +13,12 @@ GEM
     addressable (2.8.4)
       public_suffix (>= 2.0.2, < 6.0)
     ast (2.4.2)
+    bump (0.10.0)
     colorator (1.1.0)
     concurrent-ruby (1.2.2)
     debase (0.2.5.beta2)
       debase-ruby_core_source (>= 0.10.12)
-    debase-ruby_core_source (3.2.0)
+    debase-ruby_core_source (3.2.1)
     diff-lcs (1.5.0)
     em-websocket (0.5.3)
       eventmachine (>= 0.12.9)
@@ -26,7 +27,7 @@ GEM
     facets (3.1.0)
     ffi (1.15.5)
     forwardable-extended (2.6.0)
-    google-protobuf (3.23.0-x86_64-linux)
+    google-protobuf (3.23.2-x86_64-linux)
     http_parser.rb (0.8.0)
     i18n (1.13.0)
       concurrent-ruby (~> 1.0)
@@ -51,16 +52,17 @@ GEM
       sass-embedded (~> 1.54)
     jekyll-watch (2.2.1)
       listen (~> 3.0)
-    jekyll_all_collections (0.3.2)
+    jekyll_all_collections (0.3.3)
       jekyll (>= 3.5.0)
       jekyll_draft (~> 1.1.1)
-      jekyll_plugin_support (>= 0.5.0)
+      jekyll_plugin_support (>= 0.7.0)
     jekyll_draft (1.1.2)
       jekyll (>= 3.5.0)
       jekyll_plugin_logger
     jekyll_plugin_logger (2.1.1)
+      bump
       jekyll (>= 3.5.0)
-    jekyll_plugin_support (0.6.2)
+    jekyll_plugin_support (0.7.0)
       facets
       jekyll (>= 3.5.0)
       jekyll_plugin_logger
@@ -121,7 +123,7 @@ GEM
       rubocop (~> 1.33)
     rubocop-md (1.2.0)
       rubocop (>= 1.0)
-    rubocop-performance (1.17.1)
+    rubocop-performance (1.18.0)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     rubocop-rake (0.6.0)
