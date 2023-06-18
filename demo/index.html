@@ -4,6 +4,20 @@ layout: default
 title: Tests
 ---
 <!-- #region class option -->
+<h2 id="no_uri">Missing URI</h2>
+<p>
+  Should show an error message on the web page and on the console.
+</p>
+{% href label="This should cause an error" %}
+
+<p>
+  Should show another error message on the web page and on the console.
+</p>
+{% href blank follow %}
+<!-- endregion -->
+
+
+<!-- #region class option -->
 <h2 id="class">Class option</h2>
 <p>
   CSS styling added with <code>class</code> option.

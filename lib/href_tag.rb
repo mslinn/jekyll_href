@@ -3,6 +3,7 @@ require 'jekyll_all_collections'
 require 'jekyll_plugin_logger'
 require 'jekyll_plugin_support'
 require 'liquid'
+require 'sanitize'
 require_relative 'jekyll_href/version'
 require_relative 'hash_array'
 
@@ -38,7 +39,9 @@ module HrefTag
     # @return [String]
     def render_impl
       globals_initial
-      linkk = compute_linkk
+      linkk, error_msg = compute_linkk
+      return error_msg unless linkk
+
       linkk = replace_vars(linkk)
       linkk.delete_prefix('./') # normalize relative links
       @url = linkk if @url
@@ -90,32 +93,27 @@ module HrefTag
 
     # Does not look at or compute @link
     def compute_linkk
-      return @link if @link
+      return @link, nil if @link
 
       linkk = @url
       if linkk.nil? || !linkk
         linkk = @helper.argv&.shift
         @helper.params&.shift
         @helper.keys_values&.delete(linkk)
-        dump_linkk_relations(linkk) if linkk.nil?
+        return nil, error_no_uri if linkk.nil?
       elsif @url.to_s.empty?
-        dump_linkk_relations(linkk)
+        return nil, error_no_uri
       end
-      linkk
+      [linkk, nil]
     end
 
-    def dump_linkk_relations(linkk)
+    def error_no_uri
       msg = <<~END_MESSAGE
-        jekyll_href error: no url was provided on #{@path}:#{@line_number}.
-          @helper.markup=#{@helper.markup}
-          @helper.argv='#{@helper.argv}'
-          linkk='#{linkk}'
-          @match='#{@match}'
-          @url='#{@url}'
-          @follow='#{@follow}
-          @target='#{@target}'
+        Error: no url was provided on #{@path}:#{@line_number} (after front matter).
+          <pre>{% href #{@argument_string}%}</pre>
       END_MESSAGE
-      abort msg.red
+      @logger.error { Sanitize.fragment msg }
+      "<span class='error'>Error: #{msg}</span>"
     end
 
     # Sets @follow, @helper, @match, @path, @shy, @target, @url, @wbr

@@ -1,3 +1,6 @@
+## 1.2.6 / 2023-06-18
+  * No longer blows up on error.
+
 ## 1.2.5 / 2023-05-26
   * Added `style` and `class` options.
 
