@@ -225,7 +225,7 @@ module HrefTag
       return false unless IPAddress.valid? string
 
       ip_address = IPAddress string
-      return true if ip_address.loopback? || ip_address.private?
+      true if ip_address.loopback? || ip_address.private?
     rescue StandardError
       false
     ensure

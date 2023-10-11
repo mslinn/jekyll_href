@@ -5,27 +5,41 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "cwd": "${workspaceRoot}",
-      "name": "Attach rdebug-ide",
+      "args": [
+        "serve",
+        "--livereload_port", "35728",
+        "--force_polling",
+        "--host", "0.0.0.0",
+        "--port", "4008",
+        "--future",
+        "--incremental",
+        "--livereload",
+        "--drafts",
+        "--unpublished"
+      ],
+      "cwd": "${workspaceRoot}/demo",
+      "debugPort": "0",
+      "name": "Debug Demo",
+      "request": "launch",
+      "script": "${workspaceRoot}/exe/jekyll",
+      "type": "rdbg",
+    },
+    {
+      "debugPort": "0",
+      "name": "Attach rdbg",
+      "type": "rdbg",
       "request": "attach",
-      "remoteHost": "localhost",
-      "remotePort": "1234",
-      "remoteWorkspaceRoot": "/",
-      "showDebuggerOutput": true,
-      "type": "Ruby",
     },
     {
       "args": [
         "-I",
         "${workspaceRoot}"
       ],
-      "cwd": "${workspaceRoot}",
+      "debugPort": "0",
       "name": "RSpec - all",
-      "program": "./exe/rspec",
       "request": "launch",
-      "showDebuggerOutput": false,
-      "type": "Ruby",
-      "useBundler": false,
+      "script": "${workspaceRoot}/exe/rspec",
+      "type": "rdbg",
     },
     {
       "args": [
@@ -33,13 +47,11 @@
         "${workspaceRoot}",
         "${file}"
       ],
-      "cwd": "${workspaceRoot}",
+      "debugPort": "0",
       "name": "RSpec - active spec file only",
-      "program": "./exe/rspec",
       "request": "launch",
-      "showDebuggerOutput": false,
-      "type": "Ruby",
-      "useBundler": false,
+      "script": "${workspaceRoot}/exe/rspec",
+      "type": "rdbg",
     }
   ]
 }

@@ -1,5 +1,5 @@
 module HashArraySpec
-  require_relative '../lib/hash_array'
+  require_relative '../../lib/hash_array'
 
   RSpec.describe HashArray do
     let(:logger) do
