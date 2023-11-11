@@ -3,6 +3,18 @@
 # Assumes that the target Jekyll website contains a script called _bin/debug.
 # See https://www.mslinn.com/blog/2022/02/21/jekyll-debugging.html
 
+# Change to parent directory of this script
+SOURCE=${BASH_SOURCE[0]}
+while [ -L "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
+  SOURCE=$(readlink "$SOURCE")
+  [[ $SOURCE != /* ]] && SOURCE=$DIR/$SOURCE # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
+cd "$DIR/.."
+
+if [ "$1" == -r ]; then shift; RUN="-r"; fi
+
 if [ -z "$1" ]; then
   echo "Error: Please provide the directory name of the Jekyll website where the plugin is to be tested from."
   exit 1
@@ -16,9 +28,12 @@ fi
 GIT_ROOT="$( git rev-parse --show-toplevel )"
 cd "${GIT_ROOT}"
 
-bin/build
+# bin/build # This is not necessary when the Gemfile uses a path to point to the gem source
 
 set -e
 
+rake install
+
 cd "$1" > /dev/null || exit 1
-_bin/debug
+shift
+_bin/debug $RUN

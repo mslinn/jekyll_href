@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
-require "bundler/setup"
-require "irb"
-require "jekyll_href"
-require "liquid"
+require 'bundler/setup'
+require 'irb'
+require 'jekyll_href'
+require 'liquid'
 
 IRB.start(__FILE__)

@@ -46,8 +46,8 @@ plugin-vars:
   django-oscar-github: 'https://github.com/django-oscar/django-oscar/blob/3.0.2'
 plugins: # Use file name of the plugin entry point, not the gem name
   - jekyll_plugin_logger
-  - classifier-reborn
-  - html-proofer
+  # - classifier-reborn
+  # - html-proofer
   - jekyll
 sass:
   style: compressed
