@@ -42,8 +42,7 @@ module HrefTag
       linkk, error_msg = compute_linkk
       return error_msg unless linkk
 
-      linkk = replace_vars(linkk)
-      linkk.delete_prefix('./') # normalize relative links
+      linkk.delete_prefix './' # normalize relative links
       @url = linkk if @url
       @link_save = linkk
       @helper_save = @helper.clone
@@ -151,8 +150,8 @@ module HrefTag
         @text = @label || tokens.join(' ').strip
         if @text.to_s.empty?
           text = linkk
-          text = linkk.gsub('/', '/&shy;') if @shy
-          text = linkk.gsub('/', '/<wbr>') if @wbr
+          text = linkk&.gsub('/', '/&shy;') if @shy
+          text = linkk&.gsub('/', '/<wbr>') if @wbr
           @text = "<code>#{text}</code>"
           @link = if linkk.start_with?('http')
                     linkk
@@ -163,9 +162,9 @@ module HrefTag
                   end
         else
           @link = if @shy
-                    linkk.gsub('/', '/&shy;')
+                    linkk&.gsub('/', '/&shy;')
                   elsif @wbr
-                    linkk.gsub('/', '/<wbr>')
+                    linkk&.gsub('/', '/<wbr>')
                   else
                     linkk
                   end
@@ -230,17 +229,6 @@ module HrefTag
       false
     ensure
       false
-    end
-
-    # Replace names in plugin-vars with values
-    def replace_vars(text)
-      variables = @site.config['plugin-vars']
-      return text unless variables
-
-      variables.each do |name, value|
-        text = text.gsub "{{#{name}}}", value
-      end
-      text
     end
 
     JekyllPluginHelper.register(self, 'href')

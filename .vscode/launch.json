@@ -26,15 +26,10 @@
       "useBundler": true,
     },
     {
-      "debugPort": "0",
+      "debugPort": "45373",
       "name": "Attach rdbg",
       "request": "attach",
       "type": "rdbg",
-    },
-    {
-      "name": "Attach with ruby_lsp",
-      "request": "attach",
-      "type": "ruby_lsp",
     },
     {
       "args": [
