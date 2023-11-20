@@ -52,6 +52,8 @@ module HrefTag
       klass = " class='#{@klass}'" if @klass
       style = " style='#{@style}'" if @style
       "<a href='#{@link}'#{klass}#{style}#{@target}#{@follow}>#{@text}</a>"
+    rescue StandardError => e
+      puts e
     end
 
     private
