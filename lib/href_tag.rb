@@ -61,4 +61,5 @@ module HrefTag
   end
 end
 
+require_relative 'href_match'
 require_relative 'href_private'
