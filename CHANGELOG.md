@@ -2,7 +2,7 @@
 
 ## 1.2.7 / 2023-12-09
 
-* Implements the `autotitle` option.
+* Implements the `page_title` option.
 * Defines `@die_on_href_error` if the following section is present in `_config.yml`:
 
   ```yaml

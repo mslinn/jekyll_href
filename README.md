@@ -44,7 +44,7 @@ href:
 ## Syntax 1 (requires `url` without embedded spaces)
 
 ```html
-{% href [match | [follow] [blank|notarget] [autotitle] [summary_exclude]] url text to display %}
+{% href [match | [follow] [blank|notarget] [page_title] [summary_exclude]] url text to display %}
 ```
 
 1. The url must be a single token, without embedded spaces.
@@ -57,7 +57,7 @@ href:
 This syntax is recommended when the URL contains a colon (:).
 
 ```html
-{% href [match | [follow] [blank|notarget]] [autotitle] [summary_exclude]
+{% href [match | [follow] [blank|notarget]] [page_title] [summary_exclude]
   url="http://link.com with space.html" some text %}
 ```
 
@@ -69,7 +69,7 @@ This syntax is recommended when the URL contains a colon (:).
 ## Syntax 3 (implicit URL)
 
 ```html
-{% href [match | [follow] [blank|notarget] [autotitle] [summary_exclude]] [shy|wbr] www.domain.com %}
+{% href [match | [follow] [blank|notarget] [page_title] [summary_exclude]] [shy|wbr] www.domain.com %}
 ```
 
 The URI provided, for example `www.domain.com`,
@@ -95,7 +95,7 @@ For example, if `$domain`, `$uri` and `$USER` are environment variables:
 
 ## Optional Parameters
 
-### `autotitle`
+### `page_title`
 
 For local pages, use the linked page title as the link text.
 This value overrides any provided link text.
