@@ -1,5 +1,18 @@
 # Change Log
 
+## 1.2.7 / 2023-12-09
+
+* Implements the `autotitle` option.
+* Defines `@die_on_href_error` if the following section is present in `_config.yml`:
+
+  ```yaml
+  href:
+    die_on_href_error: true # or false, if you like being explicit
+  ```
+
+* Now uses the `StandardError` handler introduced in `jekyll_plugin_support` v0.8.0.
+
+
 ## 1.2.6 / 2023-06-18
 
 * No longer blows up on error.
@@ -59,21 +72,27 @@
 ## 1.0.13 / 2022-12-14
 
 * Links with embedded spaces are now supported when the new 'url' named parameter is used. For example, instead of specifying:
-  ```
+
+  ```html
   {% href http://link.com with space.html some text %}
   ```
+
   Instead specify (single and double quotes are equally valid):
-  ```
+
+  ```html
   {% href url="http://link.com with space.html" some text %}
   ```
+
 * URLs can now contain environment variable references. For example, if $domain and $uri are environment variables:
-  ```
+
+  ```html
   {% href url="http://$domain.html" some text %}
   {% href url="$uri" some text %}
   ```
 
 
 ## 1.0.12 / 2022-08-09
+
 * No longer abends if `plugin-vars` is not present in `_config.yml`
 
 

@@ -23,7 +23,8 @@ exclude:  # Wildcards are not supported yet https://github.com/jekyll/jekyll-wat
   - Gemfile.lock
   - README.md
 href:
-  nomatch: fatal
+  die_on_href_error: false
+  nomatch: warn # if value is 'fatal', the program stops
 ignore_theme_config: true
 jekyll_bootstrap5_tabs:
   - pretty: true

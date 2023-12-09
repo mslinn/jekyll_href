@@ -1,0 +1,37 @@
+.custom_error, .flexible_error, .jekyll_plugin_support_error, .standard_error {
+  background-color: rgb(248, 149, 149);
+  border-radius: 4pt;
+  border: rgb(155, 141, 141) 2px solid;
+  color: black;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-stretch: semi-condensed;
+  font-size: 9pt;
+  line-height: 150%;
+  padding: 2pt 4pt 2pt 4pt;
+}
+
+.custom_error code, .flexible_error code, .jekyll_plugin_support_error code, .standard_error code {
+  color: lightgray;
+  font-size: 10pt;
+}
+
+.jekyll_pre + .jekyll_pre {
+  margin-top: 2em;
+}
+
+.jekyll_pre + ul, .jekyll_pre + ol, .jekyll_pre + dl {
+  margin-top: 0;
+}
+
+.jps_attribute {
+  display: flex;
+}
+
+.jps_attribute div {
+  flex-grow: 1;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-size: 8pt;
+  line-height: 1.3;
+  text-align: center;
+  width: 0;
+}

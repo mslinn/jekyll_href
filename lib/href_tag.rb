@@ -14,6 +14,8 @@ require_relative 'hash_array'
 module HrefTag
   MiniHref = Struct.new(:follow, :html, :link, :line_number, :link_save, :path, :summary_exclude, :summary_href, keyword_init: true)
 
+  HRefError = JekyllSupport.define_error
+
   # Implements href Jekyll tag
   class HrefTag < JekyllSupport::JekyllTag # rubocop:disable Metrics/ClassLength
     attr_reader :follow, :helper, :line_number, :link_save, :match, :page, :path, :site,
@@ -45,6 +47,7 @@ module HrefTag
       linkk.delete_prefix './' # normalize relative links
       @url = linkk if @url
       @link_save = linkk
+
       @helper_save = @helper.clone
       globals_update(@helper.argv, linkk) # Sets @link and @text, might clear @follow and @target
       handle_match if @match
@@ -52,8 +55,6 @@ module HrefTag
       klass = " class='#{@klass}'" if @klass
       style = " style='#{@style}'" if @style
       "<a href='#{@link}'#{klass}#{style}#{@target}#{@follow}>#{@text}</a>"
-    rescue StandardError => e
-      puts e
     end
 
     private
@@ -114,7 +115,7 @@ module HrefTag
           <pre>{% href #{@argument_string}%}</pre>
       END_MESSAGE
       @logger.error { Sanitize.fragment msg }
-      "<span class='error'>Error: #{msg}</span>"
+      "<span class='error'>#{msg}</span>"
     end
 
     # Sets @follow, @helper, @match, @path, @shy, @target, @url, @wbr
@@ -122,6 +123,7 @@ module HrefTag
       @path = @page['path']
       AllCollectionsHooks.compute(@site)
 
+      @autotitle       = @helper.parameter_specified? 'autotitle'
       @blank           = @helper.parameter_specified? 'blank'
       @klass           = @helper.parameter_specified? 'class'
       @follow          = @helper.parameter_specified?('follow') ? '' : " rel='nofollow'"
@@ -135,55 +137,106 @@ module HrefTag
       @target        ||= @helper.parameter_specified?('notarget') ? '' : " target='_blank'"
       @url             = @helper.parameter_specified? 'url'
       @wbr             = @helper.parameter_specified? 'wbr'
+
+      return unless @tag_config
+
+      @die_on_href_error = @tag_config['die_on_href_error'] == true
     end
 
-    # Might set @follow, @linkk, @target, and @text
+    # Might set @external_link, @follow, @local_link, @linkk, @target, and @text
     def globals_update(tokens, linkk)
       if linkk.start_with? 'mailto:'
-        @link = linkk
-        @target = @follow = ''
-        @text = @helper.argv.join(' ')
-        if @text.empty?
-          text = linkk.delete_prefix('mailto:')
-          @text = "<code>#{text}</code>"
-        end
+        handle_mailto linkk
         return
       else
+        if @autotitle
+          handle_autotitle linkk
+          return
+        end
         @text = @label || tokens.join(' ').strip
         if @text.to_s.empty?
-          text = linkk
-          text = linkk&.gsub('/', '/&shy;') if @shy
-          text = linkk&.gsub('/', '/<wbr>') if @wbr
-          @text = "<code>#{text}</code>"
-          @link = if linkk.start_with?('http')
-                    linkk
-                  elsif insecure_ip_address linkk
-                    "http://#{linkk}"
-                  else
-                    "https://#{linkk}"
-                  end
+          handle_empty_text linkk
         else
-          @link = if @shy
-                    linkk&.gsub('/', '/&shy;')
-                  elsif @wbr
-                    linkk&.gsub('/', '/<wbr>')
-                  else
-                    linkk
-                  end
+          handle_text linkk
         end
         @link_save = @link
       end
 
-      return if @link.start_with? 'http'
-
+      if @external_link
+        @target = ''
+        return
+      end
       @follow = ''
       @target = '' unless @blank
+    end
+
+    def handle_autotitle(linkk)
+      raise HRefError, 'Autotitled href tags require local links.' unless @local_link
+
+      @label = @page.title
+      @follow = @target = ''
+    rescue HRefError => e
+      @label = "<span class='error'>Autotitled href tags require local links</span>"
+      @link = linkk
+
+      e.shorten_backtrace
+      msg = format_error_message e.message
+      @logger.error "#{e.class} raised #{msg}"
+      raise e if @die_on_href_error
+
+      "<div class='custom_error'>#{e.class} raised in #{self.class};\n#{msg}</div>"
+    ensure
+      if @text.to_s.empty?
+        handle_empty_text linkk
+      else
+        handle_text linkk
+      end
+      nil
     end
 
     def handle_match
       match_post
       @follow = ''
       @target = '' unless @blank
+    end
+
+    def handle_empty_text(linkk)
+      text = linkk
+      text = linkk&.gsub('/', '/&shy;') if @shy
+      text = linkk&.gsub('/', '/<wbr>') if @wbr
+      @text = "<code>#{text}</code>"
+      @external_link = linkk.start_with? 'http'
+      @local_link = !@external_link
+      @mailto_link = false
+      @link = if @external_link
+                linkk
+              elsif insecure_ip_address linkk
+                "http://#{linkk}"
+              else
+                "https://#{linkk}"
+              end
+    end
+
+    def handle_mailto(linkk)
+      @mailto_link = true
+      @local_link = @external_link = false
+      @link = linkk
+      @target = @follow = ''
+      @text = @helper.argv.join(' ')
+      return unless @text.empty?
+
+      text = linkk.delete_prefix('mailto:')
+      @text = "<code>#{text}</code>"
+    end
+
+    def handle_text(linkk)
+      @link = if @shy
+                linkk&.gsub('/', '/&shy;')
+              elsif @wbr
+                linkk&.gsub('/', '/<wbr>')
+              else
+                linkk
+              end
     end
 
     # Might set @link and @text
@@ -208,7 +261,7 @@ module HrefTag
       url_matches = all_urls.select { |url| url&.include? @path }
       case url_matches.length
       when 0
-        abort "href error: No url matches '#{@link}'" if @die_if_nomatch
+        abort "href error: No url matches '#{@link}', found on line #{@line_number} (after front matter) of #{@path}" if @die_if_nomatch
         @link_save = @link = '#'
         @text = "<i>#{@link} is not available</i>"
       when 1

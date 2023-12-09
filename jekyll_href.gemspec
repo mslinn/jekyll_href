@@ -33,6 +33,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'ipaddress'
   spec.add_dependency 'jekyll', '>= 3.5.0'
   spec.add_dependency 'jekyll_all_collections', '>= 0.3.3'
-  spec.add_dependency 'jekyll_plugin_support', '>= 0.7.3'
+  spec.add_dependency 'jekyll_plugin_support', '>= 0.8.0'
   spec.add_dependency 'sanitize'
 end
