@@ -51,6 +51,13 @@ module HrefTag
       klass = " class='#{@klass}'" if @klass
       style = " style='#{@style}'" if @style
       "<a href='#{@link}'#{klass}#{style}#{@target}#{@follow}>#{@text}</a>"
+    rescue HRefError => e
+      e.shorten_backtrace
+      msg = format_error_message e.message
+      @logger.error "#{e.class} raised #{msg}"
+      raise e if @die_on_href_error
+
+      "<div class='custom_error'>#{e.class} raised in #{self.class};\n#{msg}</div>"
     end
 
     def to_s
@@ -63,3 +70,4 @@ end
 
 require_relative 'href_match'
 require_relative 'href_private'
+require_relative 'href_summary'

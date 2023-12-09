@@ -3,7 +3,7 @@ require 'jekyll_plugin_support'
 require_relative 'jekyll_href/version'
 
 module HrefSummaryTag
-  class HrefSummary < JekyllSupport::JekyllTag # rubocop:disable Metrics/ClassLength
+  class HrefSummary < JekyllSupport::JekyllTag
     include JekyllHrefVersion
 
     # Class instance variables accumulate hrefs across invocations.
@@ -28,6 +28,7 @@ module HrefSummaryTag
     def render_impl
       @helper.gem_file __FILE__ # Enables attribution
       @include_local = @helper.parameter_specified? 'include_local'
+      @path = @page['path']
       global_refs = render_global_refs
       local_refs  = render_local_refs
       have_refs = !(global_refs + local_refs).empty?
@@ -40,8 +41,7 @@ module HrefSummaryTag
 
     def render_global_refs
       hrefs = HashArray.instance_variable_get(:@global_hrefs)
-      path = @page['path']
-      entries = hrefs[path]&.select { |h| h.path == path }
+      entries = hrefs[@path]&.select { |h| h.path == @path }
       return '' if entries.nil? || entries.empty?
 
       summaries = entries.map { |href| "<li>#{href.summary_href}</li>" }
@@ -61,8 +61,7 @@ module HrefSummaryTag
       return '' unless @include_local
 
       hrefs = HashArray.instance_variable_get(:@local_hrefs)
-      path = @page['path']
-      entries = hrefs[path]&.select { |h| h.path == path }
+      entries = hrefs[@path]&.select { |h| h.path == @path }
       return '' if entries.nil? || entries.empty?
 
       summary = entries.map { |href| "<li>#{href.summary_href}</li>" }

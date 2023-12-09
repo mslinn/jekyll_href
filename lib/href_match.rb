@@ -18,6 +18,12 @@ module HrefTag
       end
     end
 
+    def handle_match
+      match_post
+      @follow = ''
+      @target = '' unless @blank
+    end
+
     # Might set @link and @text
     def match_post
       config = @site.config['href']

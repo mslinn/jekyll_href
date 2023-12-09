@@ -1,5 +1,5 @@
 module HrefTag
-  class HrefTag # rubocop:disable Metrics/ClassLength
+  class HrefTag
     private
 
     # Does not look at or compute @link
@@ -32,20 +32,27 @@ module HrefTag
       @path = @page['path']
       AllCollectionsHooks.compute(@site)
 
-      @page_title = @helper.parameter_specified? 'page_title'
       @blank           = @helper.parameter_specified? 'blank'
       @klass           = @helper.parameter_specified? 'class'
       @follow          = @helper.parameter_specified?('follow') ? '' : " rel='nofollow'"
-      @match           = @helper.parameter_specified? 'match'
       @label           = @helper.parameter_specified? 'label'
-      @summary_exclude = @helper.parameter_specified? 'summary_exclude'
+      @match           = @helper.parameter_specified? 'match'
       @shy             = @helper.parameter_specified? 'shy'
       @style           = @helper.parameter_specified? 'style'
       @summary         = @helper.parameter_specified? 'summary'
+      @summary_exclude = @helper.parameter_specified? 'summary_exclude'
       @target          = @blank ? " target='_blank'" : nil
       @target        ||= @helper.parameter_specified?('notarget') ? '' : " target='_blank'"
       @url             = @helper.parameter_specified? 'url'
       @wbr             = @helper.parameter_specified? 'wbr'
+
+      @label_source    = if @helper.parameter_specified? 'page_title'
+                           :from_page_title
+                         elsif @label
+                           :from_explicit_label
+                         else
+                           :from_implicit_label
+                         end
 
       return unless @tag_config
 
@@ -58,7 +65,7 @@ module HrefTag
         handle_mailto linkk
         return
       else
-        if @page_title
+        if @label_source == :from_page_title
           handle_page_title linkk
           return
         end
@@ -80,33 +87,23 @@ module HrefTag
     end
 
     def handle_page_title(linkk)
-      raise HRefError, 'page_titled href tags require local links.' unless @local_link
-
-      @label = @page.title
       @follow = @target = ''
+      @external_link = linkk.start_with? 'http'
+      @local_link = !@external_link
+      raise HRefError, 'href tags with page_title require local links.' unless @local_link
+
+      @text = @label = @page['title']
     rescue HRefError => e
-      @label = "<span class='error'>page_titled href tags require local links</span>"
+      @label = "<span class='error'>href tags with page_title require local links</span>"
       @link = linkk
-
-      e.shorten_backtrace
-      msg = format_error_message e.message
-      @logger.error "#{e.class} raised #{msg}"
       raise e if @die_on_href_error
-
-      "<div class='custom_error'>#{e.class} raised in #{self.class};\n#{msg}</div>"
     ensure
       if @text.to_s.empty?
         handle_empty_text linkk
       else
         handle_text linkk
       end
-      nil
-    end
-
-    def handle_match
-      match_post
-      @follow = ''
-      @target = '' unless @blank
+      @label
     end
 
     def handle_empty_text(linkk)
@@ -155,44 +152,8 @@ module HrefTag
 
       ip_address = IPAddress string
       true if ip_address.loopback? || ip_address.private?
-    rescue StandardError
-      false
     ensure
       false
-    end
-
-    def save_summary
-      return if @summary_exclude || @link_save.start_with?('mailto:') || @link_save.start_with?('#')
-
-      @summary = @summary.to_s.empty? ? @text : @summary.to_s
-      if @summary == true
-        warning = <<~END_WARNING
-          Warning: a href plugin keyword option was detected in the link text for #{@path} on line #{line_number}.
-          The href tag will not be included in the summary, and the link text will not have the word summary included.
-          This is probably unintentional. Consider using the label option to correct this problem."
-        END_WARNING
-        puts warning.red
-        return
-      end
-      return if @summary.class != String || @summary.empty?
-
-      @summary = @summary[0].upcase + @summary[1..]
-      @summary_href = "<a href='#{@link_save}'#{@target}#{@follow}>#{@summary}</a>"
-      mini_href = MiniHref.new(
-        follow:          @follow,
-        html:            @summary_href,
-        line_number:     @line_number,
-        link:            @link_save,
-        link_save:       @link_save,
-        path:            @path,
-        summary_exclude: @summary_exclude,
-        summary_href:    @summary_href
-      )
-      if @link_save.start_with? 'http'
-        add_global_link_for_page mini_href
-      else
-        add_local_link_for_page mini_href
-      end
     end
   end
 end
