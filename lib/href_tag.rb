@@ -70,4 +70,5 @@ end
 
 require_relative 'href_match'
 require_relative 'href_private'
+require_relative 'href_page_title'
 require_relative 'href_summary'

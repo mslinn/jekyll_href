@@ -86,26 +86,6 @@ module HrefTag
       @target = '' unless @blank
     end
 
-    def handle_page_title(linkk)
-      @follow = @target = ''
-      @external_link = linkk.start_with? 'http'
-      @local_link = !@external_link
-      raise HRefError, 'href tags with page_title require local links.' unless @local_link
-
-      @text = @label = @page['title']
-    rescue HRefError => e
-      @label = "<span class='error'>href tags with page_title require local links</span>"
-      @link = linkk
-      raise e if @die_on_href_error
-    ensure
-      if @text.to_s.empty?
-        handle_empty_text linkk
-      else
-        handle_text linkk
-      end
-      @label
-    end
-
     def handle_empty_text(linkk)
       text = linkk
       text = linkk&.gsub('/', '/&shy;') if @shy

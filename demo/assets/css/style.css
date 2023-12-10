@@ -18,7 +18,7 @@ body {
   margin: 0;
 }
 
-code, pre, tt, .code, .codeLabel {
+code, pre, tt, .code, .codeLabel, .error {
   font-family: Monaco,"Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
   font-stretch: semi-condensed;
 }
@@ -38,7 +38,7 @@ h1, .h1 {
   margin-inline-end: 0px;
 }
 
-h1, h2, header, nav#sidebar, .error {
+h1, h2, header, nav#sidebar {
   font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 

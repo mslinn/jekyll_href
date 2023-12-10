@@ -6,15 +6,24 @@ title: 'Yay, Tests!'
 <!-- #region page_title -->
 <h2 id="page_title">page_title</h2>
 <p>
-  Implicit local URL:
+  Implicit local URL; should resolve to 'Test Draft Post':
+  {% href page_title /blog/2022/03/28/test-draft.html %}
 </p>
-{% href page_title /blog/2022/03/28/test-draft.html %}
 
 <p>
-  Explicit local URL:
+  Explicit local URL; should resolve to 'Test Draft Post':
+  {% href page_title url="/blog/2022/03/28/test-draft.html" %}
 </p>
-{% href page_title url="/blog/2022/03/28/test-draft.html" %}
 
+<p>
+  Explicit matched local URL:
+  {% href page_title match url="test-draft.html" %}
+</p>
+
+<p>
+  Implicit matched local URL:
+  {% href page_title match test-draft.html %}
+</p>
 
 <p>
   Explicit external URL (not allowed):
