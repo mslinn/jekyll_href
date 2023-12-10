@@ -57,7 +57,7 @@ module HrefTag
       @logger.error "#{e.class} raised #{msg}"
       raise e if @die_on_href_error
 
-      "<div class='custom_error'>#{e.class} raised in #{self.class};\n#{msg}</div>"
+      "<div class='href_error'>#{e.class} raised in #{self.class};\n#{msg}</div>"
     end
 
     def to_s

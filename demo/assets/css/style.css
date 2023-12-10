@@ -18,7 +18,7 @@ body {
   margin: 0;
 }
 
-code, pre, tt, .code, .codeLabel, .error {
+code, pre, tt, .code, .codeLabel {
   font-family: Monaco,"Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
   font-stretch: semi-condensed;
 }
@@ -123,31 +123,10 @@ pre {
   padding-top: 0.5em;
 }
 
-.error {
-  color: red;
-}
-
 .inner {
   margin: 0 auto;
   position: relative;
   width: 940px;
-}
-
-.maxOneScreenHigh {
-  max-height: 500px;
-}
-
-.numbered_line,
-.unselectable.numbered_line,
-.numbered_line.unselectable {
-  color: #5fb25f;
-}
-
-.unselectable {
-  color: #7922f9;
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  user-select: none;
 }
 
 

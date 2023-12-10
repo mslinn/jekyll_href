@@ -23,14 +23,20 @@ module HrefTag
       page = find_page linkk
       unless page
         msg = "There is no page at path #{linkk}"
-        @text = "<span class='error'>Error: #{msg}</span><pre>{% href #{@argument_string}%}</pre>"
+        @text = "<span class='href_error'>Error: #{msg}</span><pre>{% href #{@argument_string}%}</pre>"
         raise HRefError, msg
       end
       @text = @label = page.title
     rescue HRefError => e
-      @text ||= "<span class='error'>Error: href tags with page_title require local links</span><pre>{% href #{@argument_string}%}</pre>"
+      @text ||= "<span class='href_error'>Error: href tags with page_title require local links</span><pre>{% href #{@argument_string}%}</pre>"
       @link = linkk
+
+      e.shorten_backtrace
+      msg = format_error_message e.message
+      @logger.error "#{e.class} raised #{msg}"
       raise e if @die_on_href_error
+
+      "<div class='href_error'>#{e.class} raised in #{self.class};\n#{msg}</div>"
     ensure
       if @text.to_s.empty?
         handle_empty_text linkk

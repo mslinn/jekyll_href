@@ -1,0 +1,5 @@
+.href_error {
+  color: red;
+  font-family: Monaco,"Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-stretch: semi-condensed;
+}
