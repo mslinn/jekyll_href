@@ -18,7 +18,11 @@ body {
   margin: 0;
 }
 
-code, pre, tt, .code, .codeLabel {
+body, div, p {
+  font-size: 12pt;
+}
+
+code, pre, tt, .code {
   font-family: Monaco,"Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
   font-stretch: semi-condensed;
 }
@@ -38,7 +42,7 @@ h1, .h1 {
   margin-inline-end: 0px;
 }
 
-h1, h2, header, nav#sidebar {
+h1, h2, h3, h4, h5, header, nav#sidebar {
   font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
@@ -102,18 +106,6 @@ pre {
 
 .bg_yellow {
   background-color: yellow;
-}
-
-.codeLabel {
-  color: white;
-  background-color: #666;
-  margin-bottom: 0;
-  padding-bottom: 0;
-  padding-left: 1em;
-}
-
-.codeLabel+pre {
-  margin-top: 0;
 }
 
 .copyright {

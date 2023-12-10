@@ -24,7 +24,7 @@ module HrefTag
           <pre>{% href #{@argument_string}%}</pre>
       END_MESSAGE
       @logger.error { Sanitize.fragment msg }
-      "<span class='href_error'>#{msg}</span>"
+      "<div class='href_error'>#{msg}</div>"
     end
 
     # Sets @follow, @helper, @match, @path, @shy, @target, @url, @wbr
