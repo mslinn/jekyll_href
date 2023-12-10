@@ -5,13 +5,14 @@ title: 'Yay, Tests!'
 ---
 <!-- #region page_title -->
 <h2 id="page_title">page_title</h2>
+<h3 id="asf">These should all resolve to 'Test Draft Post'</h3>
 <p>
-  Implicit local URL; should resolve to 'Test Draft Post':
+  Implicit local URL:
   {% href page_title /blog/2022/03/28/test-draft.html %}
 </p>
 
 <p>
-  Explicit local URL; should resolve to 'Test Draft Post':
+  Explicit local URL:
   {% href page_title url="/blog/2022/03/28/test-draft.html" %}
 </p>
 
@@ -25,6 +26,7 @@ title: 'Yay, Tests!'
   {% href page_title match test-draft.html %}
 </p>
 
+<h3 id="error">Error Expected</h3>
 <p>
   Explicit external URL (not allowed):
 </p>

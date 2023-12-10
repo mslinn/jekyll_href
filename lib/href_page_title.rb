@@ -6,7 +6,11 @@ module HrefTag
 
     def find_page(path)
       all_pages = @site.all_collections + @site.pages
-      pages = all_pages.select { |page| page.url == path }
+      pages = if @match
+                all_pages.select { |page| page.url&.include? path }
+              elsif @label_source == :from_page_title
+                all_pages.select { |page| page.url == path }
+              end
       pages&.first
     end
 
