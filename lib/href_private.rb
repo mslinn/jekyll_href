@@ -16,6 +16,8 @@ module HrefTag
         return nil, error_no_uri
       end
       [linkk, nil]
+    rescue HRefError => e
+      [nil, e]
     end
 
     def error_no_uri
