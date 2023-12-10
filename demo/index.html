@@ -26,19 +26,18 @@ title: 'Yay, Tests!'
   {% href page_title match test-draft.html %}
 </p>
 
-<h3 id="error">Error Expected</h3>
+<h2 id="error">Errors Expected</h2>
 <p>
-  Explicit external URL (not allowed):
+  These examples should display an error message on the web page and on the console log.
 </p>
+
+<h3>Explicit external URL (not allowed)</h3>
 {% href page_title url="https://mslinn.com" %}
 <!-- endregion -->
 
 
 <!-- #region class option -->
-<h2 id="no_uri">Missing URI</h2>
-<p>
-  Should show an error message on the web page and on the console.
-</p>
+<h3 id="no_uri">Missing URI</h3>
 {% href label="This should cause an error" %}
 
 <p>
@@ -53,7 +52,7 @@ title: 'Yay, Tests!'
 <p>
   CSS styling added with <code>class</code> option.
 </p>
-{% href class='bg_yellow' https://mslinn.com click here %}
+{% href class='bg_yellow' https://mslinn.com Yellow background. %}
 <!-- endregion -->
 
 
@@ -62,7 +61,7 @@ title: 'Yay, Tests!'
 <p>
   CSS styling added with <code>style</code> option.
 </p>
-{% href style='color: red; font-weight: bold;' https://mslinn.com click here %}
+{% href style='color: red; font-weight: bold;' https://mslinn.com Bold red text. %}
 <!-- endregion -->
 
 
