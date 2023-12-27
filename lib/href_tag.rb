@@ -3,7 +3,6 @@ require 'jekyll_all_collections'
 require 'jekyll_plugin_logger'
 require 'jekyll_plugin_support'
 require 'liquid'
-require 'sanitize'
 require_relative 'jekyll_href/version'
 require_relative 'hash_array'
 
@@ -11,13 +10,13 @@ require_relative 'hash_array'
 # @license SPDX-License-Identifier: Apache-2.0
 # Generates an href.
 
-module HrefTag
+module MSlinn
   MiniHref = Struct.new(:follow, :html, :link, :line_number, :link_save, :path, :summary_exclude, :summary_href, keyword_init: true)
 
   HRefError = JekyllSupport.define_error
 
   # Implements href Jekyll tag
-  class HrefTag < JekyllSupport::JekyllTag
+  class HRefTag < JekyllSupport::JekyllTag
     attr_reader :follow, :helper, :line_number, :link_save, :match, :page, :path, :site,
                 :summary, :summary_exclude, :summary_href, :target, :text, :url
     attr_accessor :link
@@ -51,10 +50,11 @@ module HrefTag
       klass = " class='#{@klass}'" if @klass
       style = " style='#{@style}'" if @style
       "<a href='#{@link}'#{klass}#{style}#{@target}#{@follow}>#{@text}</a>"
-    rescue HRefError => e
+    rescue HRefError => e # jekyll_plugin_support handles StandardError
       e.shorten_backtrace
       msg = format_error_message e.message
       @logger.error "#{e.class} raised #{msg}"
+      binding.pry if @pry_on_img_error # rubocop:disable Lint/Debugger
       raise e if @die_on_href_error
 
       "<div class='href_error'>#{e.class} raised in #{self.class};\n#{msg}</div>"

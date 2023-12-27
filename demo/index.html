@@ -3,8 +3,22 @@ description: Tests
 layout: default
 title: 'Yay, Tests!'
 ---
+<!-- #region Local Section -->
+<h2 id="local">Local Section</h2>
+<p>
+  These links should not open a new tab:
+
+</p>
+<ul>
+  <li>{% href #! Page refresh %}</li>
+  <li>{% href # Top of page %}</li>
+  <li>{% href #insecure Local section (Private and Loopback IP Addresses) %}</li>
+</ul>
+<!-- endregion -->
+
+
 <!-- #region page_title -->
-<h2 id="asf"><span class="code">Page_title</span> options => 'Test Draft Post'</h2>
+<h2 id="page_title"><span class="code">Page_title</span> options => 'Test Draft Post'</h2>
 <p>
   Implicit local URL:
   {% href page_title /blog/2022/03/28/test-draft.html %}
@@ -24,14 +38,17 @@ title: 'Yay, Tests!'
   Implicit matched local URL:
   {% href page_title match test-draft.html %}
 </p>
+<!-- endregion -->
 
-<h2 id="error">Errors Expected</h2>
+
+<!-- #region Errors Expected -->
+<h2 id="errors">Errors Expected</h2>
 <p>
   These examples should display an error message on the web page and on the console log.
 </p>
 
 <h3>Explicit external URL (not allowed)</h3>
-{% href page_title url="https://mslinn.com" %}
+{% href page_title url="https://external_link.com" %}
 <!-- endregion -->
 
 
@@ -64,7 +81,7 @@ title: 'Yay, Tests!'
 <!-- endregion -->
 
 
-<!-- #region -->
+<!-- #region Private and Loopback IP Addresses -->
 <h2 id="insecure">Private and Loopback IP Addresses</h2>
 <p>Insecure addresses start with <code>http</code>:</p>
 <ul>
@@ -115,7 +132,7 @@ title: 'Yay, Tests!'
 
 
 <!-- #region Summary -->
-<h2 id="summary_tests">Summary Tests</h2>
+<h2 id="summary_tests">Summary</h2>
 <ul>
   <li>{% href summary="Front page of this website" / Front page %}</li>
   <li>{% href https://rubygems.org RubyGems.org %}</li>
@@ -126,7 +143,7 @@ title: 'Yay, Tests!'
 
 
 <!-- #region Break -->
-<h2 id="break">Break Tests</h2>
+<h2 id="break">Break</h2>
 <ul>
   <li>
     {% href wbr summary="wbr mslinn.com"
@@ -143,7 +160,7 @@ title: 'Yay, Tests!'
 
 
 <!-- #region Default Parameter Values -->
-<h2 id="defaults">Default Parameter Value Tests</h2>
+<h2 id="defaults">Default Parameter Values</h2>
 <ul>
   <li>{% href http://mslinn.com Link to <code>http://mslinn.com</code> %}</li>
   <li>{% href https://mslinn.com Link to <code>https://mslinn.com</code> %}</li>
@@ -154,7 +171,7 @@ title: 'Yay, Tests!'
 
 
 <!-- #region Follow -->
-<h2 id="follow"><code>Follow</code> Tests</h2>
+<h2 id="follow"><code>Follow</code></h2>
 <ul>
   <li>{% href follow http://mslinn.com Link to <code>http://mslinn.com</code>. %}</li>
   <li>{% href follow https://mslinn.com Link to <code>https://mslinn.com</code>. %}</li>
@@ -164,7 +181,7 @@ title: 'Yay, Tests!'
 
 
 <!-- #region Notarget -->
-<h2 id="notarget"><code>Notarget</code> Tests</h2>
+<h2 id="notarget"><code>Notarget</code></h2>
 <ul>
   <li>
     {% href notarget http://mslinn.com
@@ -180,7 +197,7 @@ title: 'Yay, Tests!'
 
 
 <!-- #region Blank -->
-<h2 id="blank"><code>Blank</code> Tests</h2>
+<h2 id="blank"><code>Blank</code></h2>
 <p>
   These links should open a new page or tab.
 </p>
@@ -199,7 +216,7 @@ title: 'Yay, Tests!'
 
 
 <!-- #region Follow and Notarget -->
-<h2 id="fandn"><code>Follow</code> and <code>Notarget</code> Tests</h2>
+<h2 id="fandn"><code>Follow</code> and <code>Notarget</code></h2>
 <ul>
   <li>
     {% href follow notarget http://mslinn.com
@@ -215,7 +232,7 @@ title: 'Yay, Tests!'
 
 
 <!-- #region Environment Variable Expansion -->
-<h2 id="env">Environment Variable Expansion Tests</h2>
+<h2 id="env">Environment Variable Expansion</h2>
 <p>
   <code>$USER</code> expansion permutations.
 </p>
@@ -243,7 +260,7 @@ title: 'Yay, Tests!'
 
 
 <!-- #region YAMLVariable Expansion -->
-<h2 id="yaml">YAML Variable Expansion Tests</h2>
+<h2 id="yaml">YAML Variable Expansion</h2>
 <p>
   The following should substitute the value of <code>github</code> defined in <code>_config.yml</code>.
 </p>

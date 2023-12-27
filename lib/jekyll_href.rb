@@ -4,6 +4,5 @@ require_relative 'href_summary_tag'
 HrefError = Class.new(Liquid::Error)
 
 module JekyllHrefModule
-  include HrefTag
-  include HrefSummaryTag
+  include MSlinn
 end

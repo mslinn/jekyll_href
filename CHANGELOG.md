@@ -1,15 +1,12 @@
 # Change Log
 
+
 ## 1.2.7 / 2023-12-09
 
 * Implements the `page_title` option.
-* Defines `@die_on_href_error` if the following section is present in `_config.yml`:
-
-  ```yaml
-  href:
-    die_on_href_error: true # or false, if you like being explicit
-  ```
-
+* Renamed the `nomatch` key in `_config.yml` to `die_on_nomatch`.
+* Defines `@die_on_href_error` if the `die_on_href_error` key is present in `_config.yml`.
+* Defines `@pry_on_href_error` if the `pry_on_href_error` key is present in `_config.yml`.
 * Now uses the `StandardError` handler introduced in `jekyll_plugin_support` v0.8.0.
 
 

@@ -2,7 +2,7 @@ require 'jekyll_plugin_logger'
 require 'jekyll_plugin_support'
 require_relative 'jekyll_href/version'
 
-module HrefSummaryTag
+module MSlinn
   class HrefSummary < JekyllSupport::JekyllTag
     include JekyllHrefVersion
 
@@ -28,6 +28,10 @@ module HrefSummaryTag
     def render_impl
       @helper.gem_file __FILE__ # Enables attribution
       @include_local = @helper.parameter_specified? 'include_local'
+
+      @die_on_href_error = @tag_config['die_on_href_error'] == true if @tag_config
+      @pry_on_href_error = @tag_config['pry_on_href_error'] == true if @tag_config
+
       @path = @page['path']
       global_refs = render_global_refs
       local_refs  = render_local_refs
@@ -37,6 +41,14 @@ module HrefSummaryTag
         #{local_refs}
         #{@helper.attribute if @helper.attribution && have_refs}
       END_RENDER
+    rescue HRefError => e # jekyll_plugin_support handles StandardError
+      e.shorten_backtrace
+      msg = format_error_message e.message
+      @logger.error "#{e.class} raised #{msg}"
+      binding.pry if @pry_on_img_error # rubocop:disable Lint/Debugger
+      raise e if @die_on_href_error
+
+      "<div class='href_error'>#{e.class} raised in #{self.class};\n#{msg}</div>"
     end
 
     def render_global_refs

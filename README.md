@@ -33,12 +33,17 @@ plugin-vars:
   django-oscar-github: 'https://github.com/django-oscar/django-oscar/blob/3.0.2'
 ```
 
-If a section called `href` exists, the following can be set:
+The following sections and settings can be set:
+`Pry_on_href_error` has priority over `die_on_href_error`.
 
 ```yaml
 href:
-  die_on_href_error: false
-  nomatch: fatal # if value is 'fatal', the program stops, any other value allows it to continue
+  die_on_href_error: false # Default value is false
+  die_on_nomatch: true     # Default value is false
+  pry_on_href_error: true  # Default value is false
+href_summary:
+  die_on_href_error: false # Default value is false
+  pry_on_href_error: true  # Default value is false
 ```
 
 ## Syntax 1 (requires `url` without embedded spaces)

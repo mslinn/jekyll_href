@@ -1,5 +1,5 @@
-module HrefTag
-  class HrefTag
+module MSlinn
+  class HRefTag
     private
 
     def save_summary

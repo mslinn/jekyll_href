@@ -1,5 +1,5 @@
-module HrefTag
-  class HrefTag
+module MSlinn
+  class HRefTag
     private
 
     # Does not look at or compute @link
@@ -22,11 +22,11 @@ module HrefTag
 
     def error_no_uri
       msg = <<~END_MESSAGE
-        Error: no url was provided on #{@path}:#{@line_number} (after front matter).
-          <pre>{% href #{@argument_string}%}</pre>
+        No URL was provided on #{@path}:#{@line_number} (after front matter).
+          <pre>{% href #{@argument_string.strip} %}</pre>
       END_MESSAGE
-      @logger.error { Sanitize.fragment msg }
-      "<div class='href_error'>#{msg}</div>"
+      @logger.error { JekyllPluginHelper.remove_html_tags msg.strip }
+      "<div class='href_error'>HRefError: #{msg}</div>"
     end
 
     # Sets @follow, @helper, @match, @path, @shy, @target, @url, @wbr
@@ -59,6 +59,8 @@ module HrefTag
       return unless @tag_config
 
       @die_on_href_error = @tag_config['die_on_href_error'] == true
+      @die_on_nomatch    = @tag_config['die_on_nomatch']    == true
+      @pry_on_href_error = @tag_config['pry_on_href_error'] == true
     end
 
     # Might set @external_link, @follow, @local_link, @linkk, @target, and @text

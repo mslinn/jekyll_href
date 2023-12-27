@@ -1,5 +1,5 @@
-module HrefTag
-  class HrefTag
+module MSlinn
+  class HRefTag
     private
 
     def compute_link_and_text(all_urls)
@@ -26,8 +26,6 @@ module HrefTag
 
     # Might set @link and @text
     def match_post
-      config = @site.config['href']
-      @die_if_nomatch = !config.nil? && config['nomatch'] && config['nomatch'] == 'fatal'
       @path, @fragment = @link.split('#')
 
       @logger.debug do

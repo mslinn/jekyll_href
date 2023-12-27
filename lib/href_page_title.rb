@@ -1,5 +1,5 @@
-module HrefTag
-  class HrefTag
+module MSlinn
+  class HRefTag
     private
 
     @hrefs = {}
@@ -23,17 +23,17 @@ module HrefTag
       page = find_page linkk
       unless page
         msg = "There is no page at path #{linkk}"
-        @text = "<div class='href_error'>HRefError: #{msg}</div><pre>{% href #{@argument_string}%}</pre>"
+        @text = "<div class='href_error'>HRefError: #{msg}</div>\n<pre>  {% href #{@argument_string.strip} %}</pre>"
         raise HRefError, msg
       end
       @text = @label = page.title
     rescue HRefError => e
-      @text ||= "<div class='href_error'>HRefError: href tags with page_title require local links</div><pre>{% href #{@argument_string}%}</pre>"
+      msg = format_error_message "#{e.message}\n<pre>  {% href #{@argument_string.strip} %}</pre>"
+      @text = "<div class='href_error'>#{msg}</div>"
       @link = linkk
 
       e.shorten_backtrace
-      msg = format_error_message e.message
-      @logger.error "#{e.class} raised #{msg}"
+      @logger.error { "#{e.class} raised #{JekyllPluginHelper.remove_html_tags msg}" }
       raise e if @die_on_href_error
 
       "<div class='href_error'>HRefError raised in #{self.class};\n#{msg}</div>"
