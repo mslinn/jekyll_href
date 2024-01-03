@@ -7,7 +7,6 @@ title: 'Yay, Tests!'
 <h2 id="local">Local Section</h2>
 <p>
   These links should not open a new tab:
-
 </p>
 <ul>
   <li>{% href #! Page refresh %}</li>
@@ -19,6 +18,9 @@ title: 'Yay, Tests!'
 
 <!-- #region page_title -->
 <h2 id="page_title"><span class="code">Page_title</span> options => 'Test Draft Post'</h2>
+<p>
+  These links should be labeled with the title from the linked local page.
+</p>
 <p>
   Implicit local URL:
   {% href page_title /blog/2022/03/28/test-draft.html %}
@@ -47,7 +49,7 @@ title: 'Yay, Tests!'
   These examples should display an error message on the web page and on the console log.
 </p>
 
-<h3>Explicit external URL (not allowed)</h3>
+<h3><span class="code">Page_title</span> from external URL (not allowed)</h3>
 {% href page_title url="https://external_link.com" %}
 <!-- endregion -->
 
@@ -68,7 +70,7 @@ title: 'Yay, Tests!'
 <p>
   CSS styling added with <code>class</code> option.
 </p>
-{% href class='bg_yellow' https://mslinn.com Yellow background. %}
+{% href class='bg_yellow' https://mslinn.com Yellow background for mslinn.com. %}
 <!-- endregion -->
 
 
@@ -77,12 +79,15 @@ title: 'Yay, Tests!'
 <p>
   CSS styling added with <code>style</code> option.
 </p>
-{% href style='color: red; font-weight: bold;' https://mslinn.com Bold red text. %}
+{% href style='color: red; font-weight: bold;' https://mslinn.com Bold red text for mslinn.com. %}
 <!-- endregion -->
 
 
 <!-- #region Private and Loopback IP Addresses -->
 <h2 id="insecure">Private and Loopback IP Addresses</h2>
+<p>
+  These links should not open new browser tabs.
+</p>
 <p>Insecure addresses start with <code>http</code>:</p>
 <ul>
   <li>{% href localhost %}</li>
@@ -105,45 +110,44 @@ title: 'Yay, Tests!'
 
 <!-- #region Label -->
 <h2 id="label"><code>Label</code> Tests</h2>
+<p>
+  These pages should open in new browser tabs.
+</p>
 <ul>
-  <li>{% href label="This is a summary" https://mslinn.com %}</li>
-  <li>{% href https://mslinn.com label="This is also a summary" %}</li>
+  <li>{% href label="This is an explicit label" https://mslinn.com %}</li>
+  <li>{% href https://mslinn.com label="This is also an explicit label" %}</li>
+  <li>{% href url="https://mslinn.com" label="Yet another explicit label" %}</li>
+  <li>{% href https://mslinn.com This is an implicit label %}</li>
 </ul>
 <!-- endregion -->
 
 
 <!-- #region Match -->
 <h2 id="match"><code>Match</code> Tests</h2>
+<p>
+  These pages should open in new browser tabs.
+</p>
 <ul>
   <li>
     {% href match test-draft.html
-      <code>Match</code> test given 'test-draft.html'. %}
+      <code>Match</code> test given <code>'test-draft.html'</code>. %}
     </li>
   <li>
     {% href match url='test-draft.html'
-      Match test with <code>url='test-draft.html'</code>. %}
+    <code>Match</code> test with <code>url='test-draft.html'</code>. %}
   </li>
-  <li>
-    {% href match url="test-draft.html"
-      Match test with <code>url="test-draft.html"</code>. %}
-  </li>
-</ul>
-<!-- endregion -->
-
-
-<!-- #region Summary -->
-<h2 id="summary_tests">Summary</h2>
-<ul>
-  <li>{% href summary="Front page of this website" / Front page %}</li>
-  <li>{% href https://rubygems.org RubyGems.org %}</li>
-  <li>{% href summary="Mothership" https://jekyllrb.com/ Jekyll %}</li>
-  <li>{% href summary="Should not appear in summary" #break Local link %}</li>
 </ul>
 <!-- endregion -->
 
 
 <!-- #region Break -->
 <h2 id="break">Break</h2>
+<p>
+  These (nonexistant) pages should open in new browser tabs.
+</p>
+<p>
+  <code>&lt;wbr&gt;</code> has precedence over <code>&amp;shy;</code>.
+</p>
 <ul>
   <li>
     {% href wbr summary="wbr mslinn.com"
@@ -155,12 +159,22 @@ title: 'Yay, Tests!'
       mslinn.com/a/very/long/uri/to/break/somewhere/reasonable/or/so/I/hope/who/knows/what/will/happen/in/life/anyway
     %}
   </li>
+  <li>
+    This should cause a warning on the console but not on the web page to the effect
+    that both <code>&amp;shy;</code> and <code>&lt;wbr&gt;</code> were specified :<br>
+    {% href shy wbr summary="shy mslinn.com"
+      mslinn.com/a/very/long/uri/to/break/somewhere/reasonable/or/so/I/hope/who/knows/what/will/happen/in/life/anyway
+    %}
+  </li>
 </ul>
 <!-- endregion -->
 
 
 <!-- #region Default Parameter Values -->
 <h2 id="defaults">Default Parameter Values</h2>
+<p>
+  These pages should open in new browser tabs.
+</p>
 <ul>
   <li>{% href http://mslinn.com Link to <code>http://mslinn.com</code> %}</li>
   <li>{% href https://mslinn.com Link to <code>https://mslinn.com</code> %}</li>
@@ -182,6 +196,9 @@ title: 'Yay, Tests!'
 
 <!-- #region Notarget -->
 <h2 id="notarget"><code>Notarget</code></h2>
+<p>
+  These links should open in the current browser tab.
+</p>
 <ul>
   <li>
     {% href notarget http://mslinn.com
@@ -217,6 +234,9 @@ title: 'Yay, Tests!'
 
 <!-- #region Follow and Notarget -->
 <h2 id="fandn"><code>Follow</code> and <code>Notarget</code></h2>
+<p>
+  These links should open in the current browser tab.
+</p>
 <ul>
   <li>
     {% href follow notarget http://mslinn.com
@@ -262,6 +282,9 @@ title: 'Yay, Tests!'
 <!-- #region YAMLVariable Expansion -->
 <h2 id="yaml">YAML Variable Expansion</h2>
 <p>
+  These pages should open in new browser tabs.
+</p>
+<p>
   The following should substitute the value of <code>github</code> defined in <code>_config.yml</code>.
 </p>
 <ul>
@@ -284,4 +307,14 @@ title: 'Yay, Tests!'
 </ul>
 <!-- endregion -->
 
+
+<!-- #region Reference Summary Setup and Tests -->
+<h2 id="summary_tests">Reference Summary Setup and Tests</h2>
+<ul>
+  <li>{% href summary="Front page of this website" / Front page %}</li>
+  <li>{% href https://rubygems.org RubyGems.org %}</li>
+  <li>{% href summary="Mothership" https://jekyllrb.com/ Jekyll %}</li>
+  <li>{% href summary="Should not appear in summary" #break Local link %}</li>
+</ul>
 {% href_summary include_local %}
+<!-- endregion -->

@@ -18,15 +18,10 @@ module MSlinn
       end
     end
 
-    def handle_match
-      match_post
+    def handle_match(link)
       @follow = ''
       @target = '' unless @blank
-    end
-
-    # Might set @link and @text
-    def match_post
-      @path, @fragment = @link.split('#')
+      @path, @fragment = link.split('#')
 
       @logger.debug do
         <<~END_DEBUG

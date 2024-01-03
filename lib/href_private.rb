@@ -10,7 +10,7 @@ module MSlinn
       if linkk.nil? || !linkk
         linkk = @helper.argv&.shift
         @helper.params&.shift
-        @helper.keys_values&.delete(linkk)
+        @helper.keys_values&.delete linkk
         return nil, error_no_uri if linkk.nil?
       elsif @url.to_s.empty?
         return nil, error_no_uri
@@ -29,32 +29,42 @@ module MSlinn
       "<div class='href_error'>HRefError: #{msg}</div>"
     end
 
-    # Sets @follow, @helper, @match, @path, @shy, @target, @url, @wbr
+    # Sets @follow, @helper, @match, @path, @target, @url, @hyphenation
     def globals_initial
       @path = @page['path']
-      AllCollectionsHooks.compute(@site)
+      AllCollectionsHooks.compute @site
+      @hyphenation      = Hyphenation::NONE
 
-      @blank           = @helper.parameter_specified? 'blank'
-      @klass           = @helper.parameter_specified? 'class'
-      @follow          = @helper.parameter_specified?('follow') ? '' : " rel='nofollow'"
-      @label           = @helper.parameter_specified? 'label'
-      @match           = @helper.parameter_specified? 'match'
-      @shy             = @helper.parameter_specified? 'shy'
-      @style           = @helper.parameter_specified? 'style'
-      @summary         = @helper.parameter_specified? 'summary'
-      @summary_exclude = @helper.parameter_specified? 'summary_exclude'
-      @target          = @blank ? " target='_blank'" : nil
-      @target        ||= @helper.parameter_specified?('notarget') ? '' : " target='_blank'"
-      @url             = @helper.parameter_specified? 'url'
-      @wbr             = @helper.parameter_specified? 'wbr'
+      @blank            = @helper.parameter_specified? 'blank'
+      @klass            = @helper.parameter_specified? 'class'
+      @follow_specified = @helper.parameter_specified?('follow')
+      @follow           = @follow_specified ? '' : ' rel="nofollow"'
+      @label            = @helper.parameter_specified? 'label'
+      @match            = @helper.parameter_specified? 'match'
+      @hyphenation      = Hyphenation::SHY if @helper.parameter_specified? 'shy'
+      @style            = @helper.parameter_specified? 'style'
+      @summary          = @helper.parameter_specified? 'summary'
+      @summary_exclude  = @helper.parameter_specified? 'summary_exclude'
+      @target           = @blank ? " target='_blank'" : nil
+      @target         ||= @helper.parameter_specified?('notarget') ? '' : " target='_blank'"
+      @url              = @helper.parameter_specified? 'url'
 
-      @label_source    = if @helper.parameter_specified? 'page_title'
-                           :from_page_title
-                         elsif @label
-                           :from_explicit_label
-                         else
-                           :from_implicit_label
-                         end
+      if @helper.parameter_specified? 'wbr' # <wbr> has precedence over &shy;
+        if @hyphenation == Hyphenation::SHY
+          @logger.info do
+            "Warning: wbr and shy were both specified for the href tag on line #{@line_number} (after front matter) of #{@page['path']}"
+          end
+        end
+        @hyphenation = Hyphenation::WBR
+      end
+
+      @label_source = if @helper.parameter_specified? 'page_title'
+                        LabelSource::FROM_PAGE_TITLE
+                      elsif @label
+                        LabelSource::FROM_EXPLICIT_LABEL
+                      else
+                        LabelSource::FROM_IMPLICIT_LABEL
+                      end
 
       return unless @tag_config
 
@@ -63,42 +73,45 @@ module MSlinn
       @pry_on_href_error = @tag_config['pry_on_href_error'] == true
     end
 
-    # Might set @external_link, @follow, @local_link, @linkk, @target, and @text
+    # Sets @link_type
+    # Might set @follow, @link, @link_save and @text
     def globals_update(tokens, linkk)
+      @link_type = LinkType::UNKNOWN
+
       if linkk.start_with? 'mailto:'
         handle_mailto linkk
         return
-      else
-        if @label_source == :from_page_title
-          handle_page_title linkk
-          return
-        end
-        @text = @label || tokens.join(' ').strip
-        if @text.to_s.empty?
-          handle_empty_text linkk
-        else
-          handle_text linkk
-        end
-        @link_save = @link
       end
 
-      if @external_link
-        @target = ''
-        return
-      end
-      @follow = ''
-      @target = '' unless @blank
+      @link_type = if linkk.start_with? 'http'
+                     LinkType::EXTERNAL
+                   elsif linkk.start_with? '#'
+                     LinkType::FRAGMENT
+                   else
+                     LinkType::LOCAL
+                   end
+
+      @follow = !@follow_specified && @link_type == LinkType::EXTERNAL ? ' rel="nofollow"' : ''
+
+      handle_page_title linkk if @label_source == LabelSource::FROM_PAGE_TITLE
+      @text = @label || tokens.join(' ').strip
+      @link = if @text.to_s.empty?
+                handle_empty_text linkk
+              else
+                linkk
+              end
+      @link_save = @link
+      return if @link_type == LinkType::EXTERNAL
+
+      @follow = @target = ''
+      nil
     end
 
+    # Sets @text and @link
     def handle_empty_text(linkk)
-      text = linkk
-      text = linkk&.gsub('/', '/&shy;') if @shy
-      text = linkk&.gsub('/', '/<wbr>') if @wbr
+      text = hyphenate linkk
       @text = "<code>#{text}</code>"
-      @external_link = linkk.start_with? 'http'
-      @local_link = !@external_link
-      @mailto_link = false
-      @link = if @external_link
+      @link = if linkk.start_with? '#'
                 linkk
               elsif insecure_ip_address linkk
                 "http://#{linkk}"
@@ -108,29 +121,28 @@ module MSlinn
     end
 
     def handle_mailto(linkk)
-      @mailto_link = true
-      @local_link = @external_link = false
+      @link_type = LinkType::MAILTO
       @link = linkk
       @target = @follow = ''
-      @text = @helper.argv.join(' ')
+      @text = @label || @helper.argv.join(' ')
       return unless @text.empty?
 
-      text = linkk.delete_prefix('mailto:')
+      text = hyphenate(linkk.delete_prefix('mailto:'))
       @text = "<code>#{text}</code>"
     end
 
-    def handle_text(linkk)
-      @link = if @shy
-                linkk&.gsub('/', '/&shy;')
-              elsif @wbr
-                linkk&.gsub('/', '/<wbr>')
-              else
-                linkk
-              end
+    def hyphenate(linkk)
+      if @hyphenation == Hyphenation::WBR
+        linkk&.gsub('/', '/<wbr>')
+      elsif @hyphenation == Hyphenation::SHY
+        linkk&.gsub('/', '/&shy;')
+      else
+        linkk
+      end
     end
 
     def insecure_ip_address(string)
-      return true if string.start_with? 'localhost'
+      return true if string.start_with?('localhost', 'http://localhost')
 
       return false unless IPAddress.valid? string
 

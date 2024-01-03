@@ -10,7 +10,11 @@ module HashArray
     pre_existing = hash[enclosing_page].find { |h| h.link_save == href.link_save }
     if pre_existing
       if pre_existing.follow != href.follow
-        @logger.warn "HRef tags for '#{href.link}' have inconsistent 'follow' keyword options on line #{href.line_number} of #{enclosing_page}"
+        @logger.warn <<~END_WARN
+          HRef tags for '#{href.link}' have inconsistent 'follow' keyword options on line #{href.line_number} of #{enclosing_page}:
+            Previous value: #{pre_existing.follow}
+             Current value: #{href.follow}
+        END_WARN
       end
     else
       hash[enclosing_page] << href unless href.summary_exclude

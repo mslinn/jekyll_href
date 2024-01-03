@@ -3,6 +3,7 @@ require 'jekyll_all_collections'
 require 'jekyll_plugin_logger'
 require 'jekyll_plugin_support'
 require 'liquid'
+require_relative 'enums'
 require_relative 'jekyll_href/version'
 require_relative 'hash_array'
 
@@ -45,14 +46,17 @@ module MSlinn
 
       @helper_save = @helper.clone
       globals_update(@helper.argv, linkk) # Sets @link and @text, might clear @follow and @target
-      handle_match if @match
+      handle_match(@link) if @match
+      raise HrefError, "@link_type was not set" if @link_type == LinkType::UNKNOWN
+
       save_summary
       klass = " class='#{@klass}'" if @klass
       style = " style='#{@style}'" if @style
       "<a href='#{@link}'#{klass}#{style}#{@target}#{@follow}>#{@text}</a>"
     rescue HRefError => e # jekyll_plugin_support handles StandardError
+      msg = format_error_message "#{e.message}\n<pre>  {% href #{@argument_string.strip} %}</pre>"
+      @text = "<div class='href_error'>#{msg}</div>"
       e.shorten_backtrace
-      msg = format_error_message e.message
       @logger.error "#{e.class} raised #{msg}"
       binding.pry if @pry_on_img_error # rubocop:disable Lint/Debugger
       raise e if @die_on_href_error
