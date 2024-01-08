@@ -1,5 +1,6 @@
 # Change Log
 
+
 ## 1.2.8 / 2023-12-31
 
 * Fixed missing ' rel="nofollow"' for links without labels.

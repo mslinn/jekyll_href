@@ -1,8 +1,17 @@
 ---
 description: Tests
+guitar_pro_file: './assets/Cantina.gp'
 layout: default
+link: '/blog/'
 title: 'Yay, Tests!'
 ---
+<!-- #region Passing Liquid Variables -->
+<h2 id="local">Passing Liquid Variables</h2>
+{% href url="{{page.guitar_pro_file}}" Star Wars Cantina (Guitar Pro) %}
+{% href url="{{layout.link}}" Blog %}
+<!-- endregion -->
+
+
 <!-- #region Local Section -->
 <h2 id="local">Local Section</h2>
 <p>
