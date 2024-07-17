@@ -103,7 +103,8 @@ module MSlinn
       @link_save = @link
       return if @link_type == LinkType::EXTERNAL
 
-      @follow = @target = ''
+      @follow = ''
+      @target = '' unless @blank
       nil
     end
 

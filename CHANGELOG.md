@@ -1,9 +1,14 @@
 # Change Log
 
 
+## 1.2.9 / 2024-07-17
+
+* Fixed missing ` target="_blank"` for links without labels, when `blank` was specified.
+
+
 ## 1.2.8 / 2023-12-31
 
-* Fixed missing ' rel="nofollow"' for links without labels.
+* Fixed missing ` rel="nofollow"` for links without labels.
 
 
 ## 1.2.7 / 2023-12-09
