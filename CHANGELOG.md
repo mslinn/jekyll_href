@@ -1,6 +1,11 @@
 # Change Log
 
 
+## 1.2.10 / 2024-07-23
+
+* Make compatible with jekyll_plugin_support 0.8.7
+
+
 ## 1.2.9 / 2024-07-17
 
 * Fixed missing ` target="_blank"` for links without labels, when `blank` was specified.

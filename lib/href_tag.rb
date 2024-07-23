@@ -68,7 +68,7 @@ module MSlinn
       "On line #{line_number} of #{path}: #{follow} #{match} #{target} #{link} => '#{text}'"
     end
 
-    JekyllPluginHelper.register(self, 'href')
+    ::JekyllSupport::JekyllPluginHelper.register(self, 'href')
   end
 end
 

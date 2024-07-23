@@ -85,6 +85,6 @@ module MSlinn
       END_RENDER
     end
 
-    JekyllPluginHelper.register(self, 'href_summary')
+    ::JekyllSupport::JekyllPluginHelper.register(self, 'href_summary')
   end
 end
