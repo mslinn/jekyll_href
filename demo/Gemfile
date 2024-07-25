@@ -6,7 +6,7 @@ gem 'nokogumbo', '=2.0.3'
 gem 'ptools'
 
 group :jekyll_plugins do
-  gem 'jekyll-assets'
+  gem 'jekyll-assets', git: 'https://github.com/envygeeks/jekyll-assets'
   gem 'jekyll-environment-variables'
   gem 'jekyll_href', path: "../"
   gem 'jekyll_plugin_logger'
