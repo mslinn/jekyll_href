@@ -1,11 +1,11 @@
 PATH
   remote: ..
   specs:
-    jekyll_href (1.2.8)
+    jekyll_href (1.2.10)
       ipaddress
       jekyll (>= 3.5.0)
-      jekyll_all_collections (>= 0.3.3)
-      jekyll_plugin_support (>= 0.8.5)
+      jekyll_all_collections
+      jekyll_plugin_support (>= 0.8.7)
       typesafe_enum
 
 GEM
@@ -30,9 +30,9 @@ GEM
     facets (3.1.0)
     fastimage (1.8.1)
       addressable (~> 2.3, >= 2.3.5)
+    ffi (1.17.0)
     ffi (1.17.0-arm64-darwin)
     ffi (1.17.0-x86_64-darwin)
-    ffi (1.17.0-x86_64-linux-gnu)
     forwardable-extended (2.6.0)
     google-protobuf (4.27.2-arm64-darwin)
       bigdecimal
@@ -84,7 +84,7 @@ GEM
       nuggets
     jekyll-watch (2.2.1)
       listen (~> 3.0)
-    jekyll_all_collections (0.4.0)
+    jekyll_all_collections (0.3.5)
       jekyll (>= 3.5.0)
       jekyll_draft (>= 1.1.1)
       jekyll_plugin_support (>= 0.7.0)
@@ -94,7 +94,7 @@ GEM
     jekyll_plugin_logger (2.1.2)
       bump
       jekyll (>= 3.5.0)
-    jekyll_plugin_support (0.8.6)
+    jekyll_plugin_support (0.8.7)
       facets
       jekyll (>= 3.5.0)
       jekyll_plugin_logger
@@ -136,7 +136,7 @@ GEM
     psych (5.1.2)
       stringio
     ptools (1.5.0)
-    public_suffix (6.0.0)
+    public_suffix (6.0.1)
     racc (1.8.0)
     rack (1.6.13)
     rainbow (3.1.1)
