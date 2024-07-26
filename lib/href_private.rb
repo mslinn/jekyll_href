@@ -25,7 +25,7 @@ module MSlinn
         No URL was provided on #{@path}:#{@line_number} (after front matter).
           <pre>{% href #{@argument_string.strip} %}</pre>
       END_MESSAGE
-      @logger.error { JekyllPluginHelper.remove_html_tags msg.strip }
+      @logger.error { JekyllSupport::JekyllPluginHelper.remove_html_tags msg.strip }
       "<div class='href_error'>HRefError: #{msg}</div>"
     end
 

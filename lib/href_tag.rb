@@ -47,7 +47,7 @@ module MSlinn
       @helper_save = @helper.clone
       globals_update(@helper.argv, linkk) # Sets @link and @text, might clear @follow and @target
       handle_match(@link) if @match
-      raise HrefError, "@link_type was not set" if @link_type == LinkType::UNKNOWN
+      raise HrefError, '@link_type was not set' if @link_type == LinkType::UNKNOWN
 
       save_summary
       klass = " class='#{@klass}'" if @klass
@@ -68,7 +68,7 @@ module MSlinn
       "On line #{line_number} of #{path}: #{follow} #{match} #{target} #{link} => '#{text}'"
     end
 
-    ::JekyllSupport::JekyllPluginHelper.register(self, 'href')
+    JekyllSupport::JekyllPluginHelper.register(self, 'href')
   end
 end
 
