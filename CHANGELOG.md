@@ -1,9 +1,15 @@
 # Change Log
 
 
+## 1.2.11 / 2024-07-27
+
+* Fixed an unqualified reference to `JekyllPluginHelper`.
+* Shortened the very long stack dump for an error condition.
+
+
 ## 1.2.10 / 2024-07-23
 
-* Make compatible with jekyll_plugin_support 1.0.0
+* Make compatible with `jekyll_plugin_support` 1.0.0
 
 
 ## 1.2.9 / 2024-07-17

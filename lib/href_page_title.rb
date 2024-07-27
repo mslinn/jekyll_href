@@ -1,4 +1,4 @@
-module MSlinn
+module JekyllSupport
   class HRefTag
     private
 

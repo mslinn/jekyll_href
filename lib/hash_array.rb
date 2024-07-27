@@ -6,7 +6,7 @@ module HashArray
 
   def add_link_for_page(href, hash)
     enclosing_page = href.path
-    hash[enclosing_page] = [] if hash[enclosing_page].nil?
+    hash[enclosing_page] = hash[enclosing_page] || []
     pre_existing = hash[enclosing_page].find { |h| h.link_save == href.link_save }
     if pre_existing
       if pre_existing.follow != href.follow

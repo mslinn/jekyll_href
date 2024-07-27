@@ -11,13 +11,13 @@ require_relative 'hash_array'
 # @license SPDX-License-Identifier: Apache-2.0
 # Generates an href.
 
-module MSlinn
+module JekyllSupport
   MiniHref = Struct.new(:follow, :html, :link, :line_number, :link_save, :path, :summary_exclude, :summary_href, keyword_init: true)
 
   HRefError = JekyllSupport.define_error
 
   # Implements href Jekyll tag
-  class HRefTag < JekyllSupport::JekyllTag
+  class HRefTag < JekyllTag
     attr_reader :follow, :helper, :line_number, :link_save, :match, :page, :path, :site,
                 :summary, :summary_exclude, :summary_href, :target, :text, :url
     attr_accessor :link
@@ -54,7 +54,8 @@ module MSlinn
       style = " style='#{@style}'" if @style
       "<a href='#{@link}'#{klass}#{style}#{@target}#{@follow}>#{@text}</a>"
     rescue HRefError => e # jekyll_plugin_support handles StandardError
-      msg = format_error_message "#{e.message}\n<pre>  {% href #{@argument_string.strip} %}</pre>"
+      msg = format_error_message e.message
+      msg = "#{msg}\n<pre>  {% href #{@argument_string.strip} %}</pre>"
       @text = "<div class='href_error'>#{msg}</div>"
       e.shorten_backtrace
       @logger.error "#{e.class} raised #{msg}"

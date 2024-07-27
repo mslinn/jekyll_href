@@ -2,10 +2,8 @@ require 'jekyll_plugin_logger'
 require 'jekyll_plugin_support'
 require_relative 'jekyll_href/version'
 
-module MSlinn
-  class HrefSummary < JekyllSupport::JekyllTag
-    include JekyllHrefVersion
-
+module JekyllSupport
+  class HrefSummary < JekyllTag
     # Class instance variables accumulate hrefs across invocations.
     # These are hashes of arrays;
     # the hash keys are page paths (strings) and the hash values are arrays of HRefTags.

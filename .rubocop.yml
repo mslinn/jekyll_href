@@ -37,6 +37,9 @@ Metrics/BlockLength:
     - jekyll_plugin_support.gemspec
   Max: 30
 
+Metrics/ClassLength:
+  Max: 150
+
 Metrics/CyclomaticComplexity:
   Max: 25
 
