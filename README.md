@@ -287,6 +287,21 @@ Expands to:
 
    Substitutions are only made to the URL, not to the linked text.
 
+8. Dollar signs
+
+   If the URL has a dollar sign in it, jekyll_href will attempt to replace an environment variable with its value. 
+   That will likely fail silently. To work around the problem, replace dollar signs in URLs with &amp;dollar;.
+  
+   For example, given this URL:
+   https://ammonite.io/#import$ivy
+   rewrite as:
+   https://ammonite.io/#import&amp;dollar;ivy.
+  
+   Here is a complete invocation:
+  
+   {% href url="https://ammonite.io/#import&dollar;ivy"
+           label="<code>import &dollar;ivy</code>" %}
+
 
 ## References Generation
 
