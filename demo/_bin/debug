@@ -4,7 +4,7 @@ function help {
   echo "
 $(basename $0) - Run the demo Jekyll website.
 By default the demo Jekyll website runs without restriction under debug,
-and listens on 0.0.0.0.
+and listens on 0.0.0.0:4444.
 Options:
   -h  Show this error message
   -r  Run freely, without a debugger
@@ -37,7 +37,7 @@ DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
 cd "$DIR/.." || exit
 
 run="serve \
-    --livereload_port 25721 \
+    --livereload_port 2572 \
     --force_polling \
     --host 0.0.0.0 \
     --port 4444 \

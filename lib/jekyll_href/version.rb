@@ -1,3 +1,3 @@
 module JekyllHrefVersion
-  VERSION = '1.2.11'.freeze
+  VERSION = '1.2.12'.freeze
 end

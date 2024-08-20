@@ -40,13 +40,10 @@ module JekyllSupport
         #{@helper.attribute if @helper.attribution && have_refs}
       END_RENDER
     rescue HRefError => e # jekyll_plugin_support handles StandardError
-      e.shorten_backtrace
-      msg = format_error_message e.message
-      @logger.error "#{e.class} raised #{msg}"
-      binding.pry if @pry_on_img_error # rubocop:disable Lint/Debugger
-      raise e if @die_on_href_error
+      @logger.error { e.logger_message }
+      exit! 1 if @die_on_demo_block_error
 
-      "<div class='href_error'>#{e.class} raised in #{self.class};\n#{msg}</div>"
+      e.html_message
     end
 
     def render_global_refs

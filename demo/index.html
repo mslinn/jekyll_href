@@ -5,15 +5,6 @@ layout: default
 link: '/blog/'
 title: 'Yay, Tests!'
 ---
-<!-- #region Error no URI -->
-<h2 id="uri">Error no URI</h2>
-<p>
-  Testing error handling.
-  {% href label='This should generate an error.' url='' %}
-</p>
-<!-- endregion -->
-
-
 <!-- #region Passing Liquid Variables -->
 <h2 id="local">Passing Liquid Variables</h2>
 {% href url="{{page.guitar_pro_file}}" Star Wars Cantina (Guitar Pro) %}
@@ -68,6 +59,9 @@ title: 'Yay, Tests!'
 </p>
 
 <h3><span class="code">Page_title</span> from external URL (not allowed)</h3>
+<p>
+  An error message should appear here:
+</p>
 {% href page_title url="https://external_link.com" %}
 <!-- endregion -->
 
@@ -143,16 +137,22 @@ title: 'Yay, Tests!'
 <!-- #region Match -->
 <h2 id="match"><code>Match</code> Tests</h2>
 <p>
-  These pages should open in new browser tabs.
+  These links should not open new browser tabs.
 </p>
 <ul>
   <li>
-    {% href match test-draft.html
-      <code>Match</code> test given <code>'test-draft.html'</code>. %}
-    </li>
+    When href is invoked without a label parameter, the matched page title should provide the label:<br>
+    {% href match mailto-config-test.html %}
+  </li>
   <li>
-    {% href match url='test-draft.html'
-    <code>Match</code> test with <code>url='test-draft.html'</code>. %}
+    {% href match
+            test-draft.html
+            label="<code>Match</code> test given <code>test-draft.html</code>." %}
+  </li>
+  <li>
+    {% href match
+            url='test-draft.html'
+            label="<code>Match</code> test given <code>url='test-draft.html'</code>." %}
   </li>
 </ul>
 <!-- endregion -->

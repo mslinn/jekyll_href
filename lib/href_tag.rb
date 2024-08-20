@@ -46,7 +46,7 @@ module JekyllSupport
 
       @helper_save = @helper.clone
       globals_update(@helper.argv, linkk) # Sets @link and @text, might clear @follow and @target
-      handle_match(@link) if @match
+      handle_match(linkk) if @match # Sets @text if not set by now
       raise HrefError, '@link_type was not set' if @link_type == LinkType::UNKNOWN
 
       save_summary
@@ -54,15 +54,10 @@ module JekyllSupport
       style = " style='#{@style}'" if @style
       "<a href='#{@link}'#{klass}#{style}#{@target}#{@follow}>#{@text}</a>"
     rescue HRefError => e # jekyll_plugin_support handles StandardError
-      msg = format_error_message e.message
-      msg = "#{msg}\n<pre>  {% href #{@argument_string.strip} %}</pre>"
-      @text = "<div class='href_error'>#{msg}</div>"
-      e.shorten_backtrace
-      @logger.error "#{e.class} raised #{msg}"
-      binding.pry if @pry_on_img_error # rubocop:disable Lint/Debugger
-      raise e if @die_on_href_error
+      @logger.error { e.logger_message }
+      exit 1 if @die_on_demo_tag_error
 
-      "<div class='href_error'>#{e.class} raised in #{self.class};\n#{msg}</div>"
+      e.html_message
     end
 
     def to_s

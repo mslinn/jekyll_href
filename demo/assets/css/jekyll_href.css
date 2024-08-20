@@ -1,6 +1,11 @@
-.href_error {
-  color: red;
+.h_ref_error {
+  background-color: rgb(255, 203, 203);
+  border: rgb(155, 141, 141) 2px solid;
+  border-radius: 4pt;
+  color: black;
   font-family: Monaco,"Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
   font-stretch: semi-condensed;
   font-size: 10pt;
+  line-height: 150%;
+  padding: 2pt 4pt 2pt 4pt;
 }

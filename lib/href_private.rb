@@ -26,7 +26,7 @@ module JekyllSupport
           <pre>{% href #{@argument_string.strip} %}</pre>
       END_MESSAGE
       @logger.error { JekyllSupport::JekyllPluginHelper.remove_html_tags msg.strip }
-      "<div class='href_error'>HRefError: #{msg}</div>"
+      "<div class='h_ref_error'>HRefError: #{msg}</div>"
     end
 
     # Sets @follow, @helper, @match, @path, @target, @url, @hyphenation

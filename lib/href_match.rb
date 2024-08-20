@@ -2,17 +2,20 @@ module JekyllSupport
   class HRefTag
     private
 
-    def compute_link_and_text(all_urls)
-      url_matches = all_urls.select { |url| url&.include? @path }
-      case url_matches.length
+    def compute_link_and_text
+      page_matches = @site.all_collections.map.select { |page| page.url&.include? @path }
+      case page_matches.length
       when 0
-        abort "href error: No url matches '#{@link}', found on line #{@line_number} (after front matter) of #{@path}" if @die_if_nomatch
+        msg = "HRef error: No url matches '#{@link}', found on line #{@line_number} (after front matter) of #{@path}"
+        @logger.error { msg }
+        abort msg if @die_if_nomatch
+        @text = "<i class='h_ref_error'>#{@link} is not available</i>"
         @link_save = @link = '#'
-        @text = "<i>#{@link} is not available</i>"
       when 1
-        @link = url_matches.first
+        @link = page_matches.first.url
         @link = "#{@link}##{@fragment}" if @fragment
         @link_save = @link
+        @text = page_matches.first.title unless @label
       else
         abort "Error: More than one url matched '#{@path}': #{url_matches.join(', ')}"
       end
@@ -31,8 +34,7 @@ module JekyllSupport
         END_DEBUG
       end
 
-      all_urls = @site.all_collections.map(&:url)
-      compute_link_and_text(all_urls)
+      compute_link_and_text
     end
   end
 end
