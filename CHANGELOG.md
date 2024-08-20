@@ -2,7 +2,7 @@
 
 ## 1.2.12 / 2024-08-17
 
-* Enhanced `match` so that if no label is provided, the title of the matched web page is used.
+* Enhanced `match` so that if no label parameter is provided, the title of the matched web page is used.
 * Now dependent on jekyll_plugin_support v1.0.2+ for better error handling.
 
 

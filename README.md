@@ -46,7 +46,22 @@ href_summary:
   pry_on_href_error: true  # Default value is false
 ```
 
-## Syntax 1 (requires `url` without embedded spaces)
+## Suppprted Syntaxes
+
+Square brackets in the [BNF notation](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form)
+below denote optional keyword parameters, and are not meant to be typed.
+
+## Syntax 1 (most verbose, but provides best results and enables implicit matching title)
+
+```html
+{% href [match | [follow] [blank|notarget] [summary_exclude]] url="local_page.html" label="text to display" %}
+```
+
+1. The url can be #relative, a page in the Jekyll website, or prefaced with a protocol, such as `https:`
+2. If `match` is provided, and `label` is not provided, then the title of the matched page is used as the label.
+
+
+## Syntax 2 (requires `url` without embedded spaces)
 
 ```html
 {% href [match | [follow] [blank|notarget] [page_title] [summary_exclude]] url text to display %}
@@ -54,10 +69,9 @@ href_summary:
 
 1. The url must be a single token, without embedded spaces.
 2. The url need not be enclosed in quotes.
-3. The square brackets denote optional keyword parameters, and should not be typed.
 
 
-## Syntax 2 (always works)
+## Syntax 3 (always works)
 
 This syntax is recommended when the URL contains a colon (:).
 
@@ -68,10 +82,9 @@ This syntax is recommended when the URL contains a colon (:).
 
 1. Each of the above examples contain an embedded newline, which is legal.
 2. The url must be enclosed by either single or double quotes.
-3. The square brackets denote optional keyword parameters, and should not be typed.
 
 
-## Syntax 3 (implicit URL)
+## Syntax 4 (implicit URL)
 
 ```html
 {% href [match | [follow] [blank|notarget] [page_title] [summary_exclude]] [shy|wbr] www.domain.com %}
@@ -289,16 +302,16 @@ Expands to:
 
 8. Dollar signs
 
-   If the URL has a dollar sign in it, jekyll_href will attempt to replace an environment variable with its value. 
+   If the URL has a dollar sign in it, jekyll_href will attempt to replace an environment variable with its value.
    That will likely fail silently. To work around the problem, replace dollar signs in URLs with &amp;dollar;.
-  
+
    For example, given this URL:
    https://ammonite.io/#import$ivy
    rewrite as:
    https://ammonite.io/#import&amp;dollar;ivy.
-  
+
    Here is a complete invocation:
-  
+
    {% href url="https://ammonite.io/#import&dollar;ivy"
            label="<code>import &dollar;ivy</code>" %}
 
