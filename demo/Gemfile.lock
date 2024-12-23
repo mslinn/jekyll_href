@@ -22,7 +22,7 @@ PATH
       ipaddress
       jekyll (>= 3.5.0)
       jekyll_all_collections
-      jekyll_plugin_support (>= 1.0.2)
+      jekyll_plugin_support (>= 1.0.3)
       typesafe_enum
 
 GEM
