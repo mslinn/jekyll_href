@@ -28,7 +28,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (6.1.7.8)
+    activesupport (6.1.7.10)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -42,7 +42,8 @@ GEM
     coderay (1.1.3)
     colorator (1.1.0)
     concurrent-ruby (1.3.4)
-    debug (1.9.2)
+    date (3.4.1)
+    debug (1.10.0)
       irb (~> 1.10)
       reline (>= 0.3.8)
     diff-lcs (1.5.1)
@@ -50,30 +51,46 @@ GEM
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0)
     eventmachine (1.2.7)
-    execjs (2.9.1)
+    execjs (2.10.0)
     extras (0.3.0)
       forwardable-extended (~> 2.5)
     facets (3.1.0)
     fastimage (2.3.1)
+    ffi (1.17.0-aarch64-linux-gnu)
+    ffi (1.17.0-aarch64-linux-musl)
+    ffi (1.17.0-arm-linux-gnu)
+    ffi (1.17.0-arm-linux-musl)
     ffi (1.17.0-arm64-darwin)
+    ffi (1.17.0-x86-linux-gnu)
+    ffi (1.17.0-x86-linux-musl)
     ffi (1.17.0-x86_64-darwin)
     ffi (1.17.0-x86_64-linux-gnu)
+    ffi (1.17.0-x86_64-linux-musl)
     forwardable-extended (2.6.0)
-    google-protobuf (4.28.2-arm64-darwin)
+    google-protobuf (4.29.2)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.28.2-x86_64-darwin)
+    google-protobuf (4.29.2-aarch64-linux)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.28.2-x86_64-linux)
+    google-protobuf (4.29.2-arm64-darwin)
+      bigdecimal
+      rake (>= 13)
+    google-protobuf (4.29.2-x86-linux)
+      bigdecimal
+      rake (>= 13)
+    google-protobuf (4.29.2-x86_64-darwin)
+      bigdecimal
+      rake (>= 13)
+    google-protobuf (4.29.2-x86_64-linux)
       bigdecimal
       rake (>= 13)
     http_parser.rb (0.8.0)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
-    io-console (0.7.2)
+    io-console (0.8.0)
     ipaddress (0.8.3)
-    irb (1.14.1)
+    irb (1.14.3)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     jekyll (4.3.4)
@@ -103,7 +120,7 @@ GEM
       nuggets
     jekyll-watch (2.2.1)
       listen (~> 3.0)
-    jekyll_all_collections (0.3.6)
+    jekyll_all_collections (0.3.7)
       jekyll (>= 3.5.0)
       jekyll_draft
       jekyll_plugin_support
@@ -119,10 +136,10 @@ GEM
       jekyll_plugin_logger
       key-value-parser
       pry
-    json (2.7.2)
+    json (2.9.1)
     key-value-parser (0.0.2)
-    kramdown (2.4.0)
-      rexml
+    kramdown (2.5.1)
+      rexml (>= 3.3.9)
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
     language_server-protocol (3.17.0.3)
@@ -135,105 +152,135 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.10)
     mercenary (0.4.0)
     method_source (1.1.0)
-    minitest (5.25.1)
-    nokogiri (1.16.7-arm64-darwin)
+    minitest (5.25.4)
+    nokogiri (1.17.2-aarch64-linux)
       racc (~> 1.4)
-    nokogiri (1.16.7-x86_64-darwin)
+    nokogiri (1.17.2-arm-linux)
       racc (~> 1.4)
-    nokogiri (1.16.7-x86_64-linux)
+    nokogiri (1.17.2-arm64-darwin)
       racc (~> 1.4)
-    nokogumbo (2.0.3)
-      nokogiri (~> 1.8, >= 1.8.4)
+    nokogiri (1.17.2-x86-linux)
+      racc (~> 1.4)
+    nokogiri (1.17.2-x86_64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.17.2-x86_64-linux)
+      racc (~> 1.4)
     nuggets (1.6.1)
     parallel (1.26.3)
-    parser (3.3.5.0)
+    parser (3.3.6.0)
       ast (~> 2.4.1)
       racc
     pathutil (0.16.2)
       forwardable-extended (~> 2.6)
-    pry (0.14.2)
+    pry (0.15.0)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    psych (5.1.2)
+    psych (5.2.2)
+      date
       stringio
     ptools (1.5.0)
     public_suffix (6.0.1)
     racc (1.8.1)
-    rack (3.1.7)
+    rack (3.1.8)
     rainbow (3.1.1)
     rake (13.2.1)
     rb-fsevent (0.11.2)
     rb-inotify (0.11.1)
       ffi (~> 1.0)
-    rdoc (6.7.0)
+    rdoc (6.10.0)
       psych (>= 4.0.0)
-    regexp_parser (2.9.2)
-    reline (0.5.10)
+    regexp_parser (2.9.3)
+    reline (0.6.0)
       io-console (~> 0.5)
-    rexml (3.3.7)
-    rouge (4.4.0)
+    rexml (3.4.0)
+    rouge (4.5.1)
     rspec (3.13.0)
       rspec-core (~> 3.13.0)
       rspec-expectations (~> 3.13.0)
       rspec-mocks (~> 3.13.0)
-    rspec-core (3.13.1)
+    rspec-core (3.13.2)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.3)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
-    rspec-mocks (3.13.1)
+    rspec-mocks (3.13.2)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
-    rspec-support (3.13.1)
-    rubocop (1.66.1)
+    rspec-support (3.13.2)
+    rubocop (1.69.2)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
-      regexp_parser (>= 2.4, < 3.0)
-      rubocop-ast (>= 1.32.2, < 2.0)
+      regexp_parser (>= 2.9.3, < 3.0)
+      rubocop-ast (>= 1.36.2, < 2.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (>= 2.4.0, < 3.0)
-    rubocop-ast (1.32.3)
+      unicode-display_width (>= 2.4.0, < 4.0)
+    rubocop-ast (1.37.0)
       parser (>= 3.3.1.0)
-    rubocop-md (1.2.3)
+    rubocop-md (1.2.4)
       rubocop (>= 1.45)
-    rubocop-performance (1.22.1)
+    rubocop-performance (1.23.0)
       rubocop (>= 1.48.1, < 2.0)
       rubocop-ast (>= 1.31.1, < 2.0)
     rubocop-rake (0.6.0)
       rubocop (~> 1.0)
-    rubocop-rspec (3.0.5)
+    rubocop-rspec (3.3.0)
       rubocop (~> 1.61)
     ruby-progressbar (1.13.0)
     safe_yaml (1.0.5)
-    sass-embedded (1.79.3)
-      google-protobuf (~> 4.27)
-      rake (>= 13)
-    sass-embedded (1.79.3-arm64-darwin)
-      google-protobuf (~> 4.27)
-    sass-embedded (1.79.3-x86_64-darwin)
-      google-protobuf (~> 4.27)
+    sass-embedded (1.83.0-aarch64-linux-gnu)
+      google-protobuf (~> 4.28)
+    sass-embedded (1.83.0-aarch64-linux-musl)
+      google-protobuf (~> 4.28)
+    sass-embedded (1.83.0-arm-linux-gnueabihf)
+      google-protobuf (~> 4.28)
+    sass-embedded (1.83.0-arm-linux-musleabihf)
+      google-protobuf (~> 4.28)
+    sass-embedded (1.83.0-arm64-darwin)
+      google-protobuf (~> 4.28)
+    sass-embedded (1.83.0-x86-linux-gnu)
+      google-protobuf (~> 4.28)
+    sass-embedded (1.83.0-x86-linux-musl)
+      google-protobuf (~> 4.28)
+    sass-embedded (1.83.0-x86_64-darwin)
+      google-protobuf (~> 4.28)
+    sass-embedded (1.83.0-x86_64-linux-gnu)
+      google-protobuf (~> 4.28)
+    sass-embedded (1.83.0-x86_64-linux-musl)
+      google-protobuf (~> 4.28)
     sassc (2.4.0)
       ffi (~> 1.9)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
-    stringio (3.1.1)
+    stringio (3.1.2)
     terminal-table (3.0.2)
       unicode-display_width (>= 1.1.1, < 3)
     typesafe_enum (0.3.1)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.6.0)
-    webrick (1.8.2)
-    zeitwerk (2.6.18)
+    webrick (1.9.1)
+    zeitwerk (2.7.1)
 
 PLATFORMS
+  aarch64-linux
+  aarch64-linux-gnu
+  aarch64-linux-musl
+  arm-linux
+  arm-linux-gnu
+  arm-linux-gnueabihf
+  arm-linux-musl
+  arm-linux-musleabihf
   arm64-darwin
+  x86-linux
+  x86-linux-gnu
+  x86-linux-musl
   x86_64-darwin
-  x86_64-linux
+  x86_64-linux-gnu
+  x86_64-linux-musl
 
 DEPENDENCIES
   debug (>= 1.0.0)
@@ -246,7 +293,6 @@ DEPENDENCIES
   jekyll_href!
   jekyll_plugin_logger
   kramdown
-  nokogumbo (= 2.0.3)
   ptools
   rake
   rspec
@@ -257,4 +303,4 @@ DEPENDENCIES
   rubocop-rspec
 
 BUNDLED WITH
-   2.5.17
+   2.6.0

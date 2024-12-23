@@ -18,7 +18,7 @@ module JekyllSupport
         @link_save = @link
         @text = page_matches.first.title unless @label
       else
-        logger.error { "Error: More than one url matched '#{@path}': #{page_matches.join(', ')}" }
+        logger.error { "Error: More than one url matched '#{@path}':\n  #{page_matches.map(&:url).join("\n  ")}" }
         exit! 2
       end
     end

@@ -91,7 +91,7 @@ module JekyllSupport
         @text = page_matches.first.title unless @label
         Jekyll::Draft.draft? page_matches.first
       else
-        logger.error { "Error: More than one url matched '#{url}': #{page_matches.join(', ')}" }
+        logger.error { "Error: More than one url matched '#{url}'. Collections are: #{page_matches.join(', ')}" }
         exit! 2
       end
     end
