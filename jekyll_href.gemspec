@@ -34,6 +34,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'ipaddress'
   spec.add_dependency 'jekyll', '>= 3.5.0'
   spec.add_dependency 'jekyll_all_collections'
-  spec.add_dependency 'jekyll_plugin_support', '>= 1.0.2'
+  spec.add_dependency 'jekyll_plugin_support', '>= 1.0.3'
   spec.add_dependency 'typesafe_enum'
 end
