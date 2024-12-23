@@ -7,6 +7,7 @@ gem 'ptools'
 
 group :jekyll_plugins do
   gem 'jekyll-assets', git: 'https://github.com/envygeeks/jekyll-assets'
+  gem 'jekyll_draft'
   gem 'jekyll-environment-variables'
   gem 'jekyll_href', path: '../'
   gem 'jekyll_plugin_logger'

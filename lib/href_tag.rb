@@ -1,4 +1,5 @@
 require 'ipaddress'
+require 'jekyll_draft'
 require 'jekyll_all_collections'
 require 'jekyll_plugin_logger'
 require 'jekyll_plugin_support'
@@ -46,12 +47,17 @@ module JekyllSupport
 
       @helper_save = @helper.clone
       globals_update(@helper.argv, linkk) # Sets @link and @text, might clear @follow and @target
-      handle_match(linkk) if @match # Sets @text if not set by now
+      handle_match(linkk) if @match # Sets @text if not set by now, also @link_type, etc.
       raise HrefError, '@link_type was not set' if @link_type == LinkType::UNKNOWN
 
       save_summary
       klass = " class='#{@klass}'" if @klass
       style = " style='#{@style}'" if @style
+      if @link_type == LinkType::LOCAL && local_page_draft?(@link)
+        klass = "draft_link #{klass}".strip
+        return "<span #{klass}#{style} title='This page is not available yet.'>#{@text}</span>" if @mode == 'production'
+      end
+
       "<a href='#{@link}'#{klass}#{style}#{@target}#{@follow}>#{@text}</a>"
     rescue HRefError => e # jekyll_plugin_support handles StandardError
       @logger.error { e.logger_message }
@@ -62,6 +68,32 @@ module JekyllSupport
 
     def to_s
       "On line #{line_number} of #{path}: #{follow} #{match} #{target} #{link} => '#{text}'"
+    end
+
+    def local_page_draft?(url)
+      filetype = File.extname url
+      page_matches = @site.all_collections.map.select { |page| page.url == url }
+      case page_matches.length
+      when 0
+        return false unless %w[htm html md].include? filetype
+
+        msg = "HRef error: No url matches '#{url}', found on line #{@line_number} (after front matter)"
+        @logger.error { msg }
+        abort msg if @die_if_nomatch
+
+        @text = "<i class='h_ref_error'>#{url} is not a valid local page</i>"
+        @link_save = @link = '#'
+        true
+      when 1
+        @link = page_matches.first.url
+        @link = "#{@link}##{@fragment}" if @fragment
+        @link_save = @link
+        @text = page_matches.first.title unless @label
+        Jekyll::Draft.draft? page_matches.first
+      else
+        logger.error { "Error: More than one url matched '#{url}': #{page_matches.join(', ')}" }
+        exit! 2
+      end
     end
 
     JekyllSupport::JekyllPluginHelper.register(self, 'href')

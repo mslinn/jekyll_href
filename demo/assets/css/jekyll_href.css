@@ -1,3 +1,8 @@
+.draft_link {
+  color: blueviolet;
+  text-decoration: underline blue solid;
+}
+
 .h_ref_error {
   background-color: rgb(255, 203, 203);
   border: rgb(155, 141, 141) 2px solid;

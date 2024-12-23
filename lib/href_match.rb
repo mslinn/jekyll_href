@@ -9,7 +9,8 @@ module JekyllSupport
         msg = "HRef error: No url matches '#{@link}', found on line #{@line_number} (after front matter) of #{@path}"
         @logger.error { msg }
         abort msg if @die_if_nomatch
-        @text = "<i class='h_ref_error'>#{@link} is not available</i>"
+
+        @text = "<i class='h_ref_error'>#{@link} is not a valid local page</i>"
         @link_save = @link = '#'
       when 1
         @link = page_matches.first.url
@@ -17,7 +18,7 @@ module JekyllSupport
         @link_save = @link
         @text = page_matches.first.title unless @label
       else
-        logger.error { "Error: More than one url matched '#{@path}': #{url_matches.join(', ')}" }
+        logger.error { "Error: More than one url matched '#{@path}': #{page_matches.join(', ')}" }
         exit! 2
       end
     end

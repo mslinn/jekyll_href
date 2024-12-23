@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.2.13 / 2024-12-23
+
+* Fixed reference to undefined `url_matches`.
+* References that point to draft pages are rendered differently in production mode,
+  and an info-level log message is generated.
+
+
 ## 1.2.12 / 2024-08-17
 
 * Enhanced `match` so that if no label parameter is provided, the title of the matched web page is used.

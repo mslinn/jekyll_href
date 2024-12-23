@@ -29,7 +29,7 @@ module JekyllSupport
         summary_exclude: @summary_exclude,
         summary_href:    @summary_href
       )
-      if @link_save.start_with? 'http'
+      if @link_type == LinkType::EXTERNAL
         add_global_link_for_page mini_href
       else
         add_local_link_for_page mini_href

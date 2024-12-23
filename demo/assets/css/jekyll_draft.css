@@ -1,0 +1,33 @@
+.draftPost {
+  text-align: center;
+  font-style: italic;
+  width: 15ch;
+  position: absolute;
+  top: 7px;
+  left: 0;
+}
+
+.jekyll_draft {
+  background-color: #fefeab;
+  border: solid lightgray thin;
+  border-radius: 4pt;
+  padding-bottom: 2pt;
+  padding-left: 4pt;
+  padding-right: 4pt;
+  padding-top: 2pt;
+}
+
+.watermarked {
+  background-image: url("
+    data:image/svg+xml;
+    utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='300px' width='300px'>
+      <text transform='translate(20, 300) rotate(-45)'
+        fill='gray'
+        font-size='50'
+        font-family='Arial, Helvetica, sans-serif'
+        opacity='0.2'>
+          Draft
+      </text>
+    </svg>
+  ");
+}
