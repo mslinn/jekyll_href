@@ -5,6 +5,14 @@ layout: default
 link: '/blog/'
 title: 'Yay, Tests!'
 ---
+<!-- #region Linking To Draft Pages -->
+<h2 id="">Linking To Draft Pages</h2>
+<p>
+  {% href match label='This should cause a error message or die in production mode.' url='test-draft.html' %}
+</p>
+<!-- endregion -->
+
+
 <!-- #region Passing Liquid Variables -->
 <h2 id="local">Passing Liquid Variables</h2>
 {% href url="{{page.guitar_pro_file}}" Star Wars Cantina (Guitar Pro) %}

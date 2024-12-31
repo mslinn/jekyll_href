@@ -6,6 +6,7 @@ gem 'jekyll', '~> 4.3.2'
 gem 'ptools'
 
 group :jekyll_plugins do
+  gem 'jekyll_all_collections'
   gem 'jekyll-assets', git: 'https://github.com/envygeeks/jekyll-assets'
   gem 'jekyll_draft'
   gem 'jekyll-environment-variables'
