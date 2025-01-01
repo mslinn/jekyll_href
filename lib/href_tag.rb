@@ -52,7 +52,7 @@ module JekyllSupport
 
       klass = " class='#{@klass}'" if @klass
       style = " style='#{@style}'" if @style
-      page = ::Jekyll::Draft.page_match(@link)
+      page  = ::Jekyll::Draft.page_match(@link)
       if @link_type == LinkType::LOCAL && ::Jekyll::Draft.draft?(page) && @mode == ('production')
         klass = "draft_link #{@klass}".strip
         raise HrefError,

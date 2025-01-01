@@ -312,9 +312,10 @@ Expands to:
 
    Here is a complete invocation:
 
+   ```text
    {% href url="https://ammonite.io/#import&dollar;ivy"
            label="<code>import &dollar;ivy</code>" %}
-
+   ```
 
 ## References Generation
 
