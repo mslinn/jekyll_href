@@ -24,11 +24,11 @@ exclude:  # Wildcards are not supported yet https://github.com/jekyll/jekyll-wat
   - README.md
 href:
   die_on_href_error: false # Default value is false
-  die_on_nomatch: true     # Default value is false
-  pry_on_href_error: true  # Default value is false
+  die_on_nomatch: false     # Default value is false
+  pry_on_href_error: false  # Default value is false
 href_summary:
   die_on_href_error: false # Default value is false
-  pry_on_href_error: true  # Default value is false
+  pry_on_href_error: false  # Default value is false
 ignore_theme_config: true
 jekyll_bootstrap5_tabs:
   - pretty: true

@@ -52,11 +52,13 @@ module JekyllSupport
 
       klass = " class='#{@klass}'" if @klass
       style = " style='#{@style}'" if @style
-      page  = ::Jekyll::Draft.page_match(@link)
-      if @link_type == LinkType::LOCAL && ::Jekyll::Draft.draft?(page) && @mode == ('production')
-        klass = "draft_link #{@klass}".strip
-        raise HrefError,
-              "<span class='#{klass}'#{style}><span class='draft_title'>#{page.title}</span> <span class='draft_label'>#{@text}</span></span>"
+      if @link_type == LinkType::LOCAL && @mode == 'production'
+        page = ::Jekyll::Draft.page_match(@link)
+        if ::Jekyll::Draft.draft?(page)
+          klass = "draft_link #{@klass}".strip
+          raise HrefError,
+                "<span class='#{klass}'#{style}><span class='draft_title'>#{page.title}</span> <span class='draft_label'>#{@text}</span></span>"
+        end
       end
 
       "<a href='#{@link}'#{klass}#{style}#{@target}#{@follow}>#{@text}</a>"

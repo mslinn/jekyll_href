@@ -16,7 +16,7 @@ module JekyllSupport
         return nil, error_no_uri
       end
       [linkk, nil]
-    rescue HRefError => e
+    rescue HrefError => e
       [nil, e]
     end
 
@@ -26,7 +26,7 @@ module JekyllSupport
           <pre>{% href #{@argument_string.strip} %}</pre>
       END_MESSAGE
       @logger.error { JekyllSupport::JekyllPluginHelper.remove_html_tags msg.strip }
-      "<div class='h_ref_error'>HRefError: #{msg}</div>"
+      "<div class='h_ref_error'>HrefError: #{msg}</div>"
     end
 
     # Sets @follow, @helper, @match, @path, @target, @url, @hyphenation

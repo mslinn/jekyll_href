@@ -39,7 +39,7 @@ module JekyllSupport
         #{local_refs}
         #{@helper.attribute if @helper.attribution && have_refs}
       END_RENDER
-    rescue HRefError => e # jekyll_plugin_support handles StandardError
+    rescue HrefError => e # jekyll_plugin_support handles StandardError
       @logger.error { e.logger_message }
       exit! 1 if @die_on_demo_block_error
 

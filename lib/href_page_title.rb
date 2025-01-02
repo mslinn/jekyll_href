@@ -18,13 +18,16 @@ module JekyllSupport
     # Uses the linked page title as the link text
     def handle_page_title(linkk)
       @follow = @target = ''
-      raise HRefError, 'href tags with page_title require local links.' unless @link_type == LinkType::LOCAL
+      unless @link_type == LinkType::LOCAL
+        puts 'Oops'
+        raise HrefError, 'href tags with page_title require local links.'
+      end
 
       page = find_page linkk
       unless page
         msg = "There is no page at path #{linkk}"
-        @text = "<div class='href_error'>HRefError: #{msg}</div>\n<pre>  {% href #{@argument_string.strip} %}</pre>"
-        raise HRefError, msg
+        @text = "<div class='href_error'>HrefError: #{msg}</div>\n<pre>  {% href #{@argument_string.strip} %}</pre>"
+        raise HrefError, msg
       end
       @text = @label = page.title
       handle_empty_text linkk if @text.to_s.empty?
