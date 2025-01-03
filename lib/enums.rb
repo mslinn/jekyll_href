@@ -2,6 +2,7 @@ require 'typesafe_enum'
 
 class LinkType < TypesafeEnum::Base
   new :EXTERNAL
+  new :FILE
   new :FRAGMENT
   new :LOCAL
   new :MAILTO

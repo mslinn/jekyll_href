@@ -83,8 +83,10 @@ module JekyllSupport
         return
       end
 
-      @link_type = if linkk.start_with? 'http'
+      @link_type = if linkk.start_with? 'http:', 'https:'
                      LinkType::EXTERNAL
+                   elsif linkk.start_with? 'file:'
+                     LinkType::FILE
                    elsif linkk.start_with? '#'
                      LinkType::FRAGMENT
                    else
@@ -101,7 +103,7 @@ module JekyllSupport
                 linkk
               end
       @link_save = @link
-      return if @link_type == LinkType::EXTERNAL
+      return if @link_type == LinkType::EXTERNAL || @link_type == LinkType::FILE
 
       @follow = ''
       @target = '' unless @blank
