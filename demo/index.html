@@ -5,8 +5,16 @@ layout: default
 link: 'blog/index.html'
 title: 'Yay, Tests!'
 ---
+<!-- #region Linking To Individual Page -->
+<h2 id="ind">Linking To Individual Page</h2>
+<p>
+  {% href match url='individual.html' %}
+</p>
+<!-- endregion -->
+
+
 <!-- #region Linking To Draft Pages -->
-<h2 id="">Linking To Draft Pages</h2>
+<h2 id="draft_death">Linking To Draft Pages</h2>
 <p>
   {% href match label='This should cause a error message or die in production mode.' url='test-draft.html' %}
 </p>

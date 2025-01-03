@@ -4,7 +4,8 @@
 
 * Fixed reference to undefined `url_matches`.
 * References that point to draft pages are rendered differently in production mode,
-  and an info-level log message is generated.
+  and an info-level log message is generated
+* The `match` option now searches all documents and pages, not just those in collections.
 
 
 ## 1.2.12 / 2024-08-17

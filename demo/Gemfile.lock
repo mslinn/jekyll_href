@@ -21,8 +21,8 @@ PATH
     jekyll_href (1.2.13)
       ipaddress
       jekyll (>= 3.5.0)
-      jekyll_all_collections
-      jekyll_plugin_support (>= 1.0.3)
+      jekyll_all_collections (>= 0.3.8)
+      jekyll_plugin_support (>= 1.1.0)
       typesafe_enum
 
 GEM
@@ -295,4 +295,4 @@ DEPENDENCIES
   rubocop-rspec
 
 BUNDLED WITH
-   2.6.0
+   2.6.2
