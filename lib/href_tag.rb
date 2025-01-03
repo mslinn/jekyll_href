@@ -53,7 +53,8 @@ module JekyllSupport
       klass = " class='#{@klass}'" if @klass
       style = " style='#{@style}'" if @style
       if @link_type == LinkType::LOCAL && @mode == 'production' && @label_source != LabelSource::FROM_IMPLICIT_LABEL
-        page = ::Jekyll::Draft.page_match @link
+        path, _fragment = @link.split('#')
+        page = ::Jekyll::Draft.page_match path
         if ::Jekyll::Draft.draft? page
           klass = "draft_link #{@klass}".strip
           raise HrefError,
