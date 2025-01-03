@@ -2,10 +2,13 @@ module JekyllSupport
   class HRefTag
     private
 
+    # This is a computationally intense method, and really slows down site generation.
+    # TODO: implement cache in front of sorted objects containing paths and page reference
+    # This cache is also needed by page_match in jekyll_draft
     def compute_link_and_text
       page_matches = @site.all_documents
                           .select { |page| page.url&.include? @path }
-                          .reject { |x| x.content.include? '<meta http-equiv="refresh" content="0; url=' } || []
+                          .reject { |x| x.path == 'redirect.html' } || []
       case page_matches.length
       when 0
         msg = "HRef error: No url matches '#{@link}', found on line #{@line_number} (after front matter) of #{@path}"
