@@ -20,7 +20,7 @@
       ],
       "cwd": "${workspaceRoot}/demo",
       "debugPort": "0",
-      "env":{"JEKYLL_ENV": "production"},
+      "env":{"JEKYLL_ENV": "development"},
       "name": "Debug Demo",
       "request": "launch",
       "script": "${workspaceRoot}/binstub/jekyll",

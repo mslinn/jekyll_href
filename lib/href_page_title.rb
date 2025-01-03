@@ -26,7 +26,7 @@ module JekyllSupport
       page = find_page linkk
       unless page
         msg = "There is no page at path #{linkk}"
-        @text = "<div class='href_error'>HrefError: #{msg}</div>\n<pre>  {% href #{@argument_string.strip} %}</pre>"
+        @text = "<div class='h_ref_error'>HrefError: #{msg}</div>\n<pre>  {% href #{@argument_string.strip} %}</pre>"
         raise HrefError, msg
       end
       @text = @label = page.title
