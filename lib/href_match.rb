@@ -3,7 +3,9 @@ module JekyllSupport
     private
 
     def compute_link_and_text
-      page_matches = @site.all_documents.map.select { |page| page.url&.include? @path } || []
+      page_matches = @site.all_documents
+                          .select { |page| page.url&.include? @path }
+                          .reject { |x| x.content.include? '<meta http-equiv="refresh" content="0; url=' } || []
       case page_matches.length
       when 0
         msg = "HRef error: No url matches '#{@link}', found on line #{@line_number} (after front matter) of #{@path}"
