@@ -52,7 +52,7 @@ module JekyllSupport
 
       klass = " class='#{@klass}'" if @klass
       style = " style='#{@style}'" if @style
-      if @link_type == LinkType::LOCAL && @mode == ('production')
+      if @link_type == LinkType::LOCAL && @mode == 'production' && @label_source != LabelSource::FROM_IMPLICIT_LABEL
         page = ::Jekyll::Draft.page_match @link
         if ::Jekyll::Draft.draft? page
           klass = "draft_link #{@klass}".strip
@@ -72,32 +72,6 @@ module JekyllSupport
     def to_s
       "On line #{line_number} of #{path}: #{follow} #{match} #{target} #{link} => '#{text}'"
     end
-
-    # def local_page_draft?(url)
-    #   filetype = File.extname url
-    #   page_matches = @site.all_collections.map.select { |page| page.url == url }
-    #   case page_matches.length
-    #   when 0
-    #     return false unless %w[htm html md].include? filetype
-
-    #     msg = "HRef error: No url matches '#{url}', found on line #{@line_number} (after front matter)"
-    #     @logger.error { msg }
-    #     abort msg if @die_if_nomatch
-
-    #     @text = "<i class='h_ref_error'>#{url} is not a valid local page</i>"
-    #     @link_save = @link = '#'
-    #     true
-    #   when 1
-    #     @link = page_matches.first.url
-    #     @link = "#{@link}##{@fragment}" if @fragment
-    #     @link_save = @link
-    #     @text = page_matches.first.title unless @label
-    #     Jekyll::Draft.draft? page_matches.first
-    #   else
-    #     logger.error { "Error: More than one url matched '#{url}, mentioned in #{@path}'.\nCollections are: #{page_matches.join(', ')}" }
-    #     exit! 2
-    #   end
-    # end
 
     JekyllSupport::JekyllPluginHelper.register(self, 'href')
   end
