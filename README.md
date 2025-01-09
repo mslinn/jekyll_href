@@ -255,9 +255,13 @@ Both of the following produce the same output:
 ### `match`
 
 `match` will attempt to match the url fragment (specified as a regex) to a URL in any collection.
-If multiple documents have matching URL an error is thrown.
+If multiple documents have matching URLs an error is thrown.
 The `match` option looks through the pages collection for a URL with containing the provided substring.
 `Match` implies `follow` and `notarget`.
+
+```text
+{% href match url="page6.html" %}
+```
 
 
 ### `notarget`
