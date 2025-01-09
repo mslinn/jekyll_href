@@ -1,36 +1,75 @@
 # `Jekyll_href` [![Gem Version](https://badge.fury.io/rb/jekyll_href.svg)](https://badge.fury.io/rb/jekyll_href)
 
-`Jekyll_href` is a Jekyll plugin that provides a new Liquid tag: `href`.
-It provides a convenient way to generate formatted and clickable URIs.
-The Liquid tag generates an `a href` HTML tag,
-which by default contains `target="_blank"` and `rel="nofollow"`.
+`Jekyll_href` is a flexible Jekyll plugin that is designed to minimize the work of creating and maintaining a Jekyll website.
 
-If the url starts with `http`, or the `match` keyword is specified:
 
-- The url will open in a new tab or window.
-- The url will include `rel="nofollow"` for SEO purposes.
+## Features
+
+1. It provides a new Liquid tag: `href` with default options such as generating `target="_blank"` and `rel="nofollow"`
+   that can be overridden.
+2. The `match` keyword causes the title of the linked Jekyll page to be used as the link text;
+  an error is displayed if the page does not exist.
+3. Provides a convenient syntax for generating links with monospaced text that display the URL being linked to.
+4. Can generate soft hyphens (&amp;shy; and &lt;wbr>).
+5. If the url starts with `http`, or the `match` keyword is specified:
+
+    a. The url will open in a new tab or window.
+
+    b. The url will include `rel="nofollow"` for SEO purposes.
+
+6. URLs can be composed from environment variable references.
+7. The href tags in a page can be summarized by the `href_summary` tag.
 
 CAUTION: if linked text contains a single or double quote,
 you will see the error message: `Liquid Exception: Unmatched quote`.
 Instead, use one of the following:
 
-- `&apos;` (&apos;)
-- `&quot;` (&quot;)
-- `&lsquo;` (&lsquo;)
-- `&rsquo;` (&rsquo;)
-- `&ldquo;` (&ldquo;)
-- `&rdquo;` (&rdquo;)
+ <ul style="column-count: 3; list-style-type: none; padding: 0; margin: 0 2em;">
+    <li><code>&amp;apos;</code> (&apos;)</li>
+    <li><code>&amp;quot;</code> (&quot;)</li>
+    <li><code>&amp;lsquo;</code> (&lsquo;)</li>
+    <li><code>&amp;rsquo;</code> (&rsquo;)</li>
+    <li><code>&amp;ldquo;</code> (&ldquo;)</li>
+    <li><code>&amp;rdquo;</code> (&rdquo;)</li>
+  </ul>
+
+
+## Installation
+
+Add the following to your Jekyll website's `Gemfile`, within the `jekyll_plugins` group:
+
+```text
+group :jekyll_plugins do
+  gem 'jekyll_href'
+end
+```
+
+And then execute:
+
+```shell
+$ bundle
+```
 
 
 ## Configuration
 
 In `_config.yml`, if a section called `plugin-vars` exists,
 then its name/value pairs are available for substitution.
+When referenced from a web page, the names must be enclosed within {{double curly braces}} in order for substitution to occur.
 
 ```yaml
 plugin-vars:
   django-github: 'https://github.com/django/django/blob/3.1.7'
   django-oscar-github: 'https://github.com/django-oscar/django-oscar/blob/3.0.2'
+```
+
+Use it as shown below. The lines have been folded for legibility; whitespace formatting is optional:
+
+```text
+{% href
+  label="django.core.management.execute_from_command_line"
+  url="{{django-github}}/django/core/management/__init__.py#L398-L401"
+%}
 ```
 
 The following sections and settings can be set:
@@ -46,55 +85,108 @@ href_summary:
   pry_on_href_error: true  # Default value is false
 ```
 
+
+## Common Usages
+
+1. For local links (links within a Jekyll website), the best way to make them is with an incantation like this:
+   ```text
+   {% href match url='trust_winning.html' %}{% endraw %}
+   ```
+
+   The above uses the page title of <code>trust_winning.html</code> as the link text;
+   an error is displayed if the page does not exist.
+   It renders like this: {% href match url='trust_winning.html' %}.
+
+2. To display external links with a monospaced font, and use the URL as the link text, use an incantation like this:
+   ```text
+   {% href url='mslinn.com' %}{% endraw %}
+   ```
+   The above renders as: <a href="https://mslinn.com"><code>mslinn.com</code></a>.
+
+
 ## Suppprted Syntaxes
 
 Square brackets in the [BNF notation](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form)
 below denote optional keyword parameters, and are not meant to be typed.
+Additional usage examples follow.
 
-## Syntax 1 (most verbose, but provides best results and enables implicit matching title)
+
+## Syntax 1: Mmost verbose
+
+This is the most verbose syntax, but it provides most reliable results.
+If `match` is specified, the title from the matching page is used as the link
+text unless overridden by the value of the `label` parameter.
+
+Options are:
 
 ```html
-{% href [match | [follow] [blank|notarget] [summary_exclude]] url="local_page.html" label="text to display" %}
+{% href [match | [follow] [blank|notarget] [summary_exclude]]
+  label="text to display"
+  url="local_page.html"
+%}
 ```
 
 1. The url can be #relative, a page in the Jekyll website, or prefaced with a protocol, such as `https:`
-2. If `match` is provided, and `label` is not provided, then the title of the matched page is used as the label.
+2. Embedded newlines within the label are legal.
+3. The `url` and `label` parameter values can be enclosed in single or double quotes.
+4. If `match` is provided, and `label` is not provided, then the title of the matched page is used as the label.
 
 
-## Syntax 2 (requires `url` without embedded spaces)
+## Syntax 2: Easiest to Type
+
+This syntax uses positional parameters instead of labeled parameters.
+This syntax can only be used if the url does not contain embedded spaces.
+You can write the tag on one line, or several lines as shown.
 
 ```html
-{% href [match | [follow] [blank|notarget] [page_title] [summary_exclude]] url text to display %}
+{% href [match | [follow] [blank|notarget] [page_title] [summary_exclude]]
+  url
+  text to display
+%}
 ```
 
-1. The url must be a single token, without embedded spaces.
+1. Embedded newlines within the tag are legal.
 2. The url need not be enclosed in quotes.
+3. The `match` keyword causes the title of the linked page to be used as the link text unless the `label` option is provided.
+4. If `url` is not provided, then the text to display is assumed to be a URI,
+   as described in syntax 4, and is formatted into a clickable link.
 
 
-## Syntax 3 (always works)
+## Syntax 3: `url` Option
 
-This syntax is recommended when the URL contains a colon (:).
+This syntax is recommended when the URL contains a problematic character,
+such as a colon (`:`) or space, and you are too lazy to type out label=.
+Contrast with the explicit `label` parameter syntax, described next.
 
 ```html
 {% href [match | [follow] [blank|notarget]] [page_title] [summary_exclude]
-  url="http://link.com with space.html" some text %}
+  url="http://link.com with space.html"
+  some text
+%}
 ```
 
 1. Each of the above examples contain an embedded newline, which is legal.
 2. The url must be enclosed by either single or double quotes.
 
 
-## Syntax 4 (implicit URL)
+## Syntax 4 Explicit `label` Option
+
+This syntax is recommended when the linked text contains an option keyword, such as `summary` or `label`.
+It can be combined with an explicit url, described above.
 
 ```html
-{% href [match | [follow] [blank|notarget] [page_title] [summary_exclude]] [shy|wbr] www.domain.com %}
+{% href [match | [follow] [blank|notarget] [page_title] [summary_exclude]] [shy|wbr]
+  www.domain.com
+%}
 ```
 
-The URI provided, for example `www.domain.com`,
-is used to form the URL by prepending `https://`,
-in this case the result would be `https://www.domain.com`.
-The displayed URI is enclosed in `<code></code>`,
-so the resulting text is `<code>www.domain.com</code>`.
+1. Embedded newlines within the tag are legal.
+
+2. The URI provided, for example `www.domain.com`,
+   is used to form the URL by prepending `https://`,
+   in this case the result would be `https://www.domain.com`.
+   The displayed URI is enclosed in `<code></code>`,
+   so the resulting text is `<code>www.domain.com</code>`.
 
 
 ## Environment Variable Expansion
@@ -103,21 +195,18 @@ URLs can contain environment variable references.
 For example, if `$domain`, `$uri` and `$USER` are environment variables:
 
 ```html
+Using keyword options:
 {% href http://$domain.html some text %}
 
+Using the url option and positional link text:
 {% href url="$uri" some text %}
 
+Using positional parameters for the URL and the link text:
 {% href https://mslinn.html <code>USER=$USER</code> %}
 ```
 
 
 ## Optional Parameters
-
-### `page_title`
-
-For local pages, use the linked page title as the link text.
-This value overrides any provided link text.
-
 
 ### `blank`
 
@@ -176,6 +265,12 @@ The `match` option looks through the pages collection for a URL with containing 
 To suppress the `target` attribute, preface the link with the word `notarget`.
 The `blank` and `notarget` parameters are mutually exclusive.
 If both are specified, `blank` prevails.
+
+
+### `page_title`
+
+For local pages, use the linked page title as the link text.
+This value overrides any provided link text.
 
 
 ### `shy`
@@ -253,7 +348,7 @@ Expands to:
 ```
 
 
-## Examples
+## Usage Examples
 
 1. Generates `nofollow` and `target` attributes:
 
@@ -400,23 +495,6 @@ You can read about the `attribution` option [here](https://www.mslinn.com/jekyll
 
 More information is available on my website about
 [my Jekyll plugins](https://www.mslinn.com/blog/2020/10/03/jekyll-plugins.html).
-
-
-## Installation
-
-Add this line to your Jekyll website's `Gemfile`, within the `jekyll_plugins` group:
-
-```ruby
-group :jekyll_plugins do
-  gem 'jekyll_href'
-end
-```
-
-And then execute:
-
-```shell
-$ bundle
-```
 
 
 ## Generated HTML
