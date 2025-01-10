@@ -468,7 +468,7 @@ Given these `href` and `href_summary` usages in a web page:
 {% href_summary attribution include_local %}
 ```
 
-Then the generated HTML looks like the following:
+The generated HTML looks like the following:
 
 ```html
 <h2 id="reference">References</h2>
