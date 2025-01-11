@@ -9,13 +9,15 @@ title: 'Yay, Tests!'
 <h2 id="ind">Linking To Individual Page</h2>
 <p>
   {% href match url='individual.html' %}
-  {% href match url='test-draft.html' %}
 </p>
 <!-- endregion -->
 
 
 <!-- #region Linking To Draft Pages -->
 <h2 id="draft_death">Linking To Draft Pages</h2>
+<p>
+  {% href match url='test-draft.html' %}
+</p>
 <p>
   {% href match label='This should cause a error message or die in production mode.' url='test-draft.html' %}
 </p>
