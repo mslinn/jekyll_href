@@ -29,7 +29,8 @@ module JekyllSupport
         @text = "<div class='h_ref_error'>HrefError: #{msg}</div>\n<pre>  {% href #{@argument_string.strip} %}</pre>"
         raise HrefError, msg
       end
-      @text = @label = page.title
+      @text = ''
+      @label = page.title
       handle_empty_text linkk if @text.to_s.empty?
       @label
     end

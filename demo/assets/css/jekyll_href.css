@@ -3,7 +3,7 @@
   text-decoration: underline blue solid;
 }
 
-.h_ref_error {
+.href_error, .h_ref_error {
   background-color: rgb(255, 203, 203);
   border: rgb(155, 141, 141) 2px solid;
   border-radius: 4pt;
@@ -13,4 +13,9 @@
   font-size: 10pt;
   line-height: 150%;
   padding: 2pt 4pt 2pt 4pt;
+}
+
+.not_public_yet {
+  color: black;
+  background-color: rgb(255, 203, 203);
 }

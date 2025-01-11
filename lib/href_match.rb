@@ -11,11 +11,11 @@ module JekyllSupport
                           .reject { |x| x.path == 'redirect.html' } || []
       case page_matches.length
       when 0
-        msg = "HRef error: No url matches '#{@link}', found on line #{@line_number} (after front matter) of #{@path}"
+        msg = "HRef error: No url matches '#{@path}', found on line #{@line_number} (after front matter) of #{@path}"
         @logger.error { msg }
         abort msg if @die_if_nomatch
 
-        @text = "<i class='h_ref_error'>#{@link} is not a valid local page</i>"
+        @text = "<i class='not_public_yet'><code>#{@path}</code> is not a public page yet</i>"
         @link_save = @link = '#'
       when 1
         @link = page_matches.first.url
