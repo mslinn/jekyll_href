@@ -52,7 +52,11 @@ module JekyllSupport
 
       klass = " class='#{@klass}'" if @klass
       style = " style='#{@style}'" if @style
-      if @link_type == LinkType::LOCAL && @mode == 'production' && @label_source != LabelSource::FROM_IMPLICIT_LABEL
+
+      if @link_type == LinkType::LOCAL &&
+         @mode == 'production' &&
+         @label_source != LabelSource::FROM_IMPLICIT_LABEL &&
+         @link != '#'
         path, _fragment = @link.split('#')
         page = ::Jekyll::Draft.page_match path
         if ::Jekyll::Draft.draft? page
