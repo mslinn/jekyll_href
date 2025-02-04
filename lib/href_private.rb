@@ -32,7 +32,6 @@ module JekyllSupport
     # Sets @follow, @helper, @match, @path, @target, @url, @hyphenation
     def globals_initial
       @path = @page['path']
-      AllCollectionsHooks.compute @site
       @hyphenation      = Hyphenation::NONE
 
       @blank            = @helper.parameter_specified? 'blank'
