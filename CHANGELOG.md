@@ -1,11 +1,18 @@
 # Change Log
 
+## 1.3.0 / 2025/-02-07
+
+* The `match` option now searches all files, not just pages in collections.
+* A binary search is now used.
+* Launch configurations are now provided for `production` and `development` modes of the demo website.
+* Renamed `HRef_error` to `HrefError`.
+
+
 ## 1.2.13 / 2024-12-23
 
 * Fixed reference to undefined `url_matches`.
 * References that point to draft pages are rendered differently in production mode,
   and an info-level log message is generated
-* The `match` option now searches all documents and pages, not just those in collections.
 
 
 ## 1.2.12 / 2024-08-17
