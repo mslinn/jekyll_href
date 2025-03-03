@@ -1,16 +1,16 @@
 source 'https://rubygems.org'
 
 gem 'ffi'
-gem 'jekyll', '~> 4.3.4'
+# gem 'jekyll', '~> 4.4.1'
 gem 'ptools'
 
 group :jekyll_plugins do
-  gem 'jekyll_all_collections'
   gem 'jekyll-assets', git: 'https://github.com/envygeeks/jekyll-assets'
   gem 'jekyll_draft'
   gem 'jekyll-environment-variables'
   gem 'jekyll_href', path: '../'
-  gem 'jekyll_plugin_logger'
+  # gem 'jekyll_plugin_logger'
+  gem 'jekyll_plugin_support'
   gem 'jekyll-tagging'
   gem 'kramdown'
 end

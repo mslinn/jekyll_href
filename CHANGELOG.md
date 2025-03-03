@@ -1,5 +1,12 @@
 # Change Log
 
+## 3.0.0 / In process
+
+* Numbered as v3.0.0 to match the `jekyll_plugin_support` version number.
+* Now requires [Jekyll 4.4.1](https://jekyllrb.com/news/2025/01/29/jekyll-4-4-1-released/) or later,
+  and Ruby 3.2.0 or later
+
+
 ## 1.3.0 / 2025/-02-07
 
 * The `match` option now searches all files, not just pages in collections.

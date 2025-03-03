@@ -1,6 +1,5 @@
 require 'ipaddress'
 require 'jekyll_draft'
-require 'jekyll_all_collections'
 require 'jekyll_plugin_logger'
 require 'jekyll_plugin_support'
 require 'liquid'
