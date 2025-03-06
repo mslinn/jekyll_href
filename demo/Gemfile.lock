@@ -66,19 +66,19 @@ GEM
     ffi (1.17.1-x86_64-linux-gnu)
     ffi (1.17.1-x86_64-linux-musl)
     forwardable-extended (2.6.0)
-    google-protobuf (4.29.3)
+    google-protobuf (4.30.0)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.29.3-aarch64-linux)
+    google-protobuf (4.30.0-aarch64-linux)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.29.3-arm64-darwin)
+    google-protobuf (4.30.0-arm64-darwin)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.29.3-x86_64-darwin)
+    google-protobuf (4.30.0-x86_64-darwin)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.29.3-x86_64-linux)
+    google-protobuf (4.30.0-x86_64-linux)
       bigdecimal
       rake (>= 13)
     http_parser.rb (0.8.0)
@@ -120,14 +120,9 @@ GEM
       nuggets
     jekyll-watch (2.2.1)
       listen (~> 3.0)
-    jekyll_all_collections (0.4.0)
+    jekyll_draft (2.1.0)
       jekyll (>= 3.5.0)
-      jekyll_draft
-      jekyll_plugin_support
-      sorted_set
-    jekyll_draft (3.0.0)
-      jekyll (>= 4.4.0)
-      jekyll_plugin_support (>= 3.0.0)
+      jekyll_plugin_support (>= 1.1.0)
     jekyll_plugin_logger (2.1.2)
       bump
       jekyll (>= 3.5.0)
@@ -137,6 +132,7 @@ GEM
       jekyll_plugin_logger
       key-value-parser
       pry
+      sorted_set
     json (2.10.1)
     key-value-parser (0.0.2)
     kramdown (2.5.1)
@@ -190,7 +186,7 @@ GEM
     ptools (1.5.0)
     public_suffix (6.0.1)
     racc (1.8.1)
-    rack (3.1.10)
+    rack (3.1.11)
     rainbow (3.1.1)
     rake (13.2.1)
     rb-fsevent (0.11.2)
@@ -217,7 +213,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
     rspec-support (3.13.2)
-    rubocop (1.73.1)
+    rubocop (1.73.2)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -299,9 +295,9 @@ DEPENDENCIES
   jekyll-assets!
   jekyll-environment-variables
   jekyll-tagging
-  jekyll_all_collections
   jekyll_draft
   jekyll_href!
+  jekyll_plugin_support
   kramdown
   ptools
   rake
@@ -313,4 +309,4 @@ DEPENDENCIES
   rubocop-rspec
 
 BUNDLED WITH
-   2.6.5
+   2.5.22
