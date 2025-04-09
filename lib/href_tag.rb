@@ -45,6 +45,9 @@ module JekyllSupport
       @helper_save = @helper.clone
       globals_update(@helper.argv, linkk) # Sets @link and @text, might clear @follow and @target
       handle_match(linkk) if @match # Sets @text if not set by now, also @link_type, etc.
+
+      @link.gsub! ' ', '%20'
+
       raise HrefError, '@link_type was not set' if @link_type == LinkType::UNKNOWN
 
       save_summary

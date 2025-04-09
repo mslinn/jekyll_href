@@ -5,6 +5,14 @@ layout: default
 link: 'blog/index.html'
 title: 'Yay, Tests!'
 ---
+<!-- #region URLs Containing Embedded Spaces -->
+<h2 id="ind">URLs Containing Embedded Spaces</h2>
+<p>
+  {% href match url='spaces.html' %}<br>
+  {% href label='External link with embedded spaces' url='https://www.mslinn.com/songs/pdfs/Slinn, Mike - One Year Older sheet.pdf' %}
+</p>
+<!-- endregion -->
+
 <!-- #region Linking To Individual Page -->
 <h2 id="ind">Linking To Individual Page</h2>
 <p>
