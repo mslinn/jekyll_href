@@ -10,14 +10,11 @@
         "--drafts",
         "--force_polling",
         "--future",
-        "--host",
-        "0.0.0.0",
+        "--host", "0.0.0.0",
         "--incremental",
         "--livereload",
-        "--livereload_port",
-        "35744",
-        "--port",
-        "4444",
+        "--livereload_port", "35744",
+        "--port", "4444",
         "--strict_front_matter",
         "--unpublished"
       ],
@@ -60,28 +57,29 @@
     },
     {
       "args": [
-        "-I",
-        "${workspaceRoot}"
+        "-I", "${workspaceRoot}/lib",
+        "-I", "${workspaceRoot}/spec",
+        "-P", "${workspaceRoot}/spec/**/*_spec.rb"
       ],
+      "askParameters": false,
       "debugPort": "0",
       "name": "RSpec - all",
       "request": "launch",
       "script": "${workspaceRoot}/binstub/rspec",
       "type": "rdbg",
-      "useBundler": true,
     },
     {
       "args": [
-        "-I",
-        "${workspaceRoot}",
+        "-I", "${workspaceRoot}/lib",
+        "-I", "${workspaceRoot}/spec",
         "${file}"
       ],
       "debugPort": "0",
-      "name": "RSpec - active spec file only",
+      "name": "RSpec - active spec only",
       "request": "launch",
       "script": "${workspaceRoot}/binstub/rspec",
       "type": "rdbg",
       "useBundler": true,
-    }
+    },
   ]
 }
