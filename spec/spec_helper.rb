@@ -3,18 +3,18 @@ require 'jekyll_plugin_logger'
 require 'liquid'
 require 'fileutils'
 require 'yaml'
-require_relative "../lib/jekyll_href"
+require_relative '../lib/jekyll_href'
 
 RSpec.configure do |config|
   # config.order = "random"
 
   # See https://relishapp.com/rspec/rspec-core/docs/command-line/only-failures
-  config.example_status_persistence_file_path = "../spec/status_persistence.txt"
+  config.example_status_persistence_file_path = '../spec/status_persistence.txt'
 
   config.filter_run_when_matching focus: true
 end
 
-Registers = Struct.new(:page, :site)
+Registers = Struct.new(:page, :site) unless defined?(Registers)
 
 # Mock for Collections
 class Collections
@@ -28,7 +28,7 @@ class SiteMock
   attr_reader :config
 
   def initialize
-    @config = YAML.safe_load(File.read('../demo/_config.yml'))
+    @config = YAML.safe_load_file('_config.yml')
     @config['env'] = { 'JEKYLL_ENV' => 'development' }
   end
 
@@ -42,18 +42,18 @@ class TestLiquidContext < Liquid::Context
     super
 
     page = {
-      "content"     => "blah blah",
-      "description" => "Jekyll plugin support demo",
-      "dir"         => "/",
-      "excerpt"     => nil,
-      "layout"      => "default",
-      "name"        => "index.html",
-      "path"        => "index.html",
-      "title"       => "Welcome",
-      "url"         => "/",
+      'content'     => 'blah blah',
+      'description' => 'Jekyll plugin support demo',
+      'dir'         => '/',
+      'excerpt'     => nil,
+      'layout'      => 'default',
+      'name'        => 'index.html',
+      'path'        => 'index.html',
+      'title'       => 'Welcome',
+      'url'         => '/',
     }
 
-    @content = "Interior of the tag"
+    @content = 'Interior of the tag'
     @registers = Registers.new(
       page,
       SiteMock.new

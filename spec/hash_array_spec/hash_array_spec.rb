@@ -1,5 +1,6 @@
 module HashArraySpec
   require_relative '../../lib/hash_array'
+  require_relative '../spec_helper'
 
   RSpec.describe HashArray do
     let(:logger) do
@@ -9,16 +10,16 @@ module HashArraySpec
     let(:parse_context) { TestParseContext.new }
 
     [1, 2, 3, 4, 11, 22, 33, 44].each do |x|
-      let("href#{x}".to_sym) do
+      let("href#{x}") do
         domain, where = if x.even?
                           ['https://domain.com/', 'External']
                         else
                           ['', 'Internal']
                         end
-        href = HrefTag::HrefTag.send(
+        href = ::JekyllSupport::HRefTag.send(
           :new,
           'href',
-          + "#{domain}path/page#{x}.html #{where} link text #{x}",
+          "#{domain}path/page#{x}.html #{where} link text #{x}",
           parse_context
         )
         href.render(TestLiquidContext.new)
@@ -32,12 +33,12 @@ module HashArraySpec
       [href2, href4, href22, href44].each { |x| described_class.add_global_link_for_page x }
 
       local_hrefs = described_class.instance_variable_get :@local_hrefs
-      value = { 'index.html' => [href1, href3, href11, href33] }
-      expect(local_hrefs).to match_array(value)
+      local_expected = { 'index.html' => [href1, href3, href11, href33] }
+      expect(local_hrefs).to match_array(local_expected)
 
       global_hrefs = described_class.instance_variable_get :@global_hrefs
-      value = { 'index.html' => [href2, href4, href22, href44] }
-      expect(global_hrefs).to match_array(value)
+      global_expected = { 'index.html' => [href2, href4, href22, href44] }
+      expect(global_hrefs).to match_array(global_expected)
     end
   end
 end
