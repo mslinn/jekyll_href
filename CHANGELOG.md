@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.2 / 2025-09-29
+
+* Added `to_s` and `inspect` methods to `HRef` and `MiniHref` classes for
+  better debugging output.
+
+
 ## 3.0.1 / 2025-04-09
 
 * Embedded spaces in URLs are translated to `%20`.
