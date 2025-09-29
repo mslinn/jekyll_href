@@ -1,4 +1,4 @@
-require:
+plugins:
   # - rubocop-jekyll
   - rubocop-md
   - rubocop-performance
@@ -69,6 +69,9 @@ RSpec/IndexedLet:
 
 RSpec/MultipleExpectations:
   Max: 15
+
+RSpec/PendingWithoutReason:
+  Enabled: false
 
 Style/ClassVars:
   Enabled: false

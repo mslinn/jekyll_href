@@ -12,7 +12,22 @@ require_relative 'hash_array'
 # Generates an href.
 
 module JekyllSupport
-  MiniHref = Struct.new(:follow, :html, :link, :line_number, :link_save, :path, :summary_exclude, :summary_href, keyword_init: true)
+  MiniHref = Struct.new(:follow, :html, :link, :line_number, :link_save, :path, :summary_exclude, :summary_href, keyword_init: true) do
+    def to_s
+      # "On line #{line_number} of #{path}:"
+      msg = '<HRef'
+      msg += follow unless follow.empty?
+      # msg += " match='#{match}'" if match
+      msg += " path='#{path}'" # if path
+      # msg += target unless target.empty?
+      msg += " link='#{link}'" # unless link.empty?
+      msg += " text='#{html}'" unless html.empty?
+      msg += '>'
+      msg
+    end
+
+    def inspect = to_s
+  end
 
   # Implements href Jekyll tag
   class HRefTag < JekyllTag
@@ -23,6 +38,28 @@ module JekyllSupport
     include JekyllHrefVersion
     include HashArray
     include Comparable
+
+    def ==(other)
+      case other
+      when self.class
+        follow == other.follow &&
+          match == other.match &&
+          path == other.path &&
+          target == other.target &&
+          text == other.text
+      when MiniHref
+        follow == other.follow &&
+          text == other.html &&
+          link == other.link &&
+          line_number == other.line_number &&
+          link_save == other.link_save &&
+          path == other.path &&
+          summary_exclude == other.summary_exclude &&
+          summary_href == other.summary_href
+      else
+        false
+      end
+    end
 
     def <=>(other)
       return nil unless other.is_a?(self.class)
@@ -77,7 +114,29 @@ module JekyllSupport
     end
 
     def to_s
-      "On line #{line_number} of #{path}: #{follow} #{match} #{target} #{link} => '#{text}'"
+      # "On line #{line_number} of #{path}:"
+      msg = '<HRef'
+      msg += follow unless follow.empty?
+      msg += " match='#{match}'" if match
+      msg += " path='#{path}'" # if path
+      msg += target unless target.empty?
+      msg += " link='#{link}'" # unless link.empty?
+      msg += " text='#{text}'" unless text.empty?
+      msg += '>'
+      msg
+    end
+
+    def inspect
+      # "On line #{line_number} of #{path}:"
+      msg = '<HRef'
+      msg += follow unless follow.empty?
+      msg += " match='#{match}'" if match
+      msg += " path='#{path}'" # if path
+      msg += target unless target.empty?
+      msg += " link='#{link}'" # unless link.empty?
+      msg += " text='#{text[0..20]}#{text.length > 20 ? "'..." : "'"}" unless text.empty?
+      msg += '>'
+      msg
     end
 
     JekyllSupport::JekyllPluginHelper.register(self, 'href')
