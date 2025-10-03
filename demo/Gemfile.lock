@@ -18,7 +18,7 @@ GIT
 PATH
   remote: ..
   specs:
-    jekyll_href (3.0.1)
+    jekyll_href (3.0.2)
       ipaddress
       jekyll (>= 4.4.1)
       jekyll_draft
@@ -28,7 +28,7 @@ PATH
 PATH
   remote: /mnt/f/work/jekyll/my_plugins/jekyll_plugin_support
   specs:
-    jekyll_plugin_support (3.1.1)
+    jekyll_plugin_support (3.1.2)
       bigdecimal
       facets
       jekyll (>= 4.4.1)
@@ -244,7 +244,7 @@ GEM
     rubocop-ast (1.47.1)
       parser (>= 3.3.7.2)
       prism (~> 1.4)
-    rubocop-md (2.0.2)
+    rubocop-md (2.0.3)
       lint_roller (~> 1.1)
       rubocop (>= 1.72.1)
     rubocop-performance (1.26.0)
