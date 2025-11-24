@@ -102,6 +102,13 @@ module JekyllSupport
                 linkk
               end
       @link_save = @link
+
+      # Re-classify if handle_empty_text transformed a bare domain into an external URL
+      if @link_type == LinkType::LOCAL && @link.start_with?('http:', 'https:', 'http://', 'https://')
+        @link_type = LinkType::EXTERNAL
+        @follow = @follow_specified ? '' : ' rel="nofollow"'
+      end
+
       return if @link_type == LinkType::EXTERNAL || @link_type == LinkType::FILE
 
       @follow = ''

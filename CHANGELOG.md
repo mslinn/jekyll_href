@@ -1,5 +1,9 @@
 # Change Log
 
+## 3.0.3 / 2025-11-24 (pending)
+
+- Fixed links like `{% href mslinn.com %}` so the always open in a new tab.
+
 ## 3.0.2 / 2025-09-29
 
 * Added `to_s` and `inspect` methods to `HRef` and `MiniHref` classes for
