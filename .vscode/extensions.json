@@ -8,18 +8,11 @@
 		"devonray.snippet",
 		"groksrc.ruby",
 		"KoichiSasada.vscode-rdbg",
-		"hoovercj.ruby-linter",
-		"miguel-savignano.ruby-symbols",
 		"misogi.ruby-rubocop",
-		"neilding.language-liquid",
 		"redhat.vscode-yaml",
 	  "shd101wyy.markdown-preview-enhanced",
 		"Shopify.ruby-extensions-pack",
 		"Shopify.ruby-lsp",
-		"sissel.shopify-liquid",
-		"timonwong.shellcheck",
-		"vayan.haml",
-		"vortizhe.simple-ruby-erb",
 	],
 	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
 	"unwantedRecommendations": [

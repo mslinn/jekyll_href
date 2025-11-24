@@ -2,40 +2,54 @@ author: Mike Slinn
 compress_html:
   blanklines: false
   clippings: all
-  comments: ["<!-- ", " -->"]
+  comments:
+  - "<!-- "
+  - " -->"
   endings: all
   ignore:
-    envs: [development]
+    envs:
+    - development
   profile: false
-  startings: [html, head, body]
+  startings:
+  - html
+  - head
+  - body
 domain: bogus.jekylldemo.com
 email: bogus@jekylldemo.com
-exclude:  # Wildcards are not supported yet https://github.com/jekyll/jekyll-watch/pull/93
-  - .git
-  - .github
-  - .gitignore
-  - .jekyll-cache
-  - .jekyll-metadata
-  - .ruby-version
-  - .vscode
-  - BingSiteAuth.xml
-  - Gemfile
-  - Gemfile.lock
-  - README.md
+exclude: # Wildcards are not supported yet https://github.com/jekyll/jekyll-watch/pull/93
+- .git
+- .github
+- .gitignore
+- .jekyll-cache
+- .jekyll-metadata
+- .ruby-version
+- .vscode
+- BingSiteAuth.xml
+- Gemfile
+- Gemfile.lock
+- README.md
 href:
   die_on_href_error: false # Default value is false
-  die_on_nomatch: false     # Default value is false
-  pry_on_href_error: false  # Default value is false
+  die_on_nomatch: false # Default value is false
+  pry_on_href_error: false # Default value is false
 href_summary:
   die_on_href_error: false # Default value is false
-  pry_on_href_error: false  # Default value is false
+  pry_on_href_error: false # Default value is false
 ignore_theme_config: true
 jekyll_bootstrap5_tabs:
-  - pretty: true
+- pretty: true
+jekyll_control:
+  port_http: 4444
+  port_live_reload: 2571
 liquid:
   error_mode: strict
   # strict_filters: true
   # strict_variables: true
+permalink: /blog/:year/:month/:day/:title:output_ext
+plugin-vars:
+  github: https://github.com
+  django-github: https://github.com/django/django/blob/3.1.7
+  django-oscar-github: https://github.com/django-oscar/django-oscar/blob/3.0.2
 plugin_loggers:
   PluginMetaLogger: info
   CleanHook: warn
@@ -44,14 +58,9 @@ plugin_loggers:
   PageHooks: warn
   PostHooks: warn
   SiteHooks: warn
-permalink: "/blog/:year/:month/:day/:title:output_ext"
-plugin-vars:
-  github: 'https://github.com'
-  django-github: 'https://github.com/django/django/blob/3.1.7'
-  django-oscar-github: 'https://github.com/django-oscar/django-oscar/blob/3.0.2'
 plugins: # Use file name of the plugin entry point, not the gem name
-  - jekyll_plugin_logger
-  - jekyll
+- jekyll_plugin_logger
+- jekyll
 sass:
   style: compressed
 title: jekyll_href Demo
