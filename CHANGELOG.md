@@ -1,6 +1,6 @@
 # Change Log
 
-## 3.0.3 / 2025-11-24 (pending)
+## 3.0.3 / 2025-12-22
 
 - Fixed links like `{% href mslinn.com %}` so the always open in a new tab.
 
